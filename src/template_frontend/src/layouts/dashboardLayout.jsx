@@ -1,12 +1,13 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, Outlet, useLocation } from "react-router-dom"
 import { Button } from "../components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
-import { BookOpen, Home, GraduationCap, Users, MessageSquare, Settings, Bell, Search, Menu, X } from "lucide-react"
+import { BookOpen, Home, GraduationCap, Users, MessageSquare, Settings, Bell, Search, Menu, X, PencilRuler } from "lucide-react"
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
   { name: "My Courses", href: "/dashboard/courses", icon: BookOpen },
+  { name: "My Assignments", href: "/dashboard/assignments", icon: PencilRuler },
   { name: "Browse Courses", href: "/dashboard/browse", icon: GraduationCap },
   { name: "Discussions", href: "/dashboard/discussions", icon: MessageSquare },
   { name: "Classmates", href: "/dashboard/classmates", icon: Users },
@@ -16,6 +17,24 @@ const navigation = [
 export default function DashboardLayout() {
   const location = useLocation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [showNotifications, setShowNotifications] = useState(false)
+  const notificationRef = useRef(null)
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target)
+      ) {
+        setShowNotifications(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }
+  )
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -39,9 +58,8 @@ export default function DashboardLayout() {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium ${
-                    location.pathname === item.href ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:bg-gray-50"
-                  }`}
+                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium ${location.pathname === item.href ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:bg-gray-50"
+                    }`}
                 >
                   <Icon className="h-5 w-5" />
                   <span>{item.name}</span>
@@ -68,9 +86,8 @@ export default function DashboardLayout() {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium ${
-                    location.pathname === item.href ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:bg-gray-50"
-                  }`}
+                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium ${location.pathname === item.href ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:bg-gray-50"
+                    }`}
                 >
                   <Icon className="h-5 w-5" />
                   <span>{item.name}</span>
@@ -102,9 +119,34 @@ export default function DashboardLayout() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm">
-                <Bell className="h-5 w-5" />
-              </Button>
+              <div className="relative" ref={notificationRef}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowNotifications(!showNotifications)}
+                  className="relative bg-white"
+                >
+                  <Bell className="h-5 w-5 text-gray-600 hover:text-blue-600 transition-colors" />
+                  <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-red-500" />
+                </Button>
+
+                {showNotifications && (
+                  <div className="absolute right-0 mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                    <div className="p-4 border-b font-semibold text-gray-700">Notifications</div>
+                    <ul className="divide-y text-sm">
+                      <li className="px-4 py-3 hover:bg-gray-50 cursor-pointer">
+                        📚 New course material uploaded
+                      </li>
+                      <li className="px-4 py-3 hover:bg-gray-50 cursor-pointer">
+                        📝 Assignment deadline tomorrow
+                      </li>
+                      <li className="px-4 py-3 hover:bg-gray-50 cursor-pointer">
+                        💬 New message in discussion forum
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
               <Avatar>
                 <AvatarImage src="/placeholder.svg?height=32&width=32" />
                 <AvatarFallback>JD</AvatarFallback>

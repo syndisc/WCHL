@@ -11,6 +11,9 @@ import InstructorDashboard from './pages/instructor/instructorDashboard';
 import NotFoundPage from './pages/error/404page';
 import CourseDetailPage from './pages/course/courses';
 import DashboardLayout from './layouts/dashboardLayout';
+import AssignmentPage from './pages/course/assignment';
+import ClassmatesPage from './pages/course/classmate';
+import QuizPage from './pages/course/quiz';
 
 export default function App() {
   return (
@@ -26,6 +29,9 @@ export default function App() {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<DashboardPage />} />
             <Route path="courses" element={<MyCoursesPage />} />
+            <Route path="assignments" element={<AssignmentPage />} />
+            <Route path="classmates" element={<ClassmatesPage />} />
+            <Route path="quiz" element={<QuizPage />} />
             <Route path="browse" element={<BrowseCoursesPage />} />
             <Route path="discussions" element={<DiscussionsPage />} />
             <Route path="settings" element={<SettingsPage />} />
