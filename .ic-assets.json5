@@ -1,0 +1,6 @@
+[
+  {
+    "match": "**/*",
+    "fallback": "/index.html"
+  }
+]

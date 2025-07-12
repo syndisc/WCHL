@@ -4,6 +4,8 @@ import { Progress } from "../../components/ui/progress"
 import { Badge } from "../../components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs"
 import { Clock, Users, Star, Play, Download } from "lucide-react"
+import { Link } from "react-router-dom"
+
 
 export default function MyCoursesPage() {
   return (
@@ -22,103 +24,108 @@ export default function MyCoursesPage() {
 
         <TabsContent value="enrolled" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card>
-              <div className="aspect-video relative">
-                <img
-                  src="/placeholder.svg?height=200&width=300"
-                  alt="Course thumbnail"
-                  className="w-full h-full object-cover rounded-t-lg"
-                />
-                <div className="absolute top-2 right-2">
-                  <Badge>In Progress</Badge>
-                </div>
-              </div>
-              <CardHeader>
-                <CardTitle className="text-lg">React Advanced Patterns</CardTitle>
-                <CardDescription>Master advanced React concepts and patterns</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between text-sm text-gray-600">
-                  <div className="flex items-center space-x-1">
-                    <Clock className="h-4 w-4" />
-                    <span>12 hours</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Users className="h-4 w-4" />
-                    <span>1,234 students</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span>4.8</span>
+            <Link to="/courses/react-advanced-patterns">
+              <Card>
+                <div className="aspect-video relative">
+                  <img
+                    src="/placeholder.svg?height=200&width=300"
+                    alt="Course thumbnail"
+                    className="w-full h-full object-cover rounded-t-lg"
+                  />
+                  <div className="absolute top-2 right-2">
+                    <Badge>In Progress</Badge>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Progress</span>
-                    <span>75%</span>
+                <CardHeader>
+                  <CardTitle className="text-lg">React Advanced Patterns</CardTitle>
+                  <CardDescription>Master advanced React concepts and patterns</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between text-sm text-gray-600">
+                    <div className="flex items-center space-x-1">
+                      <Clock className="h-4 w-4" />
+                      <span>12 hours</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Users className="h-4 w-4" />
+                      <span>1,234 students</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <span>4.8</span>
+                    </div>
                   </div>
-                  <Progress value={75} />
-                </div>
-                <div className="flex space-x-2">
-                  <Button className="flex-1">
-                    <Play className="h-4 w-4 mr-2" />
-                    Continue
-                  </Button>
-                  <Button variant="outline" size="icon">
-                    <Download className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <div className="aspect-video relative">
-                <img
-                  src="/placeholder.svg?height=200&width=300"
-                  alt="Course thumbnail"
-                  className="w-full h-full object-cover rounded-t-lg"
-                />
-                <div className="absolute top-2 right-2">
-                  <Badge>In Progress</Badge>
-                </div>
-              </div>
-              <CardHeader>
-                <CardTitle className="text-lg">Python for Data Science</CardTitle>
-                <CardDescription>Learn Python programming for data analysis</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between text-sm text-gray-600">
-                  <div className="flex items-center space-x-1">
-                    <Clock className="h-4 w-4" />
-                    <span>18 hours</span>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Progress</span>
+                      <span>75%</span>
+                    </div>
+                    <Progress value={75} />
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <Users className="h-4 w-4" />
-                    <span>2,156 students</span>
+                  <div className="flex space-x-2">
+                    <Button className="flex-1">
+                      <Play className="h-4 w-4 mr-2" />
+                      Continue
+                    </Button>
+                    <Button variant="outline" size="icon">
+                      <Download className="h-4 w-4" />
+                    </Button>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span>4.9</span>
+                </CardContent>
+              </Card>
+            </Link>
+            
+            <Link to="/courses/python-for-data-science">
+                <Card>
+                  <div className="aspect-video relative">
+                    <img
+                      src="/placeholder.svg?height=200&width=300"
+                      alt="Course thumbnail"
+                      className="w-full h-full object-cover rounded-t-lg"
+                    />
+                    <div className="absolute top-2 right-2">
+                      <Badge>In Progress</Badge>
+                    </div>
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Progress</span>
-                    <span>45%</span>
-                  </div>
-                  <Progress value={45} />
-                </div>
-                <div className="flex space-x-2">
-                  <Button className="flex-1">
-                    <Play className="h-4 w-4 mr-2" />
-                    Continue
-                  </Button>
-                  <Button variant="outline" size="icon">
-                    <Download className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Python for Data Science</CardTitle>
+                    <CardDescription>Learn Python programming for data analysis</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between text-sm text-gray-600">
+                      <div className="flex items-center space-x-1">
+                        <Clock className="h-4 w-4" />
+                        <span>18 hours</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Users className="h-4 w-4" />
+                        <span>2,156 students</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <span>4.9</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Progress</span>
+                        <span>45%</span>
+                      </div>
+                      <Progress value={45} />
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button className="flex-1">
+                        <Play className="h-4 w-4 mr-2" />
+                        Continue
+                      </Button>
+                      <Button variant="outline" size="icon">
+                        <Download className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+            </Link>
+            
           </div>
         </TabsContent>
 

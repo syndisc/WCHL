@@ -9,7 +9,7 @@
         "template_backend"
       ],
       "source": [
-        "src/template_frontend/assets"
+        "src/template_frontend/dist"
       ],
       "type": "assets"
     }

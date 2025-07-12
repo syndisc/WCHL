@@ -1,19 +1,25 @@
 {
-    "name": "template",
-    "type": "module",
-    "scripts": {
-        "start": "npm start --workspaces --if-present",
-        "prebuild": "npm run prebuild --workspaces --if-present",
-        "build": "npm run build --workspaces --if-present",
-        "pretest": "npm run prebuild --workspaces --if-present",
-        "test": "npm test --workspaces --if-present"
-    },
-    "engines": {
-        "node": ">=16.0.0",
-        "npm": ">=7.0.0"
-    },
-    "workspaces": [],
-    "dependencies": {
-        "lucide-react": "^0.525.0"
-    }
+  "name": "template",
+  "type": "module",
+  "scripts": {
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
+  "dependencies": {
+    "lucide-react": "^0.525.0",
+    "react-router-dom": "^7.6.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-react": "^7.27.1",
+    "babel-loader": "^10.0.0",
+    "webpack": "^5.100.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
+  }
 }

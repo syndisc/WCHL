@@ -9,11 +9,13 @@ import DiscussionsPage from './pages/dashboard/discussionPage';
 import SettingsPage from './pages/dashboard/settingPage';
 import InstructorDashboard from './pages/instructor/instructorDashboard';
 import NotFoundPage from './pages/error/404page';
-import CourseDetailPage from './pages/course/courses';
 import DashboardLayout from './layouts/dashboardLayout';
 import AssignmentPage from './pages/course/assignment';
 import ClassmatesPage from './pages/course/classmate';
 import QuizPage from './pages/course/quiz';
+import MyCertificate from './pages/dashboard/myCertificate';
+import CourseDetailPage from './pages/dashboard/CourseDetailPage';
+import BookmarkedCoursesPage from "./pages/dashboard/bookmarkedCoursesPage";
 
 export default function App() {
   return (
@@ -23,7 +25,6 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/register" element={<RegisterPage />} />
-          <Route path="/course/:id" element={<CourseDetailPage />} />
 
           {/* Dashboard Routes */}
           <Route path="/dashboard" element={<DashboardLayout />}>
@@ -34,7 +35,11 @@ export default function App() {
             <Route path="quiz" element={<QuizPage />} />
             <Route path="browse" element={<BrowseCoursesPage />} />
             <Route path="discussions" element={<DiscussionsPage />} />
+            <Route path="certificate" element={<MyCertificate />} />
             <Route path="settings" element={<SettingsPage />} />
+            <Route path="/dashboard/bookmarked" element={<BookmarkedCoursesPage />} 
+            />
+
           </Route>
 
           {/* Instructor Routes */}
@@ -42,6 +47,9 @@ export default function App() {
 
           {/* Error Pages */}
           <Route path="*" element={<NotFoundPage />} />
+
+          <Route path="/courses/:slug" element={<CourseDetailPage />} />
+
         </Routes>
     </BrowserRouter>
     </div>
