@@ -14,6 +14,8 @@ import DashboardLayout from './layouts/dashboardLayout';
 import AssignmentPage from './pages/course/assignment';
 import ClassmatesPage from './pages/course/classmate';
 import QuizPage from './pages/course/quiz';
+import { CreateCoursesPage } from './pages/instructor/CreateCoursesPage';
+import UserManagementPage from './pages/admin/userManagementPage';
 
 export default function App() {
   return (
@@ -39,6 +41,10 @@ export default function App() {
 
           {/* Instructor Routes */}
           <Route path="/instructor/dashboard" element={<InstructorDashboard />} />
+          <Route path="/instructor/courses/create" element={<CreateCoursesPage />} />
+
+          {/* Admin Routes */}
+          <Route path="/admin/user_management" element={<UserManagementPage />} />
 
           {/* Error Pages */}
           <Route path="*" element={<NotFoundPage />} />
