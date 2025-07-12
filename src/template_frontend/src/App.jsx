@@ -16,6 +16,9 @@ import QuizPage from './pages/course/quiz';
 import MyCertificate from './pages/dashboard/myCertificate';
 import CourseDetailPage from './pages/dashboard/CourseDetailPage';
 import BookmarkedCoursesPage from "./pages/dashboard/bookmarkedCoursesPage";
+import { CreateCoursesPage } from './pages/instructor/CreateCoursesPage';
+import UserManagementPage from './pages/admin/userManagementPage';
+
 
 export default function App() {
   return (
@@ -44,6 +47,10 @@ export default function App() {
 
           {/* Instructor Routes */}
           <Route path="/instructor/dashboard" element={<InstructorDashboard />} />
+          <Route path="/instructor/courses/create" element={<CreateCoursesPage />} />
+
+          {/* Admin Routes */}
+          <Route path="/admin/user_management" element={<UserManagementPage />} />
 
           {/* Error Pages */}
           <Route path="*" element={<NotFoundPage />} />

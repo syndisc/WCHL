@@ -3,8 +3,15 @@ import { Button } from "../../components/ui/button"
 import { Badge } from "../../components/ui/badge"
 import { Progress } from "../../components/ui/progress"
 import { BookOpen, Users, DollarSign, Plus, Eye, MessageSquare, Star } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 export default function InstructorDashboard() {
+  const navigate = useNavigate();
+
+  const handleCreateCourse = () => {
+    navigate("/instructor/courses/create");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="space-y-6">
@@ -13,7 +20,7 @@ export default function InstructorDashboard() {
             <h1 className="text-3xl font-bold text-gray-900">Instructor Dashboard</h1>
             <p className="text-gray-600 mt-2">Manage your courses and track your teaching performance</p>
           </div>
-          <Button>
+          <Button onClick={handleCreateCourse}>
             <Plus className="h-4 w-4 mr-2" />
             Create New Course
           </Button>
