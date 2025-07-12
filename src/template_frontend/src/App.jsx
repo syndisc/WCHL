@@ -14,18 +14,25 @@ import DashboardLayout from './layouts/dashboardLayout';
 import AssignmentPage from './pages/course/assignment';
 import ClassmatesPage from './pages/course/classmate';
 import QuizPage from './pages/course/quiz';
-import { CreateCoursesPage } from './pages/instructor/CreateCoursesPage';
 import UserManagementPage from './pages/admin/userManagementPage';
+import InstructorLayout from './layouts/instructorLayout';
+import QuizBuilder from './pages/instructor/quizBuilder';
+import StudentManagementPage from './pages/instructor/studentManagement';
+import AdminDashboardPage from './pages/admin/adminDashboardPage';
+import AdminLayout from './layouts/adminLayout';
+import CreateCoursesPage from './pages/instructor/CreateCoursesPage';
+import MyCertificate from './pages/dashboard/MyCertificate';
+import BookmMarkedCoursesPage from './pages/dashboard/BookMarkedCoursesPage';
 
 export default function App() {
   return (
     <div className="h-screen w-screen">
       <BrowserRouter>
-      <Routes>
+        <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/register" element={<RegisterPage />} />
-          <Route path="/course/:id" element={<CourseDetailPage />} />
+          <Route path="/courses/:slug" element={<CourseDetailPage />} />
 
           {/* Dashboard Routes */}
           <Route path="/dashboard" element={<DashboardLayout />}>
@@ -36,20 +43,29 @@ export default function App() {
             <Route path="quiz" element={<QuizPage />} />
             <Route path="browse" element={<BrowseCoursesPage />} />
             <Route path="discussions" element={<DiscussionsPage />} />
+            <Route path="certificate" element={<MyCertificate />} />
             <Route path="settings" element={<SettingsPage />} />
+            <Route path="bookmarked" element={<BookmMarkedCoursesPage />} />
           </Route>
 
           {/* Instructor Routes */}
-          <Route path="/instructor/dashboard" element={<InstructorDashboard />} />
-          <Route path="/instructor/courses/create" element={<CreateCoursesPage />} />
+          <Route path="/instructor" element={<InstructorLayout />}>
+            <Route index element={<InstructorDashboard />} />
+            <Route path="create-course" element={<CreateCoursesPage />} />
+            <Route path="quiz-builder" element={<QuizBuilder />} />
+            <Route path="students" element={<StudentManagementPage />} />
+          </Route>
 
           {/* Admin Routes */}
-          <Route path="/admin/user_management" element={<UserManagementPage />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboardPage />} />
+            <Route path="user_management" element={<UserManagementPage />} />
+          </Route>
 
           {/* Error Pages */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
     </div>
   );
 }

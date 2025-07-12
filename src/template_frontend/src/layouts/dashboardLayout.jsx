@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react"
-import { Link, Outlet, useLocation } from "react-router-dom"
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
 import { Button } from "../components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
-import { BookOpen, Home, GraduationCap, Users, MessageSquare, Settings, Bell, Search, Menu, X, PencilRuler } from "lucide-react"
+import {
+  BookOpen, Home, GraduationCap, Users, MessageSquare,
+  Settings, Bell, Search, Menu, X, PencilRuler, Bookmark
+} from "lucide-react"
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
@@ -11,11 +14,13 @@ const navigation = [
   { name: "Browse Courses", href: "/dashboard/browse", icon: GraduationCap },
   { name: "Discussions", href: "/dashboard/discussions", icon: MessageSquare },
   { name: "Classmates", href: "/dashboard/classmates", icon: Users },
+  { name: "My Certificates", href: "/dashboard/certificate", icon: GraduationCap },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ]
 
 export default function DashboardLayout() {
   const location = useLocation()
+  const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const notificationRef = useRef(null)
@@ -33,8 +38,7 @@ export default function DashboardLayout() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }
-  }
-  )
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -119,6 +123,17 @@ export default function DashboardLayout() {
             </div>
 
             <div className="flex items-center space-x-4">
+              {/* Tombol Bookmark */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/dashboard/bookmarked")}
+                className="relative bg-white"
+              >
+                <Bookmark className="h-5 w-5 text-gray-600 hover:text-blue-600 transition-colors" />
+              </Button>
+
+              {/* Tombol Notifikasi */}
               <div className="relative" ref={notificationRef}>
                 <Button
                   variant="ghost"
@@ -147,6 +162,7 @@ export default function DashboardLayout() {
                   </div>
                 )}
               </div>
+
               <Avatar>
                 <AvatarImage src="/placeholder.svg?height=32&width=32" />
                 <AvatarFallback>JD</AvatarFallback>

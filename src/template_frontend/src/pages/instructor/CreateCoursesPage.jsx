@@ -32,7 +32,7 @@ const Modal = ({ isOpen, onClose, children, title }) => {
   );
 };
 
-export function CreateCoursesPage() {
+export default function CreateCoursesPage() {
   const navigate = useNavigate();
 
   const [courseDescription, setCourseDescription] = useState('');
