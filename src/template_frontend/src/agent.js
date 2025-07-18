@@ -1,5 +1,5 @@
 import { HttpAgent, Actor } from "@dfinity/agent";
-import { idlFactory as lms_idl, canisterId as lms_id } from "./declarations/lms";
+import { idlFactory as lms_idl, canisterId as lms_id } from "./declarations/template_backend";
 
 const agent = new HttpAgent({ host: "http://localhost:4943" }); // or IC host
 

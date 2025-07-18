@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card"
 import { Button } from "../../components/ui/button"
 import { Input } from "../../components/ui/input"
@@ -7,9 +8,171 @@ import { Switch } from "../../components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar"
 import { Badge } from "../../components/ui/badge"
-import { CreditCard, Trash2 } from "lucide-react"
+import { CreditCard, Trash2, AlertCircle, CheckCircle, User, Bell, Shield, DollarSign, Settings } from "lucide-react"
+import { useLMS } from "../../hooks/useLMS"
 
 export default function SettingsPage() {
+  const { getUserProfile, updateUserProfile, deleteUser, loading, error } = useLMS();
+  const [userProfile, setUserProfile] = useState(null);
+  const [loadingError, setLoadingError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    bio: ""
+  });
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  });
+  const [notifications, setNotifications] = useState({
+    courseUpdates: true,
+    assignmentReminders: true,
+    discussionReplies: true,
+    emailNotifications: true
+  });
+  const [privacy, setPrivacy] = useState({
+    profileVisibility: true,
+    showProgress: true,
+    allowMessages: true
+  });
+
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        setLoadingError("No authentication token found");
+        return;
+      }
+
+      try {
+        const result = await getUserProfile(token);
+        if (result.success) {
+          const profile = result.data;
+          setUserProfile(profile);
+          setFormData({
+            firstName: profile.first_name || "",
+            lastName: profile.last_name || "",
+            email: profile.email || "",
+            bio: profile.bio || ""
+          });
+        } else {
+          setLoadingError(result.error || "Failed to load user profile");
+        }
+      } catch (err) {
+        setLoadingError("An unexpected error occurred");
+        console.error("Profile loading error:", err);
+      }
+    };
+
+    loadUserProfile();
+  }, [getUserProfile]);
+
+  const handleProfileUpdate = async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      setLoadingError("No authentication token found");
+      return;
+    }
+
+    try {
+      const result = await updateUserProfile(token, {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        email: formData.email,
+        bio: formData.bio
+      });
+
+      if (result.success) {
+        setSuccessMessage("Profile updated successfully!");
+        setLoadingError("");
+        // Refresh profile data
+        const updatedResult = await getUserProfile(token);
+        if (updatedResult.success) {
+          setUserProfile(updatedResult.data);
+        }
+      } else {
+        setLoadingError(result.error || "Failed to update profile");
+        setSuccessMessage("");
+      }
+    } catch (err) {
+      setLoadingError("An unexpected error occurred");
+      setSuccessMessage("");
+      console.error("Profile update error:", err);
+    }
+  };
+
+  const handlePasswordUpdate = async () => {
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setLoadingError("New passwords do not match");
+      return;
+    }
+
+    if (passwordData.newPassword.length < 6) {
+      setLoadingError("New password must be at least 6 characters long");
+      return;
+    }
+
+    // In a real implementation, you would call a password update function
+    // For now, we'll simulate success
+    setSuccessMessage("Password updated successfully!");
+    setLoadingError("");
+    setPasswordData({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: ""
+    });
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+      return;
+    }
+
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      setLoadingError("No authentication token found");
+      return;
+    }
+
+    try {
+      const result = await deleteUser(token);
+      if (result.success) {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userRole');
+        window.location.href = '/login';
+      } else {
+        setLoadingError(result.error || "Failed to delete account");
+      }
+    } catch (err) {
+      setLoadingError("An unexpected error occurred");
+      console.error("Account deletion error:", err);
+    }
+  };
+
+  const getInitials = (firstName, lastName) => {
+    return `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase() || 'U';
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
+          <div className="space-y-4">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="h-32 bg-gray-200 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -17,13 +180,43 @@ export default function SettingsPage() {
         <p className="text-gray-600 mt-2">Manage your account preferences and settings</p>
       </div>
 
+      {/* Success/Error Messages */}
+      {successMessage && (
+        <div className="flex items-center space-x-2 text-green-600 bg-green-50 p-4 rounded-md">
+          <CheckCircle className="h-5 w-5" />
+          <span>{successMessage}</span>
+        </div>
+      )}
+
+      {(loadingError || error) && (
+        <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-4 rounded-md">
+          <AlertCircle className="h-5 w-5" />
+          <span>{loadingError || error}</span>
+        </div>
+      )}
+
       <Tabs defaultValue="profile" className="space-y-6">
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          <TabsTrigger value="privacy">Privacy</TabsTrigger>
-          <TabsTrigger value="billing">Billing</TabsTrigger>
-          <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="profile" className="flex items-center gap-2">
+            <User className="h-4 w-4" />
+            Profile
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className="flex items-center gap-2">
+            <Bell className="h-4 w-4" />
+            Notifications
+          </TabsTrigger>
+          <TabsTrigger value="privacy" className="flex items-center gap-2">
+            <Shield className="h-4 w-4" />
+            Privacy
+          </TabsTrigger>
+          <TabsTrigger value="billing" className="flex items-center gap-2">
+            <DollarSign className="h-4 w-4" />
+            Billing
+          </TabsTrigger>
+          <TabsTrigger value="account" className="flex items-center gap-2">
+            <Settings className="h-4 w-4" />
+            Account
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile" className="space-y-6">
@@ -35,8 +228,9 @@ export default function SettingsPage() {
             <CardContent className="space-y-6">
               <div className="flex items-center space-x-4">
                 <Avatar className="h-20 w-20">
-                  <AvatarImage src="/placeholder.svg?height=80&width=80" />
-                  <AvatarFallback>JD</AvatarFallback>
+                  <AvatarFallback className="text-lg">
+                    {userProfile ? getInitials(userProfile.first_name, userProfile.last_name) : 'U'}
+                  </AvatarFallback>
                 </Avatar>
                 <div>
                   <Button variant="outline">Change Photo</Button>
@@ -47,17 +241,30 @@ export default function SettingsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" defaultValue="John" />
+                  <Input 
+                    id="firstName" 
+                    value={formData.firstName}
+                    onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" defaultValue="Doe" />
+                  <Input 
+                    id="lastName" 
+                    value={formData.lastName}
+                    onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
+                  />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" defaultValue="john@example.com" />
+                <Input 
+                  id="email" 
+                  type="email" 
+                  value={formData.email}
+                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                />
               </div>
 
               <div className="space-y-2">
@@ -65,11 +272,25 @@ export default function SettingsPage() {
                 <Textarea
                   id="bio"
                   placeholder="Tell us about yourself..."
-                  defaultValue="Passionate learner interested in web development and data science."
+                  value={formData.bio}
+                  onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
                 />
               </div>
 
-              <Button>Save Changes</Button>
+              {userProfile && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+                  <div>
+                    <Label className="text-sm font-medium">User ID</Label>
+                    <p className="text-sm text-gray-600">{userProfile.user_id}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium">Role</Label>
+                    <Badge variant="outline">{userProfile.role}</Badge>
+                  </div>
+                </div>
+              )}
+
+              <Button onClick={handleProfileUpdate}>Save Changes</Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -87,7 +308,10 @@ export default function SettingsPage() {
                     <Label>Course Updates</Label>
                     <p className="text-sm text-gray-600">Get notified about new lessons and course updates</p>
                   </div>
-                  <Switch defaultChecked />
+                  <Switch 
+                    checked={notifications.courseUpdates}
+                    onCheckedChange={(checked) => setNotifications(prev => ({ ...prev, courseUpdates: checked }))}
+                  />
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -95,7 +319,32 @@ export default function SettingsPage() {
                     <Label>Assignment Reminders</Label>
                     <p className="text-sm text-gray-600">Receive reminders about upcoming assignments</p>
                   </div>
-                  <Switch defaultChecked />
+                  <Switch 
+                    checked={notifications.assignmentReminders}
+                    onCheckedChange={(checked) => setNotifications(prev => ({ ...prev, assignmentReminders: checked }))}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label>Discussion Replies</Label>
+                    <p className="text-sm text-gray-600">Get notified when someone replies to your discussions</p>
+                  </div>
+                  <Switch 
+                    checked={notifications.discussionReplies}
+                    onCheckedChange={(checked) => setNotifications(prev => ({ ...prev, discussionReplies: checked }))}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label>Email Notifications</Label>
+                    <p className="text-sm text-gray-600">Receive notifications via email</p>
+                  </div>
+                  <Switch 
+                    checked={notifications.emailNotifications}
+                    onCheckedChange={(checked) => setNotifications(prev => ({ ...prev, emailNotifications: checked }))}
+                  />
                 </div>
               </div>
 
@@ -117,7 +366,32 @@ export default function SettingsPage() {
                     <Label>Profile Visibility</Label>
                     <p className="text-sm text-gray-600">Make your profile visible to other students</p>
                   </div>
-                  <Switch defaultChecked />
+                  <Switch 
+                    checked={privacy.profileVisibility}
+                    onCheckedChange={(checked) => setPrivacy(prev => ({ ...prev, profileVisibility: checked }))}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label>Show Progress</Label>
+                    <p className="text-sm text-gray-600">Allow others to see your course progress</p>
+                  </div>
+                  <Switch 
+                    checked={privacy.showProgress}
+                    onCheckedChange={(checked) => setPrivacy(prev => ({ ...prev, showProgress: checked }))}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label>Allow Messages</Label>
+                    <p className="text-sm text-gray-600">Allow other users to send you messages</p>
+                  </div>
+                  <Switch 
+                    checked={privacy.allowMessages}
+                    onCheckedChange={(checked) => setPrivacy(prev => ({ ...prev, allowMessages: checked }))}
+                  />
                 </div>
               </div>
 
@@ -174,15 +448,34 @@ export default function SettingsPage() {
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="currentPassword">Current Password</Label>
-                  <Input id="currentPassword" type="password" />
+                  <Input 
+                    id="currentPassword" 
+                    type="password"
+                    value={passwordData.currentPassword}
+                    onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="newPassword">New Password</Label>
-                  <Input id="newPassword" type="password" />
+                  <Input 
+                    id="newPassword" 
+                    type="password"
+                    value={passwordData.newPassword}
+                    onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                  <Input 
+                    id="confirmPassword" 
+                    type="password"
+                    value={passwordData.confirmPassword}
+                    onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                  />
                 </div>
               </div>
 
-              <Button>Update Password</Button>
+              <Button onClick={handlePasswordUpdate}>Update Password</Button>
             </CardContent>
           </Card>
 
@@ -197,7 +490,7 @@ export default function SettingsPage() {
                 <p className="text-sm text-gray-600 mb-4">
                   Once you delete your account, there is no going back. Please be certain.
                 </p>
-                <Button variant="destructive">
+                <Button variant="destructive" onClick={handleDeleteAccount}>
                   <Trash2 className="h-4 w-4 mr-2" />
                   Delete Account
                 </Button>

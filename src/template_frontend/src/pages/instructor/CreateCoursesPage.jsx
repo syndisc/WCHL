@@ -1,3 +1,4 @@
+import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea"
@@ -5,10 +6,10 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { PlusCircle, X, Image, PlayCircle, FileText, SquarePen, MoreHorizontal, Pencil } from 'lucide-react';
+import { PlusCircle, X, Image, PlayCircle, FileText, SquarePen, MoreHorizontal, Pencil, AlertCircle, CheckCircle } from 'lucide-react';
 import BackgrounImage from '../../assets/free-online-animation-courses.webp'
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLMS } from "../../hooks/useLMS";
 
 // Modal Component
 const Modal = ({ isOpen, onClose, children, title }) => {
@@ -23,7 +24,6 @@ const Modal = ({ isOpen, onClose, children, title }) => {
             <X className="h-5 w-5" />
           </Button>
         </div>
-        {/* Added max-h and overflow-y-auto here */}
         <div className="p-4 max-h-[80vh] overflow-y-auto">
           {children}
         </div>
@@ -34,8 +34,23 @@ const Modal = ({ isOpen, onClose, children, title }) => {
 
 export default function CreateCoursesPage() {
   const navigate = useNavigate();
+  const { createCourse, loading, error } = useLMS();
+
+  // Course form state
+  const [courseData, setCourseData] = useState({
+    title: '',
+    description: '',
+    duration: '',
+    durationPeriod: 'week',
+    language: 'english',
+    category: 'programming',
+    price: 0
+  });
 
   const [courseDescription, setCourseDescription] = useState('');
+  const [loadingError, setLoadingError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const MAX_DESCRIPTION_LENGTH = 300;
 
   const [courseMaterials, setCourseMaterials] = useState([
@@ -112,6 +127,78 @@ export default function CreateCoursesPage() {
     }
   };
 
+  const handleAddMaterial = () => {
+    if (!newMaterialTitle.trim() || !newMaterialType) {
+      setLoadingError('Please fill in all required fields for the material');
+      return;
+    }
+
+    const newMaterial = {
+      id: `mat-${Date.now()}`,
+      title: newMaterialTitle,
+      type: newMaterialType === 'document' ? 'Document/PDF' : 'Video',
+      chapter: 'Module 1', // Default for now
+      updated: new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
+      description: newMaterialDescription || 'No description provided',
+      status: 'Draft',
+      content: newMaterialFile ? newMaterialFile.name : 'No file uploaded'
+    };
+
+    setCourseMaterials(prev => [...prev, newMaterial]);
+    closeAddMaterialModal();
+    setLoadingError('');
+  };
+
+  const handleCourseSubmit = async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      setLoadingError("No authentication token found");
+      return;
+    }
+
+    // Validate required fields
+    if (!courseData.title.trim() || !courseDescription.trim()) {
+      setLoadingError('Please fill in all required fields (title and description)');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setLoadingError('');
+
+    try {
+      const result = await createCourse(
+        token,
+        courseData.title,
+        courseDescription,
+        courseData.category,
+        courseData.price,
+        courseData.language
+      );
+
+      if (result.success) {
+        setSuccessMessage('Course created successfully!');
+        setLoadingError('');
+        // Optionally redirect after a delay
+        setTimeout(() => {
+          navigate('/instructor/dashboard');
+        }, 2000);
+      } else {
+        setLoadingError(result.error || 'Failed to create course');
+        setSuccessMessage('');
+      }
+    } catch (err) {
+      setLoadingError('An unexpected error occurred');
+      setSuccessMessage('');
+      console.error('Course creation error:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleInputChange = (field, value) => {
+    setCourseData(prev => ({ ...prev, [field]: value }));
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
@@ -122,22 +209,34 @@ export default function CreateCoursesPage() {
           </Button>
           <span className="h-fit text-center text-lg font-semibold text-gray-800">Create Course</span>
         </div>
-        {/* <div className="flex items-center space-x-2 text-gray-700">
-          <span className="font-medium">Step 1 :</span>
-          <span className="text-blue-600 font-semibold">Learning Path Overview</span>
+        <div className="flex items-center space-x-2">
+          <Button 
+            onClick={handleCourseSubmit}
+            disabled={isSubmitting || loading}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            {isSubmitting ? 'Creating...' : 'Create Course'}
+          </Button>
         </div>
-        <div className="flex items-center space-x-6">
-          <div className="flex items-center space-x-2 text-gray-500">
-            <Button className="bg-white hover:bg-gray-200">
-              <ChevronsLeft className="text-black" />
-            </Button>
-            <Button className="px-6 py-2 rounded-lg font-semibold text-md">Continue</Button>
-          </div>
-        </div> */}
       </nav>
 
       {/* Course */}
       <div className="m-auto px-6 pt-24 pb-8 w-[60%]">
+        {/* Success/Error Messages */}
+        {successMessage && (
+          <div className="mb-6 flex items-center space-x-2 text-green-600 bg-green-50 p-4 rounded-md">
+            <CheckCircle className="h-5 w-5" />
+            <span>{successMessage}</span>
+          </div>
+        )}
+
+        {(loadingError || error) && (
+          <div className="mb-6 flex items-center space-x-2 text-red-600 bg-red-50 p-4 rounded-md">
+            <AlertCircle className="h-5 w-5" />
+            <span>{loadingError || error}</span>
+          </div>
+        )}
+
         <section
           className="p-4 h-[350px] bg-cover bg-[90%_40%] rounded-t-[20px] flex justify-end items-end"
           style={{ backgroundImage: `url(${BackgrounImage})` }}
@@ -152,17 +251,20 @@ export default function CreateCoursesPage() {
         <section className="mt-8 space-y-6">
           {/* Course Title */}
           <div className="space-y-2">
-            <Label htmlFor="courseTitle" className="text-xl">Course Title</Label>
+            <Label htmlFor="courseTitle" className="text-xl">Course Title *</Label>
             <Input
               id="courseTitle"
               placeholder="e.g., Introduction to React Hooks"
               className="text-lg font-semibold"
+              value={courseData.title}
+              onChange={(e) => handleInputChange('title', e.target.value)}
+              required
             />
           </div>
 
           {/* Course Description */}
           <div className="space-y-2">
-            <Label htmlFor="courseDesc" className="text-xl">Course Description</Label>
+            <Label htmlFor="courseDesc" className="text-xl">Course Description *</Label>
             <Textarea
               id="courseDesc"
               placeholder="Provide a detailed description of your course..."
@@ -170,6 +272,7 @@ export default function CreateCoursesPage() {
               onChange={(e) => setCourseDescription(e.target.value)}
               maxLength={MAX_DESCRIPTION_LENGTH}
               className="min-h-[100px]"
+              required
             />
             <div className="text-right text-sm text-gray-500">
               {courseDescription.length}/{MAX_DESCRIPTION_LENGTH}
@@ -186,8 +289,13 @@ export default function CreateCoursesPage() {
                   type="number"
                   placeholder="0"
                   className="text-lg font-medium text-gray-500"
+                  value={courseData.duration}
+                  onChange={(e) => handleInputChange('duration', e.target.value)}
                 />
-                <Select>
+                <Select 
+                  value={courseData.durationPeriod}
+                  onValueChange={(value) => handleInputChange('durationPeriod', value)}
+                >
                   <SelectTrigger className="w-[150px]">
                     <SelectValue placeholder="Period"/>
                   </SelectTrigger>
@@ -204,7 +312,11 @@ export default function CreateCoursesPage() {
             <div className="w-[50%] space-y-2">
               <Label htmlFor="language" className="text-xl">Language</Label>
               <div className="flex justify-start items-center space-x-2">
-                <Select id="language">
+                <Select 
+                  id="language"
+                  value={courseData.language}
+                  onValueChange={(value) => handleInputChange('language', value)}
+                >
                   <SelectTrigger className="w-[100%]">
                     <SelectValue placeholder="Language"/>
                   </SelectTrigger>
@@ -216,6 +328,42 @@ export default function CreateCoursesPage() {
                   </SelectContent>
                 </Select>
               </div>
+            </div>
+          </div>
+
+          {/* Additional Course Settings */}
+          <div className="flex space-x-6">
+            <div className="w-[50%] space-y-2">
+              <Label htmlFor="category" className="text-xl">Category</Label>
+              <Select 
+                value={courseData.category}
+                onValueChange={(value) => handleInputChange('category', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Category"/>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="programming">Programming</SelectItem>
+                  <SelectItem value="design">Design</SelectItem>
+                  <SelectItem value="business">Business</SelectItem>
+                  <SelectItem value="marketing">Marketing</SelectItem>
+                  <SelectItem value="data-science">Data Science</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="w-[50%] space-y-2">
+              <Label htmlFor="price" className="text-xl">Price ($)</Label>
+              <Input
+                id="price"
+                type="number"
+                placeholder="0"
+                min="0"
+                step="0.01"
+                value={courseData.price}
+                onChange={(e) => handleInputChange('price', parseFloat(e.target.value) || 0)}
+              />
             </div>
           </div>
         </section>
@@ -288,7 +436,7 @@ export default function CreateCoursesPage() {
       <Modal isOpen={isAddMaterialModalOpen} onClose={closeAddMaterialModal} title="Add New Course Material">
         <div className="space-y-4">
           <div className="space-y-1">
-            <Label htmlFor="materialTitle" className="text-md">Material Title</Label>
+            <Label htmlFor="materialTitle" className="text-md">Material Title *</Label>
             <Input
               id="materialTitle"
               placeholder="e.g., Introduction to CSS Grid"
@@ -298,7 +446,7 @@ export default function CreateCoursesPage() {
             />
           </div>
           <div className="space-y-1">
-            <Label htmlFor="materialType" className="text-md">Material Type</Label>
+            <Label htmlFor="materialType" className="text-md">Material Type *</Label>
             <Select
               id="materialType"
               value={newMaterialType}
@@ -340,7 +488,10 @@ export default function CreateCoursesPage() {
           </div>
 
           <div className="flex justify-end space-x-2 pt-4">
-            <Button type="submit" className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-0">Done</Button>
+            <Button variant="outline" onClick={closeAddMaterialModal}>Cancel</Button>
+            <Button onClick={handleAddMaterial} className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-0">
+              Add Material
+            </Button>
           </div>
         </div>
       </Modal>
