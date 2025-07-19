@@ -177,7 +177,7 @@ export default function MyCoursesPage() {
       </div>
 
       <Tabs defaultValue="enrolled" className="space-y-6">
-        <TabsList>
+        <TabsList className="space-x-2">
           <TabsTrigger value="enrolled">Enrolled ({activeCourses.length})</TabsTrigger>
           <TabsTrigger value="completed">Completed ({completedCourses.length})</TabsTrigger>
           <TabsTrigger value="browse">Browse ({availableCourses.length})</TabsTrigger>

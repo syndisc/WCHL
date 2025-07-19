@@ -19,12 +19,12 @@ export default function InstructorLayout() {
               <input
                 type="text"
                 placeholder="Search courses..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full pl-10 pr-4 py-2 bg-gray-300 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="relative">
+            <Button variant="ghost" size="sm" className="relative bg-white hover:bg-gray-200 focus:outline-none focus:ring-0 active:bg-gray-300">
               <Bell className="h-5 w-5 text-gray-600 hover:text-blue-600" />
               <span className="absolute top-1 right-1 block w-2 h-2 bg-red-500 rounded-full" />
             </Button>
