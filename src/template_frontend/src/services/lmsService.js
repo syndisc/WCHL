@@ -3,7 +3,7 @@ import { Actor, HttpAgent } from '@dfinity/agent';
 import { idlFactory } from 'declarations/template_backend';
 
 // Get the canister ID from environment or dfx
-const canisterId = "uxrrr-q7777-77774-qaaaq-cai"
+const canisterId = "u6s2n-gx777-77774-qaaba-cai"
 
 // Create an agent for local development
 const agent = new HttpAgent({
