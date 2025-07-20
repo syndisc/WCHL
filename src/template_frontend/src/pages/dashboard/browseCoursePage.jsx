@@ -40,7 +40,7 @@ export default function BrowseCoursesPage() {
                 setLoadingError(result.error || "Failed to load courses");
             }
         } catch (err) {
-            setLoadingError("An unexpected error occurred");
+            // setLoadingError("An unexpected error occurred");
             console.error("Courses loading error:", err);
         }
     };
@@ -226,7 +226,7 @@ export default function BrowseCoursesPage() {
                             <SelectValue placeholder="Category" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="">All Categories</SelectItem>
+                            <SelectItem value="All">All Categories</SelectItem>
                             {categories.map(category => (
                                 <SelectItem key={category} value={category}>
                                     {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -239,7 +239,7 @@ export default function BrowseCoursesPage() {
                             <SelectValue placeholder="Level" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="">All Levels</SelectItem>
+                            <SelectItem value="All">All Levels</SelectItem>
                             {levels.map(level => (
                                 <SelectItem key={level} value={level}>
                                     {level.charAt(0).toUpperCase() + level.slice(1)}
@@ -259,7 +259,7 @@ export default function BrowseCoursesPage() {
             </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-                <TabsList>
+                <TabsList className="space-x-2">
                     <TabsTrigger value="all">All Courses ({filteredCourses.length})</TabsTrigger>
                     <TabsTrigger value="popular">Most Popular</TabsTrigger>
                     <TabsTrigger value="new">New Releases</TabsTrigger>

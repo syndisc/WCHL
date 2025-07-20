@@ -132,7 +132,7 @@ export default function UserManagementPage() {
                 setLoadingError(result.error || "Failed to load users");
             }
         } catch (err) {
-            setLoadingError("An unexpected error occurred");
+            // setLoadingError("An unexpected error occurred");
             console.error("Users loading error:", err);
         }
     };

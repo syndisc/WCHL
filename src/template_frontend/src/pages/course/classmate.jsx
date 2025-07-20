@@ -31,7 +31,7 @@ export default function ClassmatesPage() {
                 setLoadingError(result.error || "Failed to load enrolled courses");
             }
         } catch (err) {
-            setLoadingError("An unexpected error occurred");
+            // setLoadingError("An unexpected error occurred");
             console.error("Enrolled courses loading error:", err);
         }
     };

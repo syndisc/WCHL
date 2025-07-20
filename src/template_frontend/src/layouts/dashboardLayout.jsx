@@ -49,7 +49,7 @@ export default function DashboardLayout() {
           <div className="flex h-16 items-center justify-between px-4 border-b">
             <Link to="/" className="flex items-center space-x-2">
               <BookOpen className="h-6 w-6 text-blue-600" />
-              <span className="text-lg font-bold">EduLearn</span>
+              <span className="text-lg font-bold">Edoo</span>
             </Link>
             <Button variant="ghost" size="sm" onClick={() => setSidebarOpen(false)}>
               <X className="h-5 w-5" />
@@ -80,7 +80,7 @@ export default function DashboardLayout() {
           <div className="flex h-16 items-center px-4 border-b">
             <Link to="/" className="flex items-center space-x-2">
               <BookOpen className="h-6 w-6 text-blue-600" />
-              <span className="text-lg font-bold">EduLearn</span>
+              <span className="text-lg font-bold">Edoo</span>
             </Link>
           </div>
           <nav className="flex-1 px-4 py-4 space-y-2">
