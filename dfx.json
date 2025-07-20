@@ -8,9 +8,7 @@
       "dependencies": [
         "template_backend"
       ],
-      "source": [
-        "src/template_frontend/assets"
-      ],
+      "source": [],
       "type": "assets"
     }
   },

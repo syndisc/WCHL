@@ -12,7 +12,7 @@
         "node": ">=16.0.0",
         "npm": ">=7.0.0"
     },
-    "workspaces": [],
+    "workspaces": ["src/template_frontend"],
     "dependencies": {
         "lucide-react": "^0.525.0"
     }
