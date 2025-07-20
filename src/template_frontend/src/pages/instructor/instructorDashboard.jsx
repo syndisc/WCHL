@@ -46,7 +46,7 @@ export default function InstructorDashboard() {
   }, [getInstructorDashboard, getInstructorCourses]);
 
   const handleCreateCourse = () => {
-    navigate("/instructor/courses/create");
+    navigate("/instructor/create-course");
   };
 
   const formatDate = (timestamp) => {
