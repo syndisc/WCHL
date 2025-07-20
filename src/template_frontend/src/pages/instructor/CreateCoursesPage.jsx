@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea"
@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { PlusCircle, X, Image, PlayCircle, FileText, SquarePen, MoreHorizontal, Pencil, AlertCircle, CheckCircle } from 'lucide-react';
+import { PlusCircle, X, Image, PlayCircle, FileText, SquarePen, MoreHorizontal, Pencil, AlertCircle, CheckCircle, FileUp } from 'lucide-react';
 import BackgrounImage from '../../assets/free-online-animation-courses.webp'
 import { useNavigate } from "react-router-dom";
 import { useLMS } from "../../hooks/useLMS";
@@ -48,33 +48,56 @@ export default function CreateCoursesPage() {
   });
 
   const [courseDescription, setCourseDescription] = useState('');
+  const [numSessions, setNumSessions] = useState(1);
   const [loadingError, setLoadingError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const MAX_DESCRIPTION_LENGTH = 300;
 
-  const [courseMaterials, setCourseMaterials] = useState([
+  const [courseSessions, setCourseSessions] = useState([
     {
-      id: 'mat-1',
-      title: 'Introduction to HTML Basics',
-      type: 'Document/PDF',
-      chapter: 'Module 1',
-      updated: '10 July 2024',
-      description: 'A comprehensive guide to HTML fundamentals.',
-      status: 'Published',
-      content: 'html_basics.pdf'
-    },
-    {
-      id: 'mat-2',
-      title: 'React State Management Deep Dive',
-      type: 'Video',
-      chapter: 'Module 2',
-      updated: '05 July 2024',
-      description: 'Understanding useState and useEffect hooks.',
-      status: 'Published',
-      content: 'react_state.mp4'
-    },
+      id: 'session-1',
+      title: 'Session 1: Introduction',
+      materials: [
+        {
+          id: 'mat-1',
+          title: 'Welcome to the Course',
+          type: 'Page',
+          description: 'Overview of the course and what to expect.',
+          status: 'Published',
+          content: 'Welcome text for page 1'
+        },
+        {
+          id: 'mat-2',
+          title: 'Course Introduction Video',
+          type: 'Video',
+          description: 'A short video introducing the instructor and course.',
+          status: 'Published',
+          content: 'intro_video.mp4',
+          previewUrl: 'https://placehold.co/100x60/FF0000/FFFFFF?text=Video+Preview'
+        },
+      ]
+    }
   ]);
+
+  useEffect(() => {
+    setCourseSessions(prevSessions => {
+      const newSessions = [];
+      for (let i = 1; i <= numSessions; i++) {
+        const existingSession = prevSessions.find(s => s.id === `session-${i}`);
+        if (existingSession) {
+          newSessions.push(existingSession);
+        } else {
+          newSessions.push({
+            id: `session-${i}`,
+            title: `Session ${i}`,
+            materials: []
+          });
+        }
+      }
+      return newSessions;
+    });
+  }, [numSessions]);
 
   const getMaterialIcon = (type) => {
     switch (type) {
@@ -94,59 +117,101 @@ export default function CreateCoursesPage() {
   const [isAddMaterialModalOpen, setIsAddMaterialModalOpen] = useState(false);
   const [newMaterialTitle, setNewMaterialTitle] = useState('');
   const [newMaterialType, setNewMaterialType] = useState('');
+  const [newMaterialChapter, setNewMaterialChapter] = useState('');
   const [newMaterialDescription, setNewMaterialDescription] = useState('');
   const [newMaterialFile, setNewMaterialFile] = useState(null);
-  const [newMaterialPreviewUrl, setNewMaterialPreviewUrl] = useState(null);
+  const [newMaterialTextContent, setNewMaterialTextContent] = useState('');
+  const [targetSessionId, setTargetSessionId] = useState('');
 
-  // Add Material Modal Handlers
+  // Material Modal Handlers
   const openAddMaterialModal = () => {
     setIsAddMaterialModalOpen(true);
   };
 
   const closeAddMaterialModal = () => {
     setIsAddMaterialModalOpen(false);
-    // Reset form fields
     setNewMaterialTitle('');
     setNewMaterialType('');
     setNewMaterialDescription('');
+    setNewMaterialChapter('');
     setNewMaterialFile(null);
+    setNewMaterialTextContent('');
+    setTargetSessionId('');
   };
 
   const handleMaterialFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setNewMaterialFile(file);
-      if (newMaterialType === 'video') {
-        setNewMaterialPreviewUrl(URL.createObjectURL(file));
-      } else {
-        setNewMaterialPreviewUrl(null);
-      }
     } else {
       setNewMaterialFile(null);
-      setNewMaterialPreviewUrl(null);
     }
   };
 
-  const handleAddMaterial = () => {
-    if (!newMaterialTitle.trim() || !newMaterialType) {
-      setLoadingError('Please fill in all required fields for the material');
-      return;
+  const handleAddMaterialSubmit = (e) => {
+    e.preventDefault();
+
+    let materialContentValue = '';
+
+    if (newMaterialType === 'video') {
+        materialContentValue = newMaterialTextContent;
+    } else if (newMaterialType === 'document' && newMaterialFile) {
+        materialContentValue = newMaterialFile.name;
+    }
+
+    // Basic validation
+    if (!newMaterialTitle.trim()) {
+        alert('Please enter a title for the material.');
+        return;
+    }
+    if (!newMaterialType) {
+        alert('Please select a material type.');
+        return;
+    }
+    if (!targetSessionId) {
+        alert('Please select a session for the material.');
+        return;
+    }
+
+    // VAlidation type
+    if (newMaterialType === 'video' && !newMaterialTextContent.trim()) {
+        alert('Please enter a video link.');
+        return;
+    }
+    if (newMaterialType === 'document' && !newMaterialFile) {
+        alert('Please upload a PDF file.');
+        return;
     }
 
     const newMaterial = {
       id: `mat-${Date.now()}`,
       title: newMaterialTitle,
       type: newMaterialType === 'document' ? 'Document/PDF' : 'Video',
-      chapter: 'Module 1', // Default for now
-      updated: new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
-      description: newMaterialDescription || 'No description provided',
-      status: 'Draft',
-      content: newMaterialFile ? newMaterialFile.name : 'No file uploaded'
+      chapter: newMaterialChapter,
+      updated: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }),
+      description: newMaterialDescription,
+      status: 'Published',
+      content: materialContentValue,
+      file: newMaterialType === 'document' ? newMaterialFile : null,
+      previewUrl: newMaterialType === 'video' ? newMaterialTextContent : null
     };
 
-    setCourseMaterials(prev => [...prev, newMaterial]);
-    closeAddMaterialModal();
-    setLoadingError('');
+    setCourseSessions(prevSessions =>
+      prevSessions.map(session =>
+        session.id === targetSessionId
+          ? { ...session, materials: [...session.materials, newMaterial] }
+          : session
+      )
+    );
+    console.log("New Material Added:", newMaterial);
+
+    // Reset form fields
+    setNewMaterialTitle('');
+    setNewMaterialType('');
+    setNewMaterialDescription('');
+    setNewMaterialChapter('');
+    setNewMaterialFile(null);
+    setNewMaterialTextContent('');
   };
 
   const handleCourseSubmit = async () => {
@@ -178,7 +243,7 @@ export default function CreateCoursesPage() {
       if (result.success) {
         setSuccessMessage('Course created successfully!');
         setLoadingError('');
-        // Optionally redirect after a delay
+        // Rredirect after a delay
         setTimeout(() => {
           navigate('/instructor/dashboard');
         }, 2000);
@@ -280,32 +345,18 @@ export default function CreateCoursesPage() {
           </div>
 
           <div className="flex space-x-6">
-            {/* Course Duration */}
+            {/* Course Session */}
             <div className="w-[50%] space-y-2">
-              <Label htmlFor="estimatedDuration" className="text-xl">Estimated Duration</Label>
-              <div className="flex justify-start items-center space-x-2">
-                <Input
-                  id="estimatedDuration"
-                  type="number"
-                  placeholder="0"
-                  className="text-lg font-medium text-gray-500"
-                  value={courseData.duration}
-                  onChange={(e) => handleInputChange('duration', e.target.value)}
-                />
-                <Select 
-                  value={courseData.durationPeriod}
-                  onValueChange={(value) => handleInputChange('durationPeriod', value)}
-                >
-                  <SelectTrigger className="w-[150px]">
-                    <SelectValue placeholder="Period"/>
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="week">Week</SelectItem>
-                    <SelectItem value="month">Month</SelectItem>
-                    <SelectItem value="year">Year</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Label htmlFor="numSessions" className="text-lg font-semibold">Number of Sessions</Label>
+              <Input
+                id="numSessions"
+                type="number"
+                placeholder="1"
+                min="1"
+                value={numSessions}
+                onChange={(e) => setNumSessions(Math.max(1, parseInt(e.target.value) || 1))}
+                className="text-lg font-medium text-gray-700"
+              />
             </div>
 
             {/* Course Language */}
@@ -368,73 +419,82 @@ export default function CreateCoursesPage() {
           </div>
         </section>
       
-        {/* Materials */}
-        <section className="space-y-6 mt-24">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold text-gray-800">Course Materials</h2>
-            <Button onClick={openAddMaterialModal} className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-0">
-              <PlusCircle className="h-5 w-5 mr-2" />
-              <span>Add New Material</span>
-            </Button>
-          </div>
-
-          {/* Materials List */}
-          <div className="space-y-4">
-            {courseMaterials.length === 0 ? (
-              <div className="text-center text-gray-500 p-8 border rounded-lg bg-gray-50">
-                No materials added yet. Click "Add New Material" to get started!
-              </div>
-            ) : (
-              courseMaterials.map((material, index) => (
-                <Card
-                  key={material.id} 
-                  id={material.id}
-                  className={`flex items-center p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 cursor-grab`}
+        {/* Sessions & Materials */}
+        <section className="mt-[70px] bg-white p-6 sm:p-8 rounded-xl shadow-lg space-y-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Course Sessions & Materials</h2>
+          
+          {courseSessions.map((session, sessionIndex) => (
+            <div key={session.id} className="border border-gray-200 rounded-lg p-4 space-y-4 bg-gray-50">
+              <div className="flex justify-between items-center">
+                <h3 className="text-xl font-bold text-gray-800">{session.title}</h3>
+                <Button 
+                  onClick={() => openAddMaterialModal(session.id)} 
+                  className="px-4 py-2 rounded-lg text-sm font-semibold"
                 >
-                  {/* Material Icon */}
-                  <div className="flex-shrink-0 bg-orange-100 p-3 rounded-lg mr-4">
-                    {getMaterialIcon(material.type)}
-                  </div>
+                  <PlusCircle className="h-4 w-4 mr-2" />
+                  Add Material
+                </Button>
+              </div>
 
-                  {/* Material Details */}
-                  <div className="flex-grow">
-                    <CardTitle className="text-xl font-bold text-gray-900 flex items-center">
-                      {material.title}
-                      <Badge variant="secondary" className="ml-3 px-2 py-0.5 text-xs rounded-full bg-gray-200 text-gray-700">
-                        {material.type}
-                      </Badge>
-                    </CardTitle>
-                    <CardDescription className="text-gray-600 mt-1 text-base">
-                      {material.chapter} • Updated {material.updated}
-                      {material.content && (
-                          <span className="ml-2 text-xs text-gray-500 italic">({material.content})</span>
-                      )}
-                    </CardDescription>
-                    <p className="text-gray-500 mt-2 text-sm">{material.description}</p>
-                  </div>
+              {session.materials.length === 0 ? (
+                <div className="text-center text-gray-500 p-4 border border-dashed rounded-lg bg-white">
+                  No materials in this session yet.
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {session.materials.map((material) => (
+                    <Card
+                      key={material.id} 
+                      id={material.id}
+                      className={`flex flex-col sm:flex-row items-start sm:items-center p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 group`}
+                    >
+                      {/* Material Icon */}
+                      <div className="flex-shrink-0 bg-blue-50 p-3 rounded-lg mr-4 mb-3 sm:mb-0">
+                        {getMaterialIcon(material.type)}
+                      </div>
 
-                  {/* Actions */}
-                  <div className="flex-shrink-0 flex items-center space-x-2 ml-4">
-                    <Badge variant={material.status === 'Published' ? 'success' : 'warning'} className="px-3 py-1 text-sm rounded-full">
-                      {material.status}
-                    </Badge>
-                    <Button variant="ghost" size="icon" className="text-gray-600 hover:bg-gray-100">
-                      <Pencil className="h-5 w-5" />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="text-gray-600 hover:bg-gray-100">
-                      <MoreHorizontal className="h-5 w-5" />
-                    </Button>
-                  </div>
-                </Card>
-              ))
-            )}
-          </div>
+                      {/* Material Details */}
+                      <div className="flex-grow">
+                        <CardTitle className="text-xl font-bold text-gray-900 flex items-center">
+                          {material.title}
+                          <Badge variant="secondary" className="ml-3 px-2 py-0.5 text-xs rounded-full bg-gray-200 text-gray-700">
+                            {material.type}
+                          </Badge>
+                        </CardTitle>
+                        <CardDescription className="text-gray-600 mt-1 text-base">
+                          {material.chapter} • Updated {material.updated}
+                          {material.content && (
+                              <span className="ml-2 text-xs text-gray-500 italic">({material.content})</span>
+                          )}
+                        </CardDescription>
+                        <p className="text-gray-500 mt-2 text-sm">{material.description}</p>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex-shrink-0 flex items-center space-x-2 ml-0 sm:ml-4 mt-4 sm:mt-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <Badge variant={material.status === 'Published' ? 'success' : 'warning'} className="px-2 py-0.5 text-xs rounded-full">
+                          {material.status}
+                        </Badge>
+                        <Button variant="ghost" size="icon" className="text-gray-600 hover:bg-gray-100 rounded-full h-8 w-8">
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="text-gray-600 hover:bg-gray-100 rounded-full h-8 w-8">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
         </section>
       </div>
 
       {/* Add New Material Modal */}
       <Modal isOpen={isAddMaterialModalOpen} onClose={closeAddMaterialModal} title="Add New Course Material">
-        <div className="space-y-4">
+        <form form onSubmit={handleAddMaterialSubmit} className="space-y-4">
+          {/* Material Title */}
           <div className="space-y-1">
             <Label htmlFor="materialTitle" className="text-md">Material Title *</Label>
             <Input
@@ -445,15 +505,37 @@ export default function CreateCoursesPage() {
               required
             />
           </div>
+
+          {/* Target Session */}
           <div className="space-y-1">
-            <Label htmlFor="materialType" className="text-md">Material Type *</Label>
+            <Label htmlFor="targetSession">Add to Session</Label>
+            <Select value={targetSessionId} onValueChange={(value) => setTargetSessionId(value)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a session" />
+              </SelectTrigger>
+              <SelectContent>
+                {courseSessions.map(session => (
+                  <SelectItem key={session.id} value={session.id}>
+                    {session.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Material Type */}
+          <div className="space-y-1">
+            <Label htmlFor="materialType" className="text-md font-semibold">Material Type</Label>
             <Select
-              id="materialType"
               value={newMaterialType}
-              onValueChange={(value) => setNewMaterialType(value)}
+              onValueChange={(value) => {
+                  setNewMaterialType(value);
+                  setNewMaterialFile(null);
+                  setNewMaterialTextContent('');
+              }}
             >
-              <SelectTrigger className="w-[100%]">
-                <SelectValue placeholder="Select Type"/>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a session" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="document">Document/PDF</SelectItem>
@@ -466,15 +548,70 @@ export default function CreateCoursesPage() {
           {newMaterialType === 'document' ? (
             <div className="space-y-1">
               <Label htmlFor="uploadMaterial">Upload Document/PDF File</Label>
-              <Input id="uploadMaterial" type="file" accept=".pdf" onChange={handleMaterialFileChange} />
+              <div className="relative w-full h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-blue-500 transition-colors bg-gray-50">
+                <Input
+                  id="uploadMaterial"
+                  type="file"
+                  accept=".pdf"
+                  onChange={handleMaterialFileChange}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                />
+                {newMaterialFile ? (
+                  <span className="text-gray-700 text-sm flex items-center">
+                    <FileUp className="h-5 w-5 mr-2" /> {newMaterialFile.name}
+                  </span>
+                ) : (
+                  <div className="text-center text-gray-500">
+                    <FileUp className="mx-auto h-8 w-8 text-gray-400" />
+                    <p className="mt-1 text-sm">Click to upload PDF</p>
+                  </div>
+                )}
+              </div>
+              {newMaterialFile && (
+                <div className="text-right">
+                  <Button variant="ghost" onClick={() => { setNewMaterialFile(null); }} className="text-red-500 hover:bg-red-50">Remove File</Button>
+                </div>
+              )}
             </div>
           ) : newMaterialType === 'video' ? (
             <div className="space-y-1">
-              <Label htmlFor="uploadMaterial">Upload Video</Label>
-              <Input id="uploadMaterial" type="file" accept="video/*" onChange={handleMaterialFileChange} />
+              <Label htmlFor="videoLink">Video Link (YouTube, Vimeo, etc.)</Label>
+              <Input
+                id="videoLink"
+                type="url"
+                placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                value={newMaterialTextContent}
+                onChange={(e) => setNewMaterialTextContent(e.target.value)}
+                required
+              />
+              {newMaterialTextContent && (
+                <div className="mt-4">
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">Video Preview:</h4>
+                  <div className="relative" style={{ paddingBottom: '56.25%', height: 0 }}>
+                    <iframe
+                      src={newMaterialTextContent.replace("watch?v=", "embed/")} 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute top-0 left-0 w-full h-full rounded-lg shadow-md"
+                    ></iframe>
+                  </div>
+                </div>
+              )}
             </div>
           ) : null}
 
+          {/* Chapter/Section Input */}
+          <div className="space-y-1">
+            <Label htmlFor="newMaterialChapter" className="text-md font-semibold">Chapter/Section</Label>
+            <Input
+              id="newMaterialChapter"
+              placeholder="e.g., Chapter 1, Section 2.1"
+              value={newMaterialChapter}
+              onChange={(e) => setNewMaterialChapter(e.target.value)}
+            />
+          </div>
+
+          {/* Material Description */}
           <div className="space-y-1">
             <Label htmlFor="materialDesc">Material Description</Label>
             <Textarea
@@ -487,13 +624,10 @@ export default function CreateCoursesPage() {
             />
           </div>
 
-          <div className="flex justify-end space-x-2 pt-4">
-            <Button variant="outline" onClick={closeAddMaterialModal}>Cancel</Button>
-            <Button onClick={handleAddMaterial} className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-0">
-              Add Material
-            </Button>
+          <div className="flex justify-end space-x-3 pt-4">
+            <Button type="submit" className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-0">Add Material</Button>
           </div>
-        </div>
+        </form>
       </Modal>
     </div>
   )
