@@ -1,0 +1,14 @@
+computer_science
+data_science
+marketing
+design
+business_management
+personal_development
+mathematics
+history
+language_learning
+finance_accounting
+art
+social_science
+health
+lifestyle

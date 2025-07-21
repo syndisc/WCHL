@@ -246,7 +246,7 @@ export default function DiscussionsPage() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList>
+        <TabsList className="space-x-2">
           <TabsTrigger value="recent">Recent</TabsTrigger>
           <TabsTrigger value="popular">Popular</TabsTrigger>
           <TabsTrigger value="unanswered">Unanswered</TabsTrigger>

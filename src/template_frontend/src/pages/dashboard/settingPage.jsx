@@ -62,7 +62,7 @@ export default function SettingsPage() {
           setLoadingError(result.error || "Failed to load user profile");
         }
       } catch (err) {
-        setLoadingError("An unexpected error occurred");
+        // setLoadingError("An unexpected error occurred");
         console.error("Profile loading error:", err);
       }
     };
@@ -196,7 +196,7 @@ export default function SettingsPage() {
       )}
 
       <Tabs defaultValue="profile" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-fit grid-cols-5 space-x-2">
           <TabsTrigger value="profile" className="flex items-center gap-2">
             <User className="h-4 w-4" />
             Profile

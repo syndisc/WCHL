@@ -288,7 +288,7 @@ export default function HelpCenter() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <div className="text-sm text-gray-600">
-              <strong>Email:</strong> support@edulearn.com
+              <strong>Email:</strong> support@Edoo.com
             </div>
             <div className="text-sm text-gray-600">
               <strong>Phone:</strong> 1-800-EDU-LEARN

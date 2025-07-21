@@ -157,7 +157,7 @@ export default function BrowseCoursesPage() {
                 setLoadingError(result.error || "Failed to load courses");
             }
         } catch (err) {
-            setLoadingError("An unexpected error occurred");
+            // setLoadingError("An unexpected error occurred");
             console.error("Courses loading error:", err);
         }
     };

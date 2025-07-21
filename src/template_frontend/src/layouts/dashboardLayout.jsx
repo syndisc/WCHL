@@ -4,7 +4,8 @@ import { Button } from "../components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
 import {
   BookOpen, Home, GraduationCap, Users, MessageSquare,
-  Settings, Bell, Search, Menu, X, PencilRuler, Bookmark
+  Settings, Bell, Search, Menu, X, PencilRuler, Bookmark,
+  ShoppingBag
 } from "lucide-react"
 
 const navigation = [
@@ -15,6 +16,7 @@ const navigation = [
   { name: "Discussions", href: "/dashboard/discussions", icon: MessageSquare },
   { name: "Classmates", href: "/dashboard/classmates", icon: Users },
   { name: "My Certificates", href: "/dashboard/certificate", icon: GraduationCap },
+  { name: "Top Up", href: "/dashboard/Top Up", icon: ShoppingBag },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ]
 
@@ -41,7 +43,7 @@ export default function DashboardLayout() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 w-full overflow-x-hidden">
       {/* Mobile sidebar */}
       <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? "block" : "hidden"}`}>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
@@ -49,7 +51,7 @@ export default function DashboardLayout() {
           <div className="flex h-16 items-center justify-between px-4 border-b">
             <Link to="/" className="flex items-center space-x-2">
               <BookOpen className="h-6 w-6 text-blue-600" />
-              <span className="text-lg font-bold">EduLearn</span>
+              <span className="text-lg font-bold">Edoo</span>
             </Link>
             <Button variant="ghost" size="sm" onClick={() => setSidebarOpen(false)}>
               <X className="h-5 w-5" />
@@ -80,7 +82,7 @@ export default function DashboardLayout() {
           <div className="flex h-16 items-center px-4 border-b">
             <Link to="/" className="flex items-center space-x-2">
               <BookOpen className="h-6 w-6 text-blue-600" />
-              <span className="text-lg font-bold">EduLearn</span>
+              <span className="text-lg font-bold">Edoo</span>
             </Link>
           </div>
           <nav className="flex-1 px-4 py-4 space-y-2">

@@ -23,6 +23,10 @@ import AdminLayout from './layouts/adminLayout';
 import CreateCoursesPage from './pages/instructor/CreateCoursesPage';
 import MyCertificate from './pages/dashboard/MyCertificate';
 import BookmMarkedCoursesPage from './pages/dashboard/BookMarkedCoursesPage';
+import HelpCenter from './pages/helpSupport/helpCenter';
+import HelpDetail from './pages/helpSupport/helpDetail';
+import AboutPage from './pages/about/About';
+import ExploreCourses from './pages/course/GuestCourse';
 
 export default function App() {
   return (
@@ -32,7 +36,12 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/register" element={<RegisterPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<HelpCenter />} />
+          <Route path="/contact/:slug" element={<HelpDetail />} />
+          <Route path="/courses-guest" element={<ExploreCourses />} />
           <Route path="/courses/:slug" element={<CourseDetailPage />} />
+
 
           {/* Dashboard Routes */}
           <Route path="/dashboard" element={<DashboardLayout />}>

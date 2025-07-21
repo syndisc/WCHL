@@ -31,7 +31,7 @@ export default function MyCertificate() {
           setLoadingError(result.error || "Failed to load certificates");
         }
       } catch (err) {
-        setLoadingError("An unexpected error occurred");
+        // setLoadingError("An unexpected error occurred");
         console.error("Certificates loading error:", err);
       }
     };

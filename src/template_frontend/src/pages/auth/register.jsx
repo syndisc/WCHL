@@ -111,7 +111,7 @@ export default function RegisterPage() {
               navigate("/instructor");
               break;
             case 'admin':
-              navigate("/admin/dashboard");
+              navigate("/admin");
               break;
             default:
               navigate("/dashboard");

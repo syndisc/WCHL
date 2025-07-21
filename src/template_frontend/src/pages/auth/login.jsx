@@ -1,16 +1,16 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Button } from "@/components/ui/button" 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card" 
-import { Input } from "@/components/ui/input" 
-import { Label } from "@/components/ui/label" 
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { BookOpen, AlertCircle } from "lucide-react"
 import { useLMS } from "@/hooks/useLMS"
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login, loading, error } = useLMS();
-  
+
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -36,14 +36,24 @@ export default function LoginPage() {
 
     try {
       const result = await login(formData.email, formData.password);
-      
+
       if (result.success) {
         // Store token and user data
+
+        const user = {
+          ...result.data.user,
+          last_login: result.data.user.last_login.toString(),
+          created: result.data.user.created.toString(),
+          updated: result.data.user.updated.toString()
+        };
+
+        console.log(user)
         localStorage.setItem('authToken', result.data.token);
-        localStorage.setItem('userData', JSON.stringify(result.data.user));
-        
+        localStorage.setItem('userData', JSON.stringify(user));
+
+
         // Navigate based on user role
-        const userRole = result.data.user.role;
+        const userRole = user.role;
         switch (userRole) {
           case 'student':
             navigate("/dashboard");
@@ -88,47 +98,47 @@ export default function LoginPage() {
                   <span className="text-sm">{loginError || error}</span>
                 </div>
               )}
-              
+
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input 
-                  id="email" 
+                <Input
+                  id="email"
                   name="email"
-                  type="email" 
+                  type="email"
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleInputChange}
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
-                <Input 
-                  id="password" 
+                <Input
+                  id="password"
                   name="password"
-                  type="password" 
+                  type="password"
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleInputChange}
                   required
                 />
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <a href="/auth/forgot-password" className="text-sm text-blue-600 hover:underline">
                   Forgot password?
                 </a>
               </div>
-              
-              <Button 
-                type="submit" 
-                className="w-full" 
+
+              <Button
+                type="submit"
+                className="w-full"
                 disabled={loading}
               >
                 {loading ? "Signing In..." : "Sign In"}
               </Button>
-              
+
               <div className="text-center text-sm">
                 {"Don't have an account? "}
                 <a href="/auth/register" className="text-blue-600 hover:underline">
