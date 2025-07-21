@@ -4,7 +4,8 @@ import { Button } from "../components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
 import {
   BookOpen, Home, GraduationCap, Users, MessageSquare,
-  Settings, Bell, Search, Menu, X, PencilRuler, Bookmark
+  Settings, Bell, Search, Menu, X, PencilRuler, Bookmark,
+  ShoppingBag
 } from "lucide-react"
 
 const navigation = [
@@ -15,6 +16,7 @@ const navigation = [
   { name: "Discussions", href: "/dashboard/discussions", icon: MessageSquare },
   { name: "Classmates", href: "/dashboard/classmates", icon: Users },
   { name: "My Certificates", href: "/dashboard/certificate", icon: GraduationCap },
+  { name: "Top Up", href: "/dashboard/Top Up", icon: ShoppingBag },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ]
 
