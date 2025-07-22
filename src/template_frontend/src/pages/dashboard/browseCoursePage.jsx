@@ -9,6 +9,121 @@ import { Search, Filter, Clock, Users, Star, Heart, BookOpen, AlertCircle, Loade
 import { useLMS } from "../../hooks/useLMS";
 import { Link } from "react-router-dom";
 
+const DUMMY_COURSES = [
+  {
+    course_id: 'c1',
+    title: 'Mastering React Hooks',
+    description: 'Learn to build powerful React applications using Hooks, Context API, and custom hooks.',
+    instructor_name: 'Alice Johnson',
+    thumbnail: 'https://placehold.co/400x225/E0F2F7/000000?text=React+Hooks',
+    category: 'Programming',
+    level: 'Intermediate',
+    price: 49.99,
+    duration: 12,
+    rating: 4.8,
+    enrolled_count: 1234,
+    created_date: '2024-06-15T10:00:00Z',
+  },
+  {
+    course_id: 'c2',
+    title: 'Introduction to UI/UX Design',
+    description: 'A beginner-friendly guide to user interface and user experience design principles.',
+    instructor_name: 'Bob Smith',
+    thumbnail: 'https://placehold.co/400x225/D1F7E0/000000?text=UI/UX+Design',
+    category: 'Design',
+    level: 'Beginner',
+    price: 0,
+    duration: 8,
+    rating: 4.5,
+    enrolled_count: 5678,
+    created_date: '2024-07-01T14:30:00Z',
+  },
+  {
+    course_id: 'c3',
+    title: 'Data Science with Python',
+    description: 'Explore data analysis, machine learning, and visualization using Python libraries.',
+    instructor_name: 'Charlie Brown',
+    thumbnail: 'https://placehold.co/400x225/F7E0E0/000000?text=Python+Data',
+    category: 'Programming',
+    level: 'Advanced',
+    price: 79.99,
+    duration: 20,
+    rating: 4.9,
+    enrolled_count: 987,
+    created_date: '2024-05-20T09:15:00Z',
+  },
+  {
+    course_id: 'c4',
+    title: 'Digital Marketing Fundamentals',
+    description: 'Learn the basics of SEO, social media marketing, and content strategy.',
+    instructor_name: 'Diana Prince',
+    thumbnail: 'https://placehold.co/400x225/E7D1F7/000000?text=Digital+Marketing',
+    category: 'Marketing',
+    level: 'Beginner',
+    price: 29.99,
+    duration: 10,
+    rating: 4.2,
+    enrolled_count: 2100,
+    created_date: '2024-06-01T11:45:00Z',
+  },
+  {
+    course_id: 'c5',
+    title: 'Financial Accounting Basics',
+    description: 'Understand core accounting principles, financial statements, and budgeting.',
+    instructor_name: 'Eve Adams',
+    thumbnail: 'https://placehold.co/400x225/C2F0C2/000000?text=Accounting',
+    category: 'Business',
+    level: 'Beginner',
+    price: 0,
+    duration: 15,
+    rating: 4.6,
+    enrolled_count: 3450,
+    created_date: '2024-07-10T16:00:00Z',
+  },
+  {
+    course_id: 'c6',
+    title: 'Advanced CSS & Animations',
+    description: 'Dive deep into modern CSS techniques, including Flexbox, Grid, and complex animations.',
+    instructor_name: 'Frank White',
+    thumbnail: 'https://placehold.co/400x225/F0F8FF/000000?text=CSS+Animations',
+    category: 'Programming',
+    level: 'Advanced',
+    price: 59.99,
+    duration: 18,
+    rating: 4.7,
+    enrolled_count: 750,
+    created_date: '2024-05-01T08:00:00Z',
+  },
+  {
+    course_id: 'c7',
+    title: 'Photography Masterclass',
+    description: 'Learn professional photography techniques from composition to post-processing.',
+    instructor_name: 'Grace Lee',
+    thumbnail: 'https://placehold.co/400x225/FFF0F5/000000?text=Photography',
+    category: 'Art',
+    level: 'Intermediate',
+    price: 65.00,
+    duration: 14,
+    rating: 4.4,
+    enrolled_count: 1500,
+    created_date: '2024-06-20T13:00:00Z',
+  },
+  {
+    course_id: 'c8',
+    title: 'Public Speaking Confidence',
+    description: 'Develop strong public speaking skills and overcome stage fright.',
+    instructor_name: 'Henry King',
+    thumbnail: 'https://placehold.co/400x225/E6E6FA/000000?text=Public+Speaking',
+    category: 'Business',
+    level: 'Beginner',
+    price: 0,
+    duration: 6,
+    rating: 4.3,
+    enrolled_count: 4000,
+    created_date: '2024-07-05T09:00:00Z',
+  },
+];
+
 export default function BrowseCoursesPage() {
     const { getAllCourses, enrollInCourse, loading, error } = useLMS();
     const [courses, setCourses] = useState([]);
@@ -24,7 +139,9 @@ export default function BrowseCoursesPage() {
     const [activeTab, setActiveTab] = useState('all');
 
     useEffect(() => {
-        loadCourses();
+        setTimeout(() => {
+            setCourses(DUMMY_COURSES);
+        }, 1000);
     }, []);
 
     useEffect(() => {
@@ -167,8 +284,8 @@ export default function BrowseCoursesPage() {
     };
 
     // Get unique categories and levels for filters
-    const categories = [...new Set(courses.map(course => course.category).filter(Boolean))];
-    const levels = [...new Set(courses.map(course => course.level).filter(Boolean))];
+    const categories = [...new Set(DUMMY_COURSES.map(course => course.category).filter(Boolean))];
+    const levels = [...new Set(DUMMY_COURSES.map(course => course.level).filter(Boolean))];
 
     if (loading) {
         return (
