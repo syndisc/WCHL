@@ -35,7 +35,7 @@ const allCourses = [
     duration: "12 weeks",
     students: 2543,
     rating: 4.9,
-    price: 0.5,
+    price: 5,
     tokenReward: 150,
     image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop",
     description: "Master blockchain development with hands-on projects and real-world applications."
@@ -49,7 +49,7 @@ const allCourses = [
     duration: "8 weeks",
     students: 1876,
     rating: 4.8,
-    price: 0.3,
+    price: 3,
     tokenReward: 120,
     image: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=400&h=250&fit=crop",
     description: "Learn to identify and prevent common smart contract vulnerabilities."
@@ -63,7 +63,7 @@ const allCourses = [
     duration: "10 weeks",
     students: 987,
     rating: 4.9,
-    price: 0.8,
+    price: 8,
     tokenReward: 200,
     image: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=400&h=250&fit=crop",
     description: "Build decentralized finance protocols from scratch using Solidity."
@@ -77,7 +77,7 @@ const allCourses = [
     duration: "6 weeks",
     students: 3421,
     rating: 4.7,
-    price: 0.25,
+    price: 2,
     tokenReward: 100,
     image: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=400&h=250&fit=crop",
     description: "Design intuitive interfaces for decentralized applications."
@@ -91,7 +91,7 @@ const allCourses = [
     duration: "10 weeks",
     students: 4567,
     rating: 4.8,
-    price: 0.4,
+    price: 4,
     tokenReward: 130,
     image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400&h=250&fit=crop",
     description: "Build modern web applications with React and advanced patterns."
@@ -105,7 +105,7 @@ const allCourses = [
     duration: "4 weeks",
     students: 2109,
     rating: 4.6,
-    price: 0.2,
+    price: 2,
     tokenReward: 80,
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop",
     description: "Master marketing strategies for blockchain and crypto projects."
@@ -119,7 +119,7 @@ const allCourses = [
     duration: "5 weeks",
     students: 1654,
     rating: 4.5,
-    price: 0.15,
+    price: 1,
     tokenReward: 90,
     image: "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?w=400&h=250&fit=crop",
     description: "Create, mint, and sell your own NFT artwork on various marketplaces."
@@ -133,7 +133,7 @@ const allCourses = [
     duration: "7 weeks",
     students: 3876,
     rating: 4.7,
-    price: 0.35,
+    price: 3,
     tokenReward: 110,
     image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=250&fit=crop",
     description: "Learn proven strategies for successful cryptocurrency trading."
@@ -147,7 +147,7 @@ const allCourses = [
     duration: "9 weeks",
     students: 5432,
     rating: 4.8,
-    price: 0.3,
+    price: 3,
     tokenReward: 120,
     image: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400&h=250&fit=crop",
     description: "Master Python programming for data analysis and machine learning."
@@ -161,7 +161,7 @@ const allCourses = [
     duration: "6 weeks",
     students: 1987,
     rating: 4.6,
-    price: 0.25,
+    price: 3,
     tokenReward: 95,
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop",
     description: "Understand how blockchain technology transforms business processes."
@@ -175,7 +175,7 @@ const allCourses = [
     duration: "11 weeks",
     students: 876,
     rating: 4.9,
-    price: 0.6,
+    price: 6,
     tokenReward: 180,
     image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=250&fit=crop",
     description: "Advanced Solidity concepts for professional smart contract development."
@@ -189,7 +189,7 @@ const allCourses = [
     duration: "4 weeks",
     students: 1234,
     rating: 4.4,
-    price: 0.18,
+    price: 2,
     tokenReward: 75,
     image: "https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=400&h=250&fit=crop",
     description: "Capture and monetize your photography in the Web3 ecosystem."
@@ -290,43 +290,44 @@ export default function ExploreCourses() {
           </div>
         </div>
         
-        <div className="p-6">
-          <div className="flex items-center mb-2">
-            <CategoryIcon className="h-4 w-4 text-gray-500 mr-2" />
-            <span className="text-sm text-gray-500">{course.category}</span>
-          </div>
-          
-          <h3 className="font-bold text-lg mb-2 line-clamp-2">{course.title}</h3>
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">{course.description}</p>
-          
-          <div className="flex items-center mb-4">
-            <img 
-              src={`https://images.unsplash.com/photo-150${course.id}003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face`}
-              alt={course.instructor}
-              className="w-8 h-8 rounded-full mr-3"
-            />
-            <span className="text-sm text-gray-700">by {course.instructor}</span>
-          </div>
-          
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center">
-                <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
-                <span className="text-sm font-medium">{course.rating}</span>
-              </div>
-              <div className="flex items-center text-gray-500">
-                <Users className="h-4 w-4 mr-1" />
-                <span className="text-sm">{course.students.toLocaleString()}</span>
-              </div>
-              <div className="flex items-center text-gray-500">
-                <Clock className="h-4 w-4 mr-1" />
-                <span className="text-sm">{course.duration}</span>
+        <div className="h-[calc(100%-192px)] p-6 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center mb-2">
+              <CategoryIcon className="h-4 w-4 text-gray-500 mr-2" />
+              <span className="text-sm text-gray-500">{course.category}</span>
+            </div>
+            
+            <h3 className="font-bold text-lg mb-2 line-clamp-2">{course.title}</h3>
+            <p className="text-gray-600 text-sm mb-3 line-clamp-2">{course.description}</p>
+            
+            <div className="flex items-center mb-4">
+              <img 
+                src={`https://images.unsplash.com/photo-150${course.id}003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face`}
+                alt={course.instructor}
+                className="w-8 h-8 rounded-full mr-3"
+              />
+              <span className="text-sm text-gray-700">by {course.instructor}</span>
+            </div>
+            
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center">
+                  <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
+                  <span className="text-sm font-medium">{course.rating}</span>
+                </div>
+                <div className="flex items-center text-gray-500">
+                  <Users className="h-4 w-4 mr-1" />
+                  <span className="text-sm">{course.students.toLocaleString()}</span>
+                </div>
+                <div className="flex items-center text-gray-500">
+                  <Clock className="h-4 w-4 mr-1" />
+                  <span className="text-sm">{course.duration}</span>
+                </div>
               </div>
             </div>
           </div>
-          
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <img src="/token.png" className="w-6 h-6" alt="" srcset="" />
               <span className="text-2xl font-bold text-blue-600">{course.price}
               </span>

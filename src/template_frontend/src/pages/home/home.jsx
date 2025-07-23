@@ -126,7 +126,7 @@ export default function HomePage() {
                 instructor: "Sarah Johnson",
                 rating: 4.9,
                 students: "12,543",
-                price: "$89",
+                price: 9,
                 image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=250&fit=crop"
               },
               {
@@ -134,7 +134,7 @@ export default function HomePage() {
                 instructor: "Mike Chen",
                 rating: 4.8,
                 students: "8,921",
-                price: "$79",
+                price: 8,
                 image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop"
               },
               {
@@ -142,7 +142,7 @@ export default function HomePage() {
                 instructor: "Emily Rodriguez",
                 rating: 4.9,
                 students: "6,432",
-                price: "$69",
+                price: 7,
                 image: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=400&h=250&fit=crop"
               }
             ].map((course, index) => (
@@ -171,7 +171,10 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-blue-600">{course.price}</span>
+                    <div className="flex items-center gap-1">
+                      <img src="/token.png" className="w-6 h-6" alt="" srcset="" />
+                      <span className="text-2xl font-bold text-blue-600">{course.price}</span>
+                    </div>
                     <Button size="sm">Enroll Now</Button>
                   </div>
                 </div>
@@ -267,8 +270,8 @@ export default function HomePage() {
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
         >
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="pl-20">
               <h2 className="text-3xl font-bold mb-6">Learn at Your Own Pace</h2>
               <p className="text-gray-600 mb-8">
                 Our platform is designed to fit your lifestyle. Whether you're a busy professional or a dedicated student, 
