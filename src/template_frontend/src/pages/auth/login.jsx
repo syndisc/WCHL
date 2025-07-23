@@ -44,7 +44,8 @@ export default function LoginPage() {
           ...result.data.user,
           last_login: result.data.user.last_login.toString(),
           created: result.data.user.created.toString(),
-          updated: result.data.user.updated.toString()
+          updated: result.data.user.updated.toString(),
+          edoo_token: result.data.user.edoo_token.toString(),
         };
 
         console.log(user)

@@ -19,12 +19,14 @@ export default function InstructorLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const notificationRef = useRef(null)
+  const [showAvatarMenu, setShowAvatarMenu] = useState(false)
+  const avatarRef = useRef(null)
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (
         notificationRef.current &&
-        !(notificationRef.current ).contains(event.target)
+        !(notificationRef.current).contains(event.target)
       ) {
         setShowNotifications(false)
       }
@@ -41,7 +43,8 @@ export default function InstructorLayout() {
         <div className="fixed inset-y-0 left-0 w-64 bg-white flex flex-col">
           <div className="flex items-center justify-between h-16 px-4 border-b">
             <Link to="/" className="flex items-center space-x-2">
-              <BookOpen className="h-6 w-6 text-blue-600" />
+              {/* <BookOpen className="h-6 w-6 text-blue-600" /> */}
+              <img src="/clr.png" alt="Edoo Logo" className="h-10 w-10" />
               <span className="text-lg font-bold">Edoo</span>
             </Link>
             <Button variant="ghost" size="sm" onClick={() => setSidebarOpen(false)}>
@@ -55,11 +58,10 @@ export default function InstructorLayout() {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium ${
-                    location.pathname === item.href
+                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium ${location.pathname === item.href
                       ? "bg-blue-50 text-blue-700"
                       : "text-gray-600 hover:bg-gray-50"
-                  }`}
+                    }`}
                 >
                   <Icon className="h-5 w-5" />
                   <span>{item.name}</span>
@@ -75,7 +77,8 @@ export default function InstructorLayout() {
         <div className="flex flex-col flex-grow bg-white border-r">
           <div className="flex items-center h-16 px-4 border-b">
             <Link to="/" className="flex items-center space-x-2">
-              <BookOpen className="h-6 w-6 text-blue-600" />
+              {/* <BookOpen className="h-6 w-6 text-blue-600" /> */}
+              <img src="/clr.png" alt="Edoo Logo" className="h-10 w-10" />
               <span className="text-lg font-bold">Edoo</span>
             </Link>
           </div>
@@ -86,11 +89,10 @@ export default function InstructorLayout() {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium ${
-                    location.pathname === item.href
+                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium ${location.pathname === item.href
                       ? "bg-blue-50 text-blue-700"
                       : "text-gray-600 hover:bg-gray-50"
-                  }`}
+                    }`}
                 >
                   <Icon className="h-5 w-5" />
                   <span>{item.name}</span>
@@ -146,10 +148,36 @@ export default function InstructorLayout() {
               </div>
 
               {/* Avatar */}
-              <Avatar>
-                <AvatarImage src="/placeholder.svg?height=32&width=32" />
-                <AvatarFallback>JD</AvatarFallback>
-              </Avatar>
+              <div className="relative" ref={avatarRef}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="p-0 bg-transparent focus:outline-none hover:border-transparent hover:bg-transparent"
+                  onClick={() => setShowAvatarMenu(!showAvatarMenu)}
+                >
+                  <Avatar>
+                    <AvatarImage src="/placeholder.svg?height=32&width=32" />
+                    <AvatarFallback>JD</AvatarFallback>
+                  </Avatar>
+                </Button>
+
+                {showAvatarMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                    {/* <div className="px-4 py-3 text-sm text-gray-700">Signed in as <br /><span className="font-medium">student@gmail.com</span></div> */}
+                    <div className="border-t" />
+                    <button
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 bg-white hover:bg-gray-100"
+                      onClick={() => {
+                        // clear session, redirect to login
+                        localStorage.clear()
+                        navigate("/auth/login")
+                      }}
+                    >
+                      Log out
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

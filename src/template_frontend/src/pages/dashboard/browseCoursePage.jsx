@@ -10,123 +10,168 @@ import { useLMS } from "../../hooks/useLMS";
 import { Link } from "react-router-dom";
 
 const DUMMY_COURSES = [
-  {
-    course_id: 'c1',
-    title: 'Mastering React Hooks',
-    description: 'Learn to build powerful React applications using Hooks, Context API, and custom hooks.',
-    instructor_name: 'Alice Johnson',
-    thumbnail: 'https://placehold.co/400x225/E0F2F7/000000?text=React+Hooks',
-    category: 'Programming',
-    level: 'Intermediate',
-    price: 49.99,
-    duration: 12,
-    rating: 4.8,
-    enrolled_count: 1234,
-    created_date: '2024-06-15T10:00:00Z',
-  },
-  {
-    course_id: 'c2',
-    title: 'Introduction to UI/UX Design',
-    description: 'A beginner-friendly guide to user interface and user experience design principles.',
-    instructor_name: 'Bob Smith',
-    thumbnail: 'https://placehold.co/400x225/D1F7E0/000000?text=UI/UX+Design',
-    category: 'Design',
-    level: 'Beginner',
-    price: 0,
-    duration: 8,
-    rating: 4.5,
-    enrolled_count: 5678,
-    created_date: '2024-07-01T14:30:00Z',
-  },
-  {
-    course_id: 'c3',
-    title: 'Data Science with Python',
-    description: 'Explore data analysis, machine learning, and visualization using Python libraries.',
-    instructor_name: 'Charlie Brown',
-    thumbnail: 'https://placehold.co/400x225/F7E0E0/000000?text=Python+Data',
-    category: 'Programming',
-    level: 'Advanced',
-    price: 79.99,
-    duration: 20,
-    rating: 4.9,
-    enrolled_count: 987,
-    created_date: '2024-05-20T09:15:00Z',
-  },
-  {
-    course_id: 'c4',
-    title: 'Digital Marketing Fundamentals',
-    description: 'Learn the basics of SEO, social media marketing, and content strategy.',
-    instructor_name: 'Diana Prince',
-    thumbnail: 'https://placehold.co/400x225/E7D1F7/000000?text=Digital+Marketing',
-    category: 'Marketing',
-    level: 'Beginner',
-    price: 29.99,
-    duration: 10,
-    rating: 4.2,
-    enrolled_count: 2100,
-    created_date: '2024-06-01T11:45:00Z',
-  },
-  {
-    course_id: 'c5',
-    title: 'Financial Accounting Basics',
-    description: 'Understand core accounting principles, financial statements, and budgeting.',
-    instructor_name: 'Eve Adams',
-    thumbnail: 'https://placehold.co/400x225/C2F0C2/000000?text=Accounting',
-    category: 'Business',
-    level: 'Beginner',
-    price: 0,
-    duration: 15,
-    rating: 4.6,
-    enrolled_count: 3450,
-    created_date: '2024-07-10T16:00:00Z',
-  },
-  {
-    course_id: 'c6',
-    title: 'Advanced CSS & Animations',
-    description: 'Dive deep into modern CSS techniques, including Flexbox, Grid, and complex animations.',
-    instructor_name: 'Frank White',
-    thumbnail: 'https://placehold.co/400x225/F0F8FF/000000?text=CSS+Animations',
-    category: 'Programming',
-    level: 'Advanced',
-    price: 59.99,
-    duration: 18,
-    rating: 4.7,
-    enrolled_count: 750,
-    created_date: '2024-05-01T08:00:00Z',
-  },
-  {
-    course_id: 'c7',
-    title: 'Photography Masterclass',
-    description: 'Learn professional photography techniques from composition to post-processing.',
-    instructor_name: 'Grace Lee',
-    thumbnail: 'https://placehold.co/400x225/FFF0F5/000000?text=Photography',
-    category: 'Art',
-    level: 'Intermediate',
-    price: 65.00,
-    duration: 14,
-    rating: 4.4,
-    enrolled_count: 1500,
-    created_date: '2024-06-20T13:00:00Z',
-  },
-  {
-    course_id: 'c8',
-    title: 'Public Speaking Confidence',
-    description: 'Develop strong public speaking skills and overcome stage fright.',
-    instructor_name: 'Henry King',
-    thumbnail: 'https://placehold.co/400x225/E6E6FA/000000?text=Public+Speaking',
-    category: 'Business',
-    level: 'Beginner',
-    price: 0,
-    duration: 6,
-    rating: 4.3,
-    enrolled_count: 4000,
-    created_date: '2024-07-05T09:00:00Z',
-  },
+    {
+        course_id: 'c1',
+        course_name: 'Mastering React Hooks',
+        course_description: 'Learn to build powerful React applications using Hooks, Context API, and custom hooks.',
+        course_status: 'active',
+        course_length: '5 hours',
+        course_thumbnail: 'https://placehold.co/400x225/E0F2F7/000000?text=React+Hooks',
+        language: 'English',
+        instructor_id: 'i1',
+        duration_days: 12,
+        rating: 4.8,
+        student_count: 1234
+    },
+    {
+        course_id: 'c2',
+        course_name: 'Intro to Data Science',
+        course_description: 'Explore data analysis, visualization, and the basics of machine learning.',
+        course_status: 'active',
+        course_length: '8 hours',
+        course_thumbnail: 'https://placehold.co/400x225/FDE68A/000000?text=Data+Science',
+        language: 'English',
+        instructor_id: 'i2',
+        duration_days: 20,
+        rating: 4.6,
+        student_count: 890
+    },
+    {
+        course_id: 'c3',
+        course_name: 'Beginner\'s Guide to Web3',
+        course_description: 'Understand the fundamentals of Web3, smart contracts, and blockchain development.',
+        course_status: 'inactive',
+        course_length: '6 hours',
+        course_thumbnail: 'https://placehold.co/400x225/D1FAE5/000000?text=Web3+Basics',
+        language: 'English',
+        instructor_id: 'i3',
+        duration_days: 15,
+        rating: 4.3,
+        student_count: 540
+    },
+    {
+        course_id: 'c4',
+        course_name: 'Python for Absolute Beginners',
+        course_description: 'Get started with Python, from syntax to basic data structures and functions.',
+        course_status: 'active',
+        course_length: '10 hours',
+        course_thumbnail: 'https://placehold.co/400x225/FFF5E5/000000?text=Python+Basics',
+        language: 'English',
+        instructor_id: 'i4',
+        duration_days: 10,
+        rating: 4.7,
+        student_count: 1500
+    },
+    {
+        course_id: 'c5',
+        course_name: 'UI/UX Design Principles',
+        course_description: 'Learn the core concepts of user interface and user experience design.',
+        course_status: 'active',
+        course_length: '7 hours',
+        course_thumbnail: 'https://placehold.co/400x225/FFE4E1/000000?text=UI%2FUX+Design',
+        language: 'English',
+        instructor_id: 'i5',
+        duration_days: 8,
+        rating: 4.5,
+        student_count: 740
+    },
+    {
+        course_id: 'c6',
+        course_name: 'Machine Learning Crash Course',
+        course_description: 'Dive into ML concepts, supervised and unsupervised learning, and model training.',
+        course_status: 'inactive',
+        course_length: '9 hours',
+        course_thumbnail: 'https://placehold.co/400x225/E6E6FA/000000?text=ML+Crash+Course',
+        language: 'English',
+        instructor_id: 'i6',
+        duration_days: 14,
+        rating: 4.9,
+        student_count: 2020
+    },
+    {
+        course_id: 'c7',
+        course_name: 'Effective Public Speaking',
+        course_description: 'Gain confidence in speaking and presenting in front of an audience.',
+        course_status: 'active',
+        course_length: '4 hours',
+        course_thumbnail: 'https://placehold.co/400x225/FFDAB9/000000?text=Public+Speaking',
+        language: 'English',
+        instructor_id: 'i7',
+        duration_days: 5,
+        rating: 4.4,
+        student_count: 680
+    },
+    {
+        course_id: 'c8',
+        course_name: 'Git & GitHub Essentials',
+        course_description: 'Understand version control systems and how to collaborate on code using GitHub.',
+        course_status: 'active',
+        course_length: '3 hours',
+        course_thumbnail: 'https://placehold.co/400x225/C8E6C9/000000?text=Git+Essentials',
+        language: 'English',
+        instructor_id: 'i8',
+        duration_days: 3,
+        rating: 4.2,
+        student_count: 450
+    },
+    {
+        course_id: 'c9',
+        course_name: 'Advanced JavaScript Techniques',
+        course_description: 'Explore asynchronous programming, closures, and ES6+ features in depth.',
+        course_status: 'active',
+        course_length: '6 hours',
+        course_thumbnail: 'https://placehold.co/400x225/E0E0E0/000000?text=JavaScript+Advanced',
+        language: 'English',
+        instructor_id: 'i9',
+        duration_days: 9,
+        rating: 4.6,
+        student_count: 980
+    },
+    {
+        course_id: 'c10',
+        course_name: 'SQL for Data Analysis',
+        course_description: 'Write powerful SQL queries to analyze and visualize real-world data sets.',
+        course_status: 'inactive',
+        course_length: '5 hours',
+        course_thumbnail: 'https://placehold.co/400x225/FFEBCD/000000?text=SQL+Data+Analysis',
+        language: 'English',
+        instructor_id: 'i10',
+        duration_days: 7,
+        rating: 4.3,
+        student_count: 620
+    },
+    {
+        course_id: 'c11',
+        course_name: 'Docker & Kubernetes Fundamentals',
+        course_description: 'Containerize your applications and orchestrate them using Kubernetes.',
+        course_status: 'active',
+        course_length: '11 hours',
+        course_thumbnail: 'https://placehold.co/400x225/B0E0E6/000000?text=Docker+K8s',
+        language: 'English',
+        instructor_id: 'i11',
+        duration_days: 16,
+        rating: 4.7,
+        student_count: 1340
+    },
+    {
+        course_id: 'c12',
+        course_name: 'Digital Marketing Strategy',
+        course_description: 'Create comprehensive digital marketing campaigns for online success.',
+        course_status: 'active',
+        course_length: '6 hours',
+        course_thumbnail: 'https://placehold.co/400x225/F5DEB3/000000?text=Marketing+Strategy',
+        language: 'English',
+        instructor_id: 'i12',
+        duration_days: 10,
+        rating: 4.5,
+        student_count: 1110
+    }
 ];
+
 
 export default function BrowseCoursesPage() {
     const { getAllCourses, enrollInCourse, loading, error } = useLMS();
-    const [courses, setCourses] = useState([]);
+    const [courses, setCourses] = useState([]); // Start with dummy data
     const [filteredCourses, setFilteredCourses] = useState([]);
     const [loadingError, setLoadingError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -134,78 +179,103 @@ export default function BrowseCoursesPage() {
 
     // Filter states
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('');
-    const [selectedLevel, setSelectedLevel] = useState('');
+    const [selectedLanguage, setSelectedLanguage] = useState('');
     const [activeTab, setActiveTab] = useState('all');
 
     useEffect(() => {
-        setTimeout(() => {
-            setCourses(DUMMY_COURSES);
-        }, 1000);
-    }, []);
-
-    useEffect(() => {
+        console.log("Courses loaded:", courses);
+        console.log("Courses length:", courses.length);
+        console.log("Dummy courses used:", DUMMY_COURSES);
+        console.log("About to filter courses...");
         filterCourses();
-    }, [courses, searchTerm, selectedCategory, selectedLevel, activeTab]);
+    }, [courses, searchTerm, selectedLanguage, activeTab]);
 
     const loadCourses = async () => {
         try {
             const result = await getAllCourses();
-            if (result.success) {
+            console.log("getAllCourses result:", result);
+            if (result.success && result.data && result.data.length > 0) {
+                console.log("Loaded courses from API:", result.data);
+                console.log("API courses length:", result.data.length);
                 setCourses(result.data);
             } else {
-                setLoadingError(result.error || "Failed to load courses");
+                console.log("Using dummy data - no courses from API or empty result");
+                console.log("Result success:", result?.success);
+                console.log("Result data:", result?.data);
+                console.log("Result data length:", result?.data?.length);
+                // Keep using dummy data if API fails or returns empty
             }
         } catch (err) {
-            // setLoadingError("An unexpected error occurred");
             console.error("Courses loading error:", err);
+            // Keep using dummy data on error
         }
     };
 
+    useEffect(() => {
+        console.log("Component mounted, loading courses...");
+        loadCourses();
+        // setCourses(DUMMY_COURSES); // For testing, use dummy data
+    }, []);
+
     const filterCourses = () => {
+        console.log("Starting filterCourses with courses:", courses);
+        console.log("Current filters:", { searchTerm, selectedLanguage, activeTab });
+
         let filtered = [...courses];
+        console.log("Initial filtered array:", filtered);
+
+        // Filter out inactive courses unless specifically searching for them, commented since Candid UI generate random status
+        const beforeStatusFilter = filtered.length;
+        // filtered = filtered.filter(course => course.course_status === 'active');
+        console.log(`After status filter: ${beforeStatusFilter} -> ${filtered.length} courses`);
 
         // Apply search filter
         if (searchTerm) {
+            const beforeSearchFilter = filtered.length;
             filtered = filtered.filter(course =>
-                course.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                course.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                course.instructor_name?.toLowerCase().includes(searchTerm.toLowerCase())
+                course.course_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                course.course_description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                course.instructor_id?.toLowerCase().includes(searchTerm.toLowerCase())
             );
+            console.log(`After search filter: ${beforeSearchFilter} -> ${filtered.length} courses`);
         }
 
-        // Apply category filter
-        if (selectedCategory) {
-            filtered = filtered.filter(course => 
-                course.category?.toLowerCase() === selectedCategory.toLowerCase()
+        // Apply language filter
+        if (selectedLanguage && selectedLanguage !== 'all') {
+            const beforeLanguageFilter = filtered.length;
+            filtered = filtered.filter(course =>
+                course.language?.toLowerCase() === selectedLanguage.toLowerCase()
             );
-        }
-
-        // Apply level filter
-        if (selectedLevel) {
-            filtered = filtered.filter(course => 
-                course.level?.toLowerCase() === selectedLevel.toLowerCase()
-            );
+            console.log(`After language filter: ${beforeLanguageFilter} -> ${filtered.length} courses`);
         }
 
         // Apply tab filters
         switch (activeTab) {
             case 'popular':
-                filtered = filtered.sort((a, b) => (b.enrolled_count || 0) - (a.enrolled_count || 0));
+                filtered = filtered.sort((a, b) => (b.student_count || 0) - (a.student_count || 0));
                 break;
-            case 'new':
-                filtered = filtered.sort((a, b) => 
-                    new Date(b.created_date || 0) - new Date(a.created_date || 0)
-                );
+            case 'highest-rated':
+                filtered = filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
                 break;
-            case 'free':
-                filtered = filtered.filter(course => !course.price || course.price === 0);
+            case 'shortest':
+                filtered = filtered.sort((a, b) => (a.duration_days || 0) - (b.duration_days || 0));
+                break;
+            case 'longest':
+                filtered = filtered.sort((a, b) => (b.duration_days || 0) - (a.duration_days || 0));
                 break;
             default:
-                // 'all' - no additional filtering
+                // 'all' - sort by popularity by default
+                filtered = filtered.sort((a, b) => {
+                    const countA = a.student_count || 0n;
+                    const countB = b.student_count || 0n;
+                    return countB > countA ? 1 : countB < countA ? -1 : 0;
+                });
+
                 break;
         }
 
+        console.log("Final filtered courses:", filtered);
+        console.log("Setting filteredCourses to:", filtered.length, "items");
         setFilteredCourses(filtered);
     };
 
@@ -220,14 +290,24 @@ export default function BrowseCoursesPage() {
         setLoadingError('');
         setSuccessMessage('');
 
+        /*  public type Enrollment = {
+            enrollment_id : Text;
+            class_id : Text;
+            student_id : Text;
+            enrollment_status : Text;
+            enrollment_grade : Text;
+            progress_percentage : Nat;
+            enrollment_date : Int;
+        };*/
+
         try {
             const result = await enrollInCourse(token, courseId);
             if (result.success) {
                 setSuccessMessage('Successfully enrolled in course!');
                 // Update the course in the list to reflect enrollment
-                setCourses(prev => prev.map(course => 
-                    course.course_id === courseId 
-                        ? { ...course, enrolled_count: (course.enrolled_count || 0) + 1 }
+                setCourses(prev => prev.map(course =>
+                    course.course_id === courseId
+                        ? { ...course, student_count: (course.student_count || 0) + 1 }
                         : course
                 ));
             } else {
@@ -245,47 +325,53 @@ export default function BrowseCoursesPage() {
         }
     };
 
-    const formatPrice = (price) => {
-        if (!price || price === 0) return 'Free';
-        return `$${price}`;
+    const formatDuration = (course_length) => {
+        if (!course_length) return 'N/A';
+        return course_length;
     };
 
-    const formatDuration = (duration) => {
-        if (!duration) return 'N/A';
-        return `${duration} hours`;
+    const formatDurationDays = (duration_days) => {
+        if (!duration_days) return 'N/A';
+        if (duration_days === 1) return '1 day';
+        return `${duration_days} days`;
     };
 
-    const getLevelColor = (level) => {
-        switch (level?.toLowerCase()) {
-            case 'beginner':
-                return 'bg-green-100 text-green-800';
-            case 'intermediate':
-                return 'bg-yellow-100 text-yellow-800';
-            case 'advanced':
-                return 'bg-red-100 text-red-800';
+    const getStatusColor = (status) => {
+        switch (status?.toLowerCase()) {
+            case 'active':
+                return 'bg-green-100 text-green-800 border-green-200';
+            case 'inactive':
+                return 'bg-gray-100 text-gray-800 border-gray-200';
             default:
-                return 'bg-gray-100 text-gray-800';
+                return 'bg-gray-100 text-gray-800 border-gray-200';
         }
     };
 
-    const getCategoryColor = (category) => {
-        switch (category?.toLowerCase()) {
-            case 'programming':
-                return 'bg-blue-100 text-blue-800';
-            case 'design':
-                return 'bg-purple-100 text-purple-800';
-            case 'business':
-                return 'bg-orange-100 text-orange-800';
-            case 'marketing':
-                return 'bg-pink-100 text-pink-800';
+    const getLanguageFlag = (language) => {
+        switch (language?.toLowerCase()) {
+            case 'english':
+                return '🇺🇸';
+            case 'spanish':
+                return '🇪🇸';
+            case 'french':
+                return '🇫🇷';
+            case 'german':
+                return '🇩🇪';
+            case 'portuguese':
+                return '🇵🇹';
+            case 'italian':
+                return '🇮🇹';
+            case 'japanese':
+                return '🇯🇵';
+            case 'chinese':
+                return '🇨🇳';
             default:
-                return 'bg-gray-100 text-gray-800';
+                return '🌐';
         }
     };
 
-    // Get unique categories and levels for filters
-    const categories = [...new Set(DUMMY_COURSES.map(course => course.category).filter(Boolean))];
-    const levels = [...new Set(DUMMY_COURSES.map(course => course.level).filter(Boolean))];
+    // Get unique languages for filters
+    const languages = [...new Set(courses.map(course => course.language).filter(Boolean))];
 
     if (loading) {
         return (
@@ -308,19 +394,19 @@ export default function BrowseCoursesPage() {
         <div className="space-y-6">
             <div>
                 <h1 className="text-3xl font-bold text-gray-900">Browse Courses</h1>
-                <p className="text-gray-600 mt-2">Discover new courses to expand your knowledge</p>
+                <p className="text-gray-600 mt-2">Discover new courses to expand your knowledge and skills</p>
             </div>
 
             {/* Success/Error Messages */}
             {successMessage && (
-                <div className="flex items-center space-x-2 text-green-600 bg-green-50 p-4 rounded-md">
+                <div className="flex items-center space-x-2 text-green-600 bg-green-50 border border-green-200 p-4 rounded-md">
                     <CheckCircle className="h-5 w-5" />
                     <span>{successMessage}</span>
                 </div>
             )}
 
             {(loadingError || error) && (
-                <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-4 rounded-md">
+                <div className="flex items-center space-x-2 text-red-600 bg-red-50 border border-red-200 p-4 rounded-md">
                     <AlertCircle className="h-5 w-5" />
                     <span>{loadingError || error}</span>
                 </div>
@@ -330,57 +416,44 @@ export default function BrowseCoursesPage() {
             <div className="flex flex-col lg:flex-row gap-4">
                 <div className="flex-1 relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    <Input 
-                        placeholder="Search for courses, topics, or instructors..." 
-                        className="pl-10" 
+                    <Input
+                        placeholder="Search for courses, topics, or instructor ID..."
+                        className="pl-10"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <div className="flex gap-2">
-                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <div className="flex gap-2 flex-wrap">
+                    <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
                         <SelectTrigger className="w-40">
-                            <SelectValue placeholder="Category" />
+                            <SelectValue placeholder="Language" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="All">All Categories</SelectItem>
-                            {categories.map(category => (
-                                <SelectItem key={category} value={category}>
-                                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                    <Select value={selectedLevel} onValueChange={setSelectedLevel}>
-                        <SelectTrigger className="w-32">
-                            <SelectValue placeholder="Level" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="All">All Levels</SelectItem>
-                            {levels.map(level => (
-                                <SelectItem key={level} value={level}>
-                                    {level.charAt(0).toUpperCase() + level.slice(1)}
+                            <SelectItem value="all">All Languages</SelectItem>
+                            {languages.map(language => (
+                                <SelectItem key={language} value={language}>
+                                    {getLanguageFlag(language)} {language}
                                 </SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
                     <Button variant="outline" onClick={() => {
                         setSearchTerm('');
-                        setSelectedCategory('');
-                        setSelectedLevel('');
+                        setSelectedLanguage('');
                     }}>
                         <Filter className="h-4 w-4 mr-2" />
-                        Clear Filters
+                        Clear
                     </Button>
                 </div>
             </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
                 <TabsList className="space-x-2">
-                    <TabsTrigger value="all">All Courses ({filteredCourses.length})</TabsTrigger>
-                    <TabsTrigger value="popular">Most Popular</TabsTrigger>
-                    <TabsTrigger value="new">New Releases</TabsTrigger>
-                    <TabsTrigger value="free">Free Courses</TabsTrigger>
+                    <TabsTrigger value="all" className="bg-white">All Courses ({filteredCourses.length})</TabsTrigger>
+                    <TabsTrigger value="popular" className="bg-white">Most Popular</TabsTrigger>
+                    <TabsTrigger value="highest-rated" className="bg-white">Highest Rated</TabsTrigger>
+                    <TabsTrigger value="shortest" className="bg-white">Shortest Duration</TabsTrigger>
+                    <TabsTrigger value="longest" className="bg-white">Longest Duration</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value={activeTab} className="space-y-6">
@@ -388,14 +461,14 @@ export default function BrowseCoursesPage() {
                         <div className="text-center py-12">
                             <BookOpen className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                             <h3 className="text-lg font-medium text-gray-900 mb-2">
-                                {searchTerm || selectedCategory || selectedLevel 
-                                    ? 'No courses match your filters' 
+                                {searchTerm || selectedLanguage
+                                    ? 'No courses match your filters'
                                     : 'No courses available'
                                 }
                             </h3>
                             <p className="text-gray-600">
-                                {searchTerm || selectedCategory || selectedLevel 
-                                    ? 'Try adjusting your search or filter criteria' 
+                                {searchTerm || selectedLanguage
+                                    ? 'Try adjusting your search or filter criteria'
                                     : 'Check back later for new courses'
                                 }
                             </p>
@@ -403,70 +476,68 @@ export default function BrowseCoursesPage() {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {filteredCourses.map((course) => (
-                                <Card key={course.course_id} className="group hover:shadow-lg transition-shadow">
-                                    <div className="aspect-video relative bg-gray-100">
-                                        {course.thumbnail ? (
-                                            <img
-                                                src={course.thumbnail}
-                                                alt={course.title}
-                                                className="w-full h-full object-cover rounded-t-lg"
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg">
-                                                <BookOpen className="h-12 w-12 text-blue-600" />
-                                            </div>
-                                        )}
-                                        <div className="absolute top-2 left-2">
-                                            {course.category && (
-                                                <Badge className={getCategoryColor(course.category)}>
-                                                    {course.category}
-                                                </Badge>
-                                            )}
+                                <Card key={course.course_id} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                                    <div className="aspect-video relative bg-gray-100 overflow-hidden">
+                                        <img
+                                            src={course.course_thumbnail}
+                                            alt={course.course_name}
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = "/thumbnail.jpg";
+                                            }}
+                                            className="w-full h-full object-cover rounded-t-lg group-hover:scale-105 transition-transform duration-300"
+                                        />
+                                        <div className="absolute top-3 left-3">
+                                            <Badge className={getStatusColor(course.course_status)}>
+                                                {course.course_status === 'active' ? 'Active' : 'Inactive'}
+                                            </Badge>
                                         </div>
-                                        <div className="absolute top-2 right-2">
-                                            <Button variant="ghost" size="sm" className="bg-white/80 hover:bg-white">
+                                        <div className="absolute top-3 right-3">
+                                            <Button variant="ghost" size="sm" className="bg-white/80 hover:bg-white backdrop-blur-sm">
                                                 <Heart className="h-4 w-4" />
                                             </Button>
                                         </div>
-                                    </div>
-                                    <CardHeader>
-                                        <div className="flex items-center justify-between">
-                                            {course.level && (
-                                                <Badge variant="outline" className={getLevelColor(course.level)}>
-                                                    {course.level.charAt(0).toUpperCase() + course.level.slice(1)}
-                                                </Badge>
-                                            )}
-                                            <span className="text-lg font-bold text-green-600">
-                                                {formatPrice(course.price)}
-                                            </span>
+                                        <div className="absolute bottom-3 left-3">
+                                            <Badge variant="secondary" className="bg-black/60 text-white border-none">
+                                                <Clock className="h-3 w-3 mr-1" />
+                                                {formatDuration(course.course_length)}
+                                            </Badge>
                                         </div>
-                                        <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">
-                                            {course.title || 'Untitled Course'}
+                                        <div className="absolute bottom-3 right-3">
+                                            <Badge variant="secondary" className="bg-black/60 text-white border-none">
+                                                {getLanguageFlag(course.language)} {course.language}
+                                            </Badge>
+                                        </div>
+                                    </div>
+                                    <CardHeader className="pb-3">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                                                {formatDurationDays(course.duration_days)}
+                                            </Badge>
+                                            <div className="flex items-center space-x-1">
+                                                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                                                <span className="text-sm font-medium">{course.rating}</span>
+                                            </div>
+                                        </div>
+                                        <CardTitle className="text-lg group-hover:text-blue-600 transition-colors leading-tight">
+                                            {course.course_name}
                                         </CardTitle>
-                                        <CardDescription>
-                                            {course.description || 'No description available'}
+                                        <CardDescription className="text-sm line-clamp-2">
+                                            {course.course_description}
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
                                         <div className="flex items-center justify-between text-sm text-gray-600">
                                             <div className="flex items-center space-x-1">
-                                                <Clock className="h-4 w-4" />
-                                                <span>{formatDuration(course.duration)}</span>
-                                            </div>
-                                            <div className="flex items-center space-x-1">
                                                 <Users className="h-4 w-4" />
-                                                <span>{course.enrolled_count || 0} students</span>
+                                                <span>{course.student_count?.toLocaleString()} students</span>
                                             </div>
-                                            <div className="flex items-center space-x-1">
-                                                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                                                <span>{course.rating || '4.5'}</span>
-                                            </div>
+                                            <span className="text-sm text-gray-500">
+                                                ID: {course.instructor_id}
+                                            </span>
                                         </div>
-                                        <p className="text-sm text-gray-600">
-                                            By {course.instructor_name || 'Unknown Instructor'}
-                                        </p>
-                                        <Button 
-                                            className="w-full" 
+                                        <Button
+                                            className="w-full group-hover:bg-blue-600 transition-colors"
                                             onClick={() => handleEnrollment(course.course_id)}
                                             disabled={enrollingCourses.has(course.course_id)}
                                         >
@@ -486,10 +557,11 @@ export default function BrowseCoursesPage() {
                     )}
 
                     {/* Load More Button */}
-                    {filteredCourses.length > 0 && filteredCourses.length >= 12 && (
+                    {filteredCourses.length > 0 && filteredCourses.length >= 9 && (
                         <div className="text-center">
-                            <Button variant="outline" size="lg">
+                            <Button variant="outline" size="lg" className="px-8">
                                 Load More Courses
+                                <BookOpen className="h-4 w-4 ml-2" />
                             </Button>
                         </div>
                     )}

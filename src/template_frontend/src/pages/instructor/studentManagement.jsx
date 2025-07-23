@@ -5,43 +5,82 @@ import { Input } from "@/components/ui/input"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Trash2, Eye, Search, Users, AlertCircle, UserCheck, UserX, Filter } from "lucide-react"
-import { useLMS } from "../../hooks/useLMS"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
+import { Trash2, Eye, Search, Users, AlertCircle, UserCheck, UserX, Filter, X } from "lucide-react"
+
+// Mock data for demonstration
+const dummyStudents = [
+  {
+    student_id: "STU001",
+    name: "Alice Johnson",
+    email: "alice.johnson@email.com",
+    course_id: "CS101",
+    course_title: "Introduction to Computer Science",
+    enrollment_status: "active",
+    progress: 75,
+    enrollment_date: Date.now() * 1000000 - (30 * 24 * 60 * 60 * 1000 * 1000000),
+    avatar: null
+  },
+  {
+    student_id: "STU002",
+    name: "Bob Smith",
+    email: "bob.smith@email.com",
+    course_id: "CS101",
+    course_title: "Introduction to Computer Science",
+    enrollment_status: "completed",
+    progress: 100,
+    enrollment_date: Date.now() * 1000000 - (60 * 24 * 60 * 60 * 1000 * 1000000),
+    avatar: null
+  },
+  {
+    student_id: "STU003",
+    name: "Carol Davis",
+    email: "carol.davis@email.com",
+    course_id: "MATH201",
+    course_title: "Advanced Mathematics",
+    enrollment_status: "active",
+    progress: 45,
+    enrollment_date: Date.now() * 1000000 - (15 * 24 * 60 * 60 * 1000 * 1000000),
+    avatar: null
+  },
+  {
+    student_id: "STU004",
+    name: "David Wilson",
+    email: "david.wilson@email.com",
+    course_id: "CS102",
+    course_title: "Data Structures and Algorithms",
+    enrollment_status: "pending",
+    progress: 0,
+    enrollment_date: Date.now() * 1000000 - (2 * 24 * 60 * 60 * 1000 * 1000000),
+    avatar: null
+  },
+  {
+    student_id: "STU005",
+    name: "Emma Brown",
+    email: "emma.brown@email.com",
+    course_id: "CS101",
+    course_title: "Introduction to Computer Science",
+    enrollment_status: "active",
+    progress: 92,
+    enrollment_date: Date.now() * 1000000 - (45 * 24 * 60 * 60 * 1000 * 1000000),
+    avatar: null
+  }
+];
 
 export default function StudentManagementPage() {
-  const { getInstructorStudents, removeStudentFromCourse, loading, error } = useLMS();
-  const [students, setStudents] = useState([]);
-  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [students, setStudents] = useState(dummyStudents);
+  const [filteredStudents, setFilteredStudents] = useState(dummyStudents);
   const [searchTerm, setSearchTerm] = useState("");
   const [courseFilter, setCourseFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [loading, setLoading] = useState(false);
   const [loadingError, setLoadingError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-
-  useEffect(() => {
-    const loadStudents = async () => {
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        setLoadingError("No authentication token found");
-        return;
-      }
-
-      try {
-        const result = await getInstructorStudents(token);
-        if (result.success) {
-          setStudents(result.data);
-          setFilteredStudents(result.data);
-        } else {
-          setLoadingError(result.error || "Failed to load students");
-        }
-      } catch (err) {
-        setLoadingError("An unexpected error occurred");
-        console.error("Students loading error:", err);
-      }
-    };
-
-    loadStudents();
-  }, [getInstructorStudents]);
+  
+  // Modal state
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
+  const [studentToRemove, setStudentToRemove] = useState(null);
+  const [isRemoving, setIsRemoving] = useState(false);
 
   useEffect(() => {
     filterStudents();
@@ -50,7 +89,6 @@ export default function StudentManagementPage() {
   const filterStudents = () => {
     let filtered = [...students];
 
-    // Apply search filter
     if (searchTerm) {
       filtered = filtered.filter(student =>
         student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -59,12 +97,10 @@ export default function StudentManagementPage() {
       );
     }
 
-    // Apply course filter
     if (courseFilter !== "all") {
       filtered = filtered.filter(student => student.course_id === courseFilter);
     }
 
-    // Apply status filter
     if (statusFilter !== "all") {
       filtered = filtered.filter(student => student.enrollment_status === statusFilter);
     }
@@ -72,33 +108,42 @@ export default function StudentManagementPage() {
     setFilteredStudents(filtered);
   };
 
-  const removeStudent = async (studentId, courseId) => {
-    if (!window.confirm("Are you sure you want to remove this student from the course?")) {
-      return;
-    }
+  const openRemoveModal = (student) => {
+    setStudentToRemove(student);
+    setShowRemoveModal(true);
+  };
 
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      setLoadingError("No authentication token found");
-      return;
-    }
+  const closeRemoveModal = () => {
+    setShowRemoveModal(false);
+    setStudentToRemove(null);
+    setIsRemoving(false);
+  };
+
+  const confirmRemoveStudent = async () => {
+    if (!studentToRemove) return;
+
+    setIsRemoving(true);
 
     try {
-      const result = await removeStudentFromCourse(token, studentId, courseId);
-      if (result.success) {
-        setStudents(prev => prev.filter(student => 
-          !(student.student_id === studentId && student.course_id === courseId)
-        ));
-        setSuccessMessage("Student removed successfully");
-        setLoadingError("");
-      } else {
-        setLoadingError(result.error || "Failed to remove student");
-        setSuccessMessage("");
-      }
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Remove student from list
+      setStudents(prev => prev.filter(student => 
+        !(student.student_id === studentToRemove.student_id && student.course_id === studentToRemove.course_id)
+      ));
+      
+      setSuccessMessage(`${studentToRemove.name} has been removed from ${studentToRemove.course_title}`);
+      setLoadingError("");
+      closeRemoveModal();
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => setSuccessMessage(""), 5000);
+      
     } catch (err) {
-      setLoadingError("An unexpected error occurred");
+      setLoadingError("Failed to remove student. Please try again.");
       setSuccessMessage("");
-      console.error("Student removal error:", err);
+      setIsRemoving(false);
     }
   };
 
@@ -169,16 +214,36 @@ export default function StudentManagementPage() {
 
       {/* Success/Error Messages */}
       {successMessage && (
-        <div className="flex items-center space-x-2 text-green-600 bg-green-50 p-4 rounded-md">
-          <UserCheck className="h-5 w-5" />
-          <span>{successMessage}</span>
+        <div className="flex items-center justify-between space-x-2 text-green-600 bg-green-50 p-4 rounded-md">
+          <div className="flex items-center space-x-2">
+            <UserCheck className="h-5 w-5" />
+            <span>{successMessage}</span>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSuccessMessage("")}
+            className="h-6 w-6 p-0 text-green-600 hover:text-green-700"
+          >
+            <X className="h-4 w-4" />
+          </Button>
         </div>
       )}
 
-      {(loadingError || error) && (
-        <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-4 rounded-md">
-          <AlertCircle className="h-5 w-5" />
-          <span>{loadingError || error}</span>
+      {loadingError && (
+        <div className="flex items-center justify-between space-x-2 text-red-600 bg-red-50 p-4 rounded-md">
+          <div className="flex items-center space-x-2">
+            <AlertCircle className="h-5 w-5" />
+            <span>{loadingError}</span>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setLoadingError("")}
+            className="h-6 w-6 p-0 text-red-600 hover:text-red-700"
+          >
+            <X className="h-4 w-4" />
+          </Button>
         </div>
       )}
 
@@ -311,7 +376,7 @@ export default function StudentManagementPage() {
                           <Button
                             variant="destructive"
                             size="sm"
-                            onClick={() => removeStudent(student.student_id, student.course_id)}
+                            onClick={() => openRemoveModal(student)}
                             disabled={student.enrollment_status === 'completed'}
                           >
                             <Trash2 className="w-4 h-4 mr-1" />
@@ -365,6 +430,58 @@ export default function StudentManagementPage() {
           </Card>
         </div>
       )}
+
+      {/* Remove Student Modal */}
+      <AlertDialog open={showRemoveModal} onOpenChange={setShowRemoveModal}>
+        <AlertDialogContent className="sm:max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <UserX className="h-5 w-5 text-red-600" />
+              Remove Student
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {studentToRemove && (
+                <div className="space-y-3">
+                  <p>
+                    Are you sure you want to remove <strong>{studentToRemove.name}</strong> from the course?
+                  </p>
+                  <div className="bg-gray-50 p-3 rounded-md text-sm">
+                    <div className="font-medium text-gray-900">{studentToRemove.course_title}</div>
+                    <div className="text-gray-600">Course ID: {studentToRemove.course_id}</div>
+                    <div className="text-gray-600">Student ID: {studentToRemove.student_id}</div>
+                    <div className="text-gray-600">Progress: {studentToRemove.progress}%</div>
+                  </div>
+                  <p className="text-red-600 text-sm">
+                    This action cannot be undone. The student will lose access to the course and all progress data.
+                  </p>
+                </div>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={closeRemoveModal} disabled={isRemoving}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmRemoveStudent}
+              disabled={isRemoving}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+            >
+              {isRemoving ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Removing...
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Trash2 className="w-4 h-4" />
+                  Remove Student
+                </div>
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

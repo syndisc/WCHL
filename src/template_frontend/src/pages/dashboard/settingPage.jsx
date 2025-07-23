@@ -197,23 +197,23 @@ export default function SettingsPage() {
 
       <Tabs defaultValue="profile" className="space-y-6">
         <TabsList className="grid w-fit grid-cols-5 space-x-2">
-          <TabsTrigger value="profile" className="flex items-center gap-2">
+          <TabsTrigger value="profile" className="flex bg-white items-center gap-2">
             <User className="h-4 w-4" />
             Profile
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="flex items-center gap-2">
+          <TabsTrigger value="notifications" className="flex bg-white items-center gap-2">
             <Bell className="h-4 w-4" />
             Notifications
           </TabsTrigger>
-          <TabsTrigger value="privacy" className="flex items-center gap-2">
+          <TabsTrigger value="privacy" className="flex bg-white items-center gap-2">
             <Shield className="h-4 w-4" />
             Privacy
           </TabsTrigger>
-          <TabsTrigger value="billing" className="flex items-center gap-2">
+          <TabsTrigger value="billing" className="flex bg-white items-center gap-2">
             <DollarSign className="h-4 w-4" />
             Billing
           </TabsTrigger>
-          <TabsTrigger value="account" className="flex items-center gap-2">
+          <TabsTrigger value="account" className="flex bg-white items-center gap-2">
             <Settings className="h-4 w-4" />
             Account
           </TabsTrigger>

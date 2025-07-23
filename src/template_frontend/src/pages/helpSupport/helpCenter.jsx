@@ -195,7 +195,7 @@ export default function HelpCenter() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24">
         <Card className="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <MessageCircle className="h-10 w-10 text-blue-600 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Live Chat</h3>

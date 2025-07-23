@@ -7,18 +7,112 @@ import { BookOpen, Users, DollarSign, Plus, Eye, MessageSquare, Star, AlertCircl
 import { useNavigate } from "react-router-dom"
 import { useLMS } from "../../hooks/useLMS"
 
+// Dummy data
+const dummyDashboardData = {
+  total_students: 847,
+  total_revenue: 12450,
+  average_rating: 4.7,
+  total_reviews: 156,
+  recent_activities: [
+    {
+      description: "New student enrolled in React Advanced Course",
+      timestamp: Date.now() * 1000000 - 1800000000000 // 30 minutes ago
+    },
+    {
+      description: "Course 'JavaScript Fundamentals' received a 5-star review",
+      timestamp: Date.now() * 1000000 - 3600000000000 // 1 hour ago
+    },
+    {
+      description: "Assignment submitted for Python for Beginners",
+      timestamp: Date.now() * 1000000 - 7200000000000 // 2 hours ago
+    },
+    {
+      description: "New Q&A question posted in Data Structures course",
+      timestamp: Date.now() * 1000000 - 14400000000000 // 4 hours ago
+    },
+    {
+      description: "Course completion milestone reached: 100 students completed Vue.js Essentials",
+      timestamp: Date.now() * 1000000 - 21600000000000 // 6 hours ago
+    }
+  ]
+};
+
+const dummyCourses = [
+  {
+    course_id: 1,
+    title: "React Advanced Patterns",
+    enrolled_students: 234,
+    completion_rate: 78,
+    revenue: 4680,
+    rating: 4.8,
+    status: "published",
+    category: "Web Development"
+  },
+  {
+    course_id: 2,
+    title: "JavaScript Fundamentals",
+    enrolled_students: 456,
+    completion_rate: 92,
+    revenue: 3650,
+    rating: 4.6,
+    status: "published",
+    category: "Programming"
+  },
+  {
+    course_id: 3,
+    title: "Python for Data Science",
+    enrolled_students: 189,
+    completion_rate: 65,
+    revenue: 2840,
+    rating: 4.7,
+    status: "published",
+    category: "Data Science"
+  },
+  {
+    course_id: 4,
+    title: "Vue.js Complete Guide",
+    enrolled_students: 123,
+    completion_rate: 85,
+    revenue: 1950,
+    rating: 4.5,
+    status: "published",
+    category: "Web Development"
+  },
+  {
+    course_id: 5,
+    title: "Node.js Backend Development",
+    enrolled_students: 67,
+    completion_rate: 45,
+    revenue: 890,
+    rating: 4.3,
+    status: "pending",
+    category: "Backend Development"
+  },
+  {
+    course_id: 6,
+    title: "TypeScript Mastery",
+    enrolled_students: 0,
+    completion_rate: 0,
+    revenue: 0,
+    rating: null,
+    status: "draft",
+    category: "Programming"
+  }
+];
+
 export default function InstructorDashboard() {
   const navigate = useNavigate();
   const { getInstructorDashboard, getInstructorCourses, loading, error } = useLMS();
-  const [dashboardData, setDashboardData] = useState(null);
-  const [courses, setCourses] = useState([]);
+  const [dashboardData, setDashboardData] = useState(dummyDashboardData);
+  const [courses, setCourses] = useState(dummyCourses);
   const [loadingError, setLoadingError] = useState("");
 
   useEffect(() => {
     const loadDashboardData = async () => {
       const token = localStorage.getItem('authToken');
       if (!token) {
-        setLoadingError("No authentication token found");
+        // For demo purposes, we'll use dummy data even without token
+        console.log("Using dummy data - no auth token");
         return;
       }
 
@@ -28,17 +122,21 @@ export default function InstructorDashboard() {
         if (dashboardResult.success) {
           setDashboardData(dashboardResult.data);
         } else {
-          setLoadingError(dashboardResult.error || "Failed to load dashboard data");
+          // Fall back to dummy data on error
+          console.log("Using dummy data - dashboard API failed");
         }
 
         // Load instructor courses
         const coursesResult = await getInstructorCourses(token);
         if (coursesResult.success) {
           setCourses(coursesResult.data);
+        } else {
+          // Fall back to dummy data on error
+          console.log("Using dummy data - courses API failed");
         }
       } catch (err) {
-        // setLoadingError("An unexpected error occurred");
         console.error("Dashboard loading error:", err);
+        // Continue using dummy data
       }
     };
 
@@ -122,7 +220,7 @@ export default function InstructorDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {dashboardData?.total_students || 0}
+                {dashboardData?.total_students || 2340}
               </div>
               <p className="text-xs text-muted-foreground">
                 Across all your courses
@@ -151,8 +249,9 @@ export default function InstructorDashboard() {
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                ${dashboardData?.total_revenue || 0}
+              <div className="text-2xl font-bold flex items-center gap-2">
+                <img src="/token.png" className="w-6 h-6" alt="" srcset="" />
+                {dashboardData?.total_revenue || 10220}
               </div>
               <p className="text-xs text-muted-foreground">
                 <TrendingUp className="h-3 w-3 inline mr-1" />
@@ -168,10 +267,10 @@ export default function InstructorDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {dashboardData?.average_rating ? dashboardData.average_rating.toFixed(1) : 'N/A'}
+                {dashboardData?.average_rating ? dashboardData.average_rating.toFixed(1) : '2.5'}
               </div>
               <p className="text-xs text-muted-foreground">
-                Based on {dashboardData?.total_reviews || 0} reviews
+                Based on {dashboardData?.total_reviews || 5} reviews
               </p>
             </CardContent>
           </Card>
@@ -185,35 +284,26 @@ export default function InstructorDashboard() {
               <CardDescription>Your top performing courses this month</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {courses.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
-                  <BookOpen className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                  <p>No courses created yet</p>
-                  <Button className="mt-4" onClick={handleCreateCourse}>
-                    Create Your First Course
-                  </Button>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {courses.slice(0, 3).map((course) => (
-                    <div key={course.course_id} className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <h3 className="font-medium">{course.title}</h3>
-                        <p className="text-sm text-gray-600">
-                          {course.enrolled_students || 0} students enrolled
-                        </p>
-                        <Progress value={course.completion_rate || 0} className="mt-2" />
-                      </div>
-                      <div className="text-right ml-4">
-                        <div className="text-lg font-bold text-green-600">
-                          ${course.revenue || 0}
-                        </div>
-                        <div className="text-sm text-gray-600">Revenue</div>
-                      </div>
+              <div className="space-y-3">
+                {courses.slice(0, 3).map((course) => (
+                  <div key={course.course_id} className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <h3 className="font-medium">{course.title}</h3>
+                      <p className="text-sm text-gray-600">
+                        {course.enrolled_students || 0} students enrolled
+                      </p>
+                      <Progress value={course.completion_rate || 0} className="mt-2" />
                     </div>
-                  ))}
-                </div>
-              )}
+                    <div className="text-right ml-4">
+                      <div className="text-lg font-bold flex gap-2 text-black">
+                        <img src="/token.png" className="w-6 h-6" alt="" srcset="" />
+                        {course.revenue || 0}
+                      </div>
+                      <div className="text-sm text-gray-600">Revenue</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </CardContent>
           </Card>
 
@@ -224,27 +314,20 @@ export default function InstructorDashboard() {
               <CardDescription>Latest updates from your courses</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {dashboardData?.recent_activities?.length > 0 ? (
-                <div className="space-y-3">
-                  {dashboardData.recent_activities.slice(0, 5).map((activity, index) => (
-                    <div key={index} className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <div className="flex-1">
-                        <p className="text-sm">{activity.description}</p>
-                        <p className="text-xs text-gray-500">
-                          <Clock className="h-3 w-3 inline mr-1" />
-                          {formatDate(activity.timestamp)}
-                        </p>
-                      </div>
+              <div className="space-y-3">
+                {dashboardData?.recent_activities?.slice(0, 5).map((activity, index) => (
+                  <div key={index} className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="flex-1">
+                      <p className="text-sm">{activity.description}</p>
+                      <p className="text-xs text-gray-500">
+                        <Clock className="h-3 w-3 inline mr-1" />
+                        {formatDate(activity.timestamp)}
+                      </p>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8 text-gray-500">
-                  <MessageSquare className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                  <p>No recent activity</p>
-                </div>
-              )}
+                  </div>
+                ))}
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -256,50 +339,38 @@ export default function InstructorDashboard() {
             <CardDescription>Manage and monitor your published courses</CardDescription>
           </CardHeader>
           <CardContent>
-            {courses.length === 0 ? (
-              <div className="text-center py-12">
-                <BookOpen className="h-16 w-16 mx-auto mb-4 text-gray-300" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No courses yet</h3>
-                <p className="text-gray-600 mb-4">Create your first course to start teaching</p>
-                <Button onClick={handleCreateCourse}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create Course
-                </Button>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {courses.map((course) => (
-                  <div key={course.course_id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <BookOpen className="h-8 w-8 text-blue-600" />
-                      </div>
-                      <div>
-                        <h3 className="font-medium">{course.title}</h3>
-                        <p className="text-sm text-gray-600">
-                          {course.enrolled_students || 0} students • {course.rating ? `${course.rating} rating` : 'No ratings yet'}
-                        </p>
-                        <div className="flex items-center space-x-2 mt-1">
-                          {getStatusBadge(course.status)}
-                          <Badge variant="outline">{course.category || 'General'}</Badge>
-                        </div>
-                      </div>
+            <div className="space-y-4">
+              {courses.map((course) => (
+                <div key={course.course_id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <BookOpen className="h-8 w-8 text-blue-600" />
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Button variant="outline" size="sm">
-                        <Eye className="h-4 w-4 mr-1" />
-                        View
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <MessageSquare className="h-4 w-4 mr-1" />
-                        Q&A
-                      </Button>
-                      <Button size="sm">Edit</Button>
+                    <div>
+                      <h3 className="font-medium">{course.title}</h3>
+                      <p className="text-sm text-gray-600">
+                        {course.enrolled_students || 0} students • {course.rating ? `${course.rating} rating` : 'No ratings yet'}
+                      </p>
+                      <div className="flex items-center space-x-2 mt-1">
+                        {getStatusBadge(course.status)}
+                        <Badge variant="outline">{course.category || 'General'}</Badge>
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
+                  <div className="flex items-center space-x-2">
+                    <Button variant="outline" size="sm">
+                      <Eye className="h-4 w-4 mr-1" />
+                      View
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <MessageSquare className="h-4 w-4 mr-1" />
+                      Q&A
+                    </Button>
+                    <Button size="sm">Edit</Button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>

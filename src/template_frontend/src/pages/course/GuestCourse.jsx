@@ -284,8 +284,8 @@ export default function ExploreCourses() {
             <Play className="h-4 w-4 text-blue-600" />
           </div>
           <div className="absolute bottom-4 right-4 bg-purple-600 text-white px-2 py-1 rounded-full flex items-center text-xs">
-            <Coins className="h-3 w-3 mr-1" />
-            +{course.tokenReward} EDOO
+            {/* <Coins className="h-3 w-3 mr-1" />
+            +{course.tokenReward} EDOO */}
           </div>
         </div>
         
@@ -325,8 +325,10 @@ export default function ExploreCourses() {
           </div>
           
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <span className="text-2xl font-bold text-blue-600">{course.price} ETH</span>
+            <div className="flex items-center gap-2">
+              <img src="/token.png" className="w-6 h-6" alt="" srcset="" />
+              <span className="text-2xl font-bold text-blue-600">{course.price}
+              </span>
             </div>
             <button className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-colors duration-200">
               Enroll Now

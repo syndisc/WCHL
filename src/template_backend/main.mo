@@ -16,6 +16,7 @@ actor LMS {
     first_name : Text;
     last_name : Text;
     email : Text;
+    password : Text;
     bio : Text;
     profile_picture : Text;
     role : Text; // "student", "instructor", "admin"
@@ -193,13 +194,26 @@ actor LMS {
   stable var discussions : [Discussion] = [];
   stable var student_reports : [StudentReport] = [];
 
+  // === UTILITY FUNCTIONS ===
+  private func generateToken(userId : Text) : Text {
+    userId # "_" # Int.toText(Time.now());
+  };
+
+  private func generateId(prefix : Text) : Text {
+    prefix # "_" # Int.toText(Time.now());
+  };
+
   // === AUTHENTICATION ===
-  public func login(email : Text, password : Text) : async Result.Result<{ token : Text; user : User }, Text> {
+  public func login(email : Text, password : Text) : async Result.Result<{ token : Text }, Text> {
     switch (Array.find(users, func(u : User) : Bool { u.email == email })) {
       case null { #err("User not found") };
       case (?user) {
         if (user.status == "inactive") {
           return #err("Account is inactive");
+        };
+
+        if(user.password != password) {
+          return #err("Incorrect password");
         };
 
         let token = generateToken(user.user_id);
@@ -216,6 +230,7 @@ actor LMS {
           first_name = user.first_name;
           last_name = user.last_name;
           email = user.email;
+          password = user.password;
           bio = user.bio;
           profile_picture = user.profile_picture;
           role = user.role;
@@ -232,7 +247,7 @@ actor LMS {
           },
         );
 
-        #ok({ token = token; user = updatedUser });
+        #ok({ token = token});
       };
     };
   };
@@ -242,6 +257,7 @@ actor LMS {
       first_name : Text;
       last_name : Text;
       email : Text;
+      password : Text;
       role : Text;
     }
   ) : async Result.Result<{ token : Text; user : User }, Text> {
@@ -257,6 +273,7 @@ actor LMS {
       first_name = userData.first_name;
       last_name = userData.last_name;
       email = userData.email;
+      password = userData.password; 
       bio = "";
       profile_picture = "";
       role = userData.role;
@@ -722,23 +739,12 @@ actor LMS {
     };
   };
 
-  // === UTILITY FUNCTIONS ===
-  private func generateToken(userId : Text) : Text {
-    userId # "_" # Int.toText(Time.now());
-  };
-
-  private func generateId(prefix : Text) : Text {
-    prefix # "_" # Int.toText(Time.now());
-  };
-
   // === EXISTING CRUD FUNCTIONS ===
   // User
-  public func createUser(user : User) : async () {
-    users := Array.append(users, [user]);
-  };
   public func getUser(id : Text) : async ?User {
     Array.find(users, func(u : User) : Bool { u.user_id == id });
   };
+
   public func updateUser(user : User) : async () {
     users := Array.map(
       users,
@@ -747,6 +753,7 @@ actor LMS {
       },
     );
   };
+
   public func deleteUser(id : Text) : async () {
     users := Array.filter(users, func(u : User) : Bool { u.user_id != id });
   };
@@ -755,9 +762,11 @@ actor LMS {
   public func createStudent(s : Student) : async () {
     students := Array.append(students, [s]);
   };
+
   public func getStudent(id : Text) : async ?Student {
     Array.find(students, func(x : Student) : Bool { x.student_id == id });
   };
+
   public func updateStudent(s : Student) : async () {
     students := Array.map(
       students,
@@ -766,6 +775,7 @@ actor LMS {
       },
     );
   };
+
   public func deleteStudent(id : Text) : async () {
     students := Array.filter(students, func(x : Student) : Bool { x.student_id != id });
   };
@@ -774,9 +784,15 @@ actor LMS {
   public func createLecturer(l : Lecturer) : async () {
     lecturers := Array.append(lecturers, [l]);
   };
+
   public func getLecturer(id : Text) : async ?Lecturer {
     Array.find(lecturers, func(x : Lecturer) : Bool { x.lecturer_id == id });
   };
+
+  public func getLecturerByUserId(userId : Text) : async ?Lecturer {
+    Array.find(lecturers, func(x : Lecturer) : Bool { x.user_id == userId });
+  };
+
   public func updateLecturer(l : Lecturer) : async () {
     lecturers := Array.map(
       lecturers,
@@ -785,17 +801,63 @@ actor LMS {
       },
     );
   };
+
   public func deleteLecturer(id : Text) : async () {
     lecturers := Array.filter(lecturers, func(x : Lecturer) : Bool { x.lecturer_id != id });
   };
 
+  /*
+    course_id : Text;
+    course_name : Text;
+    course_description : Text;
+    course_status : Text;
+    course_length : Text;
+    course_thumbnail : Text;
+    language : Text;
+    instructor_id : Text;
+    duration_days : Nat;
+    rating : Float;
+    student_count : Nat;
+  */
+
   // Course
-  public func createCourse(c : Course) : async () {
-    courses := Array.append(courses, [c]);
+  public func createCourse(courseData : {
+      course_name : Text;
+      course_description : Text;
+      course_status : Text;
+      course_length : Text;
+      course_thumbnail : Text;
+      language : Text;
+      instructor_id : Text;
+      duration_days : Nat;
+    }) : async () {
+
+    let courseId = generateId("course");
+    let newCourse : Course = {
+      course_id = courseId;
+      course_name = courseData.course_name;
+      course_description = courseData.course_description;
+      course_status = courseData.course_status;
+      course_length = courseData.course_length;
+      course_thumbnail = courseData.course_thumbnail;
+      language = courseData.language;
+      instructor_id = courseData.instructor_id;
+      duration_days = courseData.duration_days;
+      rating = 0.0;
+      student_count = 0;
+    };
+
+    courses := Array.append(courses, [newCourse]);
   };
+
   public func getCourse(id : Text) : async ?Course {
     Array.find(courses, func(x : Course) : Bool { x.course_id == id });
   };
+
+  public func getAllCourses() : async [Course] {
+    courses;
+  };
+
   public func updateCourse(c : Course) : async () {
     courses := Array.map(
       courses,
@@ -804,6 +866,7 @@ actor LMS {
       },
     );
   };
+
   public func deleteCourse(id : Text) : async () {
     courses := Array.filter(courses, func(x : Course) : Bool { x.course_id != id });
   };
@@ -812,9 +875,11 @@ actor LMS {
   public func createClass(c : Class) : async () {
     classes := Array.append(classes, [c]);
   };
+
   public func getClass(id : Text) : async ?Class {
     Array.find(classes, func(x : Class) : Bool { x.class_id == id });
   };
+  
   public func updateClass(c : Class) : async () {
     classes := Array.map(
       classes,
@@ -823,6 +888,7 @@ actor LMS {
       },
     );
   };
+
   public func deleteClass(id : Text) : async () {
     classes := Array.filter(classes, func(x : Class) : Bool { x.class_id != id });
   };
@@ -831,9 +897,11 @@ actor LMS {
   public func createEnrollment(e : Enrollment) : async () {
     enrollments := Array.append(enrollments, [e]);
   };
+
   public func getEnrollment(id : Text) : async ?Enrollment {
     Array.find(enrollments, func(x : Enrollment) : Bool { x.enrollment_id == id });
   };
+
   public func updateEnrollment(e : Enrollment) : async () {
     enrollments := Array.map(
       enrollments,
@@ -842,6 +910,7 @@ actor LMS {
       },
     );
   };
+
   public func deleteEnrollment(id : Text) : async () {
     enrollments := Array.filter(enrollments, func(x : Enrollment) : Bool { x.enrollment_id != id });
   };
@@ -850,9 +919,11 @@ actor LMS {
   public func createAssignment(a : Assignment) : async () {
     assignments := Array.append(assignments, [a]);
   };
+
   public func getAssignment(id : Text) : async ?Assignment {
     Array.find(assignments, func(x : Assignment) : Bool { x.assignment_id == id });
   };
+
   public func updateAssignment(a : Assignment) : async () {
     assignments := Array.map(
       assignments,
@@ -861,6 +932,7 @@ actor LMS {
       },
     );
   };
+
   public func deleteAssignment(id : Text) : async () {
     assignments := Array.filter(assignments, func(x : Assignment) : Bool { x.assignment_id != id });
   };
@@ -869,9 +941,11 @@ actor LMS {
   public func createCertificate(c : Certificate) : async () {
     certificates := Array.append(certificates, [c]);
   };
+
   public func getCertificate(id : Text) : async ?Certificate {
     Array.find(certificates, func(x : Certificate) : Bool { x.certificate_id == id });
   };
+
   public func updateCertificate(c : Certificate) : async () {
     certificates := Array.map(
       certificates,
@@ -880,6 +954,7 @@ actor LMS {
       },
     );
   };
+
   public func deleteCertificate(id : Text) : async () {
     certificates := Array.filter(certificates, func(x : Certificate) : Bool { x.certificate_id != id });
   };
@@ -888,9 +963,11 @@ actor LMS {
   public func createReview(r : Review) : async () {
     reviews := Array.append(reviews, [r]);
   };
+
   public func getReview(id : Text) : async ?Review {
     Array.find(reviews, func(x : Review) : Bool { x.review_id == id });
   };
+
   public func updateReview(r : Review) : async () {
     reviews := Array.map(
       reviews,
@@ -899,6 +976,7 @@ actor LMS {
       },
     );
   };
+
   public func deleteReview(id : Text) : async () {
     reviews := Array.filter(reviews, func(x : Review) : Bool { x.review_id != id });
   };
@@ -1108,6 +1186,7 @@ actor LMS {
       first_name : Text;
       last_name : Text;
       email : Text;
+      password : Text;
       bio : Text;
       profile_picture : Text;
     },
@@ -1120,6 +1199,7 @@ actor LMS {
           first_name = settings.first_name;
           last_name = settings.last_name;
           email = settings.email;
+          password = settings.password;
           bio = settings.bio;
           profile_picture = settings.profile_picture;
           role = user.role;
@@ -1496,6 +1576,7 @@ actor LMS {
               first_name = targetUser.first_name;
               last_name = targetUser.last_name;
               email = targetUser.email;
+              password = targetUser.password;
               bio = targetUser.bio;
               profile_picture = targetUser.profile_picture;
               role = targetUser.role;
@@ -1635,6 +1716,7 @@ actor LMS {
                         first_name = u.first_name;
                         last_name = u.last_name;
                         email = u.email;
+                        password = u.password;
                         bio = u.bio;
                         profile_picture = u.profile_picture;
                         role = u.role;
@@ -1679,6 +1761,7 @@ actor LMS {
             first_name = u.first_name;
             last_name = u.last_name;
             email = u.email;
+            password = u.password; 
             bio = u.bio;
             profile_picture = u.profile_picture;
             role = u.role;
@@ -1709,6 +1792,7 @@ actor LMS {
               first_name = u.first_name;
               last_name = u.last_name;
               email = u.email;
+              password = u.password;
               bio = u.bio;
               profile_picture = u.profile_picture;
               role = u.role;

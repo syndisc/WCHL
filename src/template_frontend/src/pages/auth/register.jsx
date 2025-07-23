@@ -77,6 +77,7 @@ export default function RegisterPage() {
         first_name: formData.first_name,
         last_name: formData.last_name,
         email: formData.email,
+        password: formData.password,
         role: formData.role
       };
 
@@ -94,6 +95,7 @@ export default function RegisterPage() {
           last_login: userPayload.last_login.toString(),
           created: userPayload.created.toString(),
           updated: userPayload.updated.toString(),
+          edoo_token: userPayload.edoo_token.toString(),
         };
         
         console.log(serializedUser);

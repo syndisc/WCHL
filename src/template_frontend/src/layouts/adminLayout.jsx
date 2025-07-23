@@ -17,6 +17,8 @@ export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const notificationRef = useRef(null)
+  const [showAvatarMenu, setShowAvatarMenu] = useState(false)
+  const avatarRef = useRef(null)
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -41,7 +43,8 @@ export default function AdminLayout() {
         <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-white">
           <div className="flex h-16 items-center justify-between px-4 border-b">
             <Link to="/" className="flex items-center space-x-2">
-              <LayoutDashboard className="h-6 w-6 text-blue-600" />
+              {/* <LayoutDashboard className="h-6 w-6 text-blue-600" /> */}
+              <img src="/clr.png" alt="Edoo Logo" className="h-10 w-10" />
               <span className="text-lg font-bold">Edoo Admin</span>
             </Link>
             <Button variant="ghost" size="sm" onClick={() => setSidebarOpen(false)}>
@@ -74,7 +77,8 @@ export default function AdminLayout() {
         <div className="flex flex-col flex-grow bg-white border-r">
           <div className="flex h-16 items-center px-4 border-b">
             <Link to="/admin" className="flex items-center space-x-2">
-              <LayoutDashboard className="h-6 w-6 text-blue-600" />
+              {/* <LayoutDashboard className="h-6 w-6 text-blue-600" /> */}
+              <img src="/clr.png" alt="Edoo Logo" className="h-10 w-10" />
               <span className="text-lg font-bold">Edoo Admin</span>
             </Link>
           </div>
@@ -143,10 +147,36 @@ export default function AdminLayout() {
                 )}
               </div>
 
-              <Avatar>
-                <AvatarImage src="/placeholder.svg?height=32&width=32" />
-                <AvatarFallback>AD</AvatarFallback>
-              </Avatar>
+              <div className="relative" ref={avatarRef}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="p-0 bg-transparent focus:outline-none hover:border-transparent hover:bg-transparent"
+                  onClick={() => setShowAvatarMenu(!showAvatarMenu)}
+                >
+                  <Avatar>
+                    <AvatarImage src="/placeholder.svg?height=32&width=32" />
+                    <AvatarFallback>JD</AvatarFallback>
+                  </Avatar>
+                </Button>
+
+                {showAvatarMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                    {/* <div className="px-4 py-3 text-sm text-gray-700">Signed in as <br /><span className="font-medium">student@gmail.com</span></div> */}
+                    <div className="border-t" />
+                    <button
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 bg-white hover:bg-gray-100"
+                      onClick={() => {
+                        // clear session, redirect to login
+                        localStorage.clear()
+                        navigate("/auth/login")
+                      }}
+                    >
+                      Log out
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

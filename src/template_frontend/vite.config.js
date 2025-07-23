@@ -22,6 +22,11 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      external: ['@dfinity/agent'],
+    },
+  },
   optimizeDeps: {
     esbuildOptions: {
       define: {

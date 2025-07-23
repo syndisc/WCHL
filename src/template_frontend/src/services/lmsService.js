@@ -3,7 +3,7 @@ import { Actor, HttpAgent } from '@dfinity/agent';
 import { idlFactory } from 'declarations/template_backend';
 
 // Get the canister ID from environment or dfx
-const canisterId = "u6s2n-gx777-77774-qaaba-cai"
+const canisterId = "uxrrr-q7777-77774-qaaaq-cai"
 
 // Create an agent for local development
 const agent = new HttpAgent({
@@ -457,6 +457,16 @@ export class LMSService {
     }
   }
 
+  static async getLecturerByUserId(userId) {
+    try {
+      const result = await lmsActor.getLecturerByUserId(userId);
+      return { success: true, data: result.length > 0 ? result[0] : null };
+    } catch (error) {
+      console.error('Error getting lecturer by user ID:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
   static async updateLecturer(lecturer) {
     try {
       await lmsActor.updateLecturer(lecturer);
@@ -494,6 +504,16 @@ export class LMSService {
       return { success: true, data: result.length > 0 ? result[0] : null };
     } catch (error) {
       console.error('Error getting course:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  static async getAllCourses() {
+    try {
+      const result = await lmsActor.getAllCourses();
+      return { success: true, data: result };
+    } catch (error) {
+      console.error('Error getting all courses:', error);
       return { success: false, error: error.message };
     }
   }
@@ -722,6 +742,18 @@ export class LMSService {
       return { success: false, error: error.message };
     }
   }
+
+  // ===== PAYMENT METHODS =====
+  static async addCurrency(user_id, amount) {
+    try {
+      const result = await lmsActor.addCurrency(user_id, amount);
+      return { success: true, data: result };
+    } catch (error) {
+      console.error('Error adding currency:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
 }
 
 export default LMSService;

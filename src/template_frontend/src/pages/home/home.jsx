@@ -30,7 +30,7 @@ export default function HomePage() {
           </nav>
           <div className="flex items-center space-x-4">
             <Link to="/auth/login">
-              <Button variant="ghost">Login</Button>
+              <Button className="bg-white text-blue-500">Login</Button>
             </Link>
             <Link to="/auth/register">
               <Button>Get Started</Button>

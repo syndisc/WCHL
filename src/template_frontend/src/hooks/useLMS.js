@@ -205,6 +205,10 @@ export const useLMS = () => {
     return executeAction(() => LMSService.getLecturer(lecturerId));
   }, [executeAction]);
 
+  const getLecturerByUserId = useCallback((userId) => {
+    return executeAction(() => LMSService.getLecturerByUserId(userId));
+  }, [executeAction]);
+
   const updateLecturer = useCallback((lecturer) => {
     return executeAction(() => LMSService.updateLecturer(lecturer));
   }, [executeAction]);
@@ -220,6 +224,10 @@ export const useLMS = () => {
 
   const getCourse = useCallback((courseId) => {
     return executeAction(() => LMSService.getCourse(courseId));
+  }, [executeAction]);
+
+  const getAllCourses = useCallback(() => {
+    return executeAction(() => LMSService.getAllCourses());
   }, [executeAction]);
 
   const updateCourse = useCallback((course) => {
@@ -315,6 +323,10 @@ export const useLMS = () => {
     return executeAction(() => LMSService.deleteReview(reviewId));
   }, [executeAction]);
 
+  const addCurrency = useCallback((user_id, amount) => {
+    return executeAction(() => LMSService.addCurrency(user_id, amount));
+  }, [executeAction]);
+
   return {
     loading,
     error,
@@ -383,6 +395,7 @@ export const useLMS = () => {
     // Course methods
     createCourse,
     getCourse,
+    getAllCourses,
     updateCourse,
     deleteCourse,
     // Class methods
@@ -410,5 +423,7 @@ export const useLMS = () => {
     getReview,
     updateReview,
     deleteReview,
+    // Currency methods
+    addCurrency
   };
 };

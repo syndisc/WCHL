@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { PlusCircle, Search, User, Mail, Trash2, Pencil, X, Filter, AlertCircle, CheckCircle, Users, UserCheck } from 'lucide-react';
-import { useLMS } from '../../hooks/useLMS';
+import { PlusCircle, Search, User, Mail, Trash2, Pencil, X, Filter, AlertCircle, CheckCircle, Users, UserCheck, Shield, GraduationCap, Star } from 'lucide-react';
 
 const Button = ({ children, className, variant, onClick, disabled, type = "button" }) => {
-    let baseClasses = "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
-    let variantClasses = "bg-blue-600 text-white hover:bg-blue-700"; 
+    let baseClasses = "inline-flex items-center justify-center rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none shadow-sm";
+    let variantClasses = "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 hover:shadow-md"; 
+    
     if (variant === "outline") {
-        variantClasses = "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50";
+        variantClasses = "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400";
     } else if (variant === "ghost") {
-        variantClasses = "hover:bg-gray-100 text-gray-700";
+        variantClasses = "hover:bg-gray-100 text-gray-700 hover:text-gray-900";
     } else if (variant === "destructive") {
-        variantClasses = "bg-red-600 text-white hover:bg-red-700";
+        variantClasses = "bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 hover:shadow-md";
     }
+    
     return (
-        <button type={type} className={`${baseClasses} ${variantClasses} ${className}`} onClick={onClick} disabled={disabled}>
+        <button type={type} className={`${baseClasses} ${variantClasses} ${className} px-4 py-2`} onClick={onClick} disabled={disabled}>
             {children}
         </button>
-    );
-};
+        );
+    };
 
 const Input = ({ type = "text", placeholder, className, value, onChange, label, required }) => (
     <div className="space-y-2">
-        {label && <label className="text-sm font-medium text-gray-700">{label}</label>}
+        {label && <label className="text-sm font-semibold text-gray-700">{label}</label>}
         <input
             type={type}
             placeholder={placeholder}
-            className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+            className={`flex h-11 w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm transition-all duration-200 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
             value={value}
             onChange={onChange}
             required={required}
@@ -35,49 +36,151 @@ const Input = ({ type = "text", placeholder, className, value, onChange, label, 
 
 const Select = ({ label, className, value, onChange, options, required }) => (
     <div className="space-y-2">
-        {label && <label className="text-sm font-medium text-gray-700">{label}</label>}
+        {label && <label className="text-sm font-semibold text-gray-700">{label}</label>}
         <select
-            className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+            className={`flex h-11 w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
             value={value}
             onChange={onChange}
             required={required}
         >
             {options.map((option) => (
-            <option key={option.value} value={option.value}>
-                {option.label}
-            </option>
+                <option key={option.value} value={option.value}>
+                    {option.label}
+                </option>
             ))}
         </select>
     </div>
 );
 
-// Modal Component
 const Modal = ({ isOpen, onClose, children, title }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-lg relative">
-            <div className="flex justify-between items-center p-4 border-b">
-                <h2 className="text-xl font-semibold">{title}</h2>
-                <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full">
-                <X className="h-5 w-5" />
-                </Button>
-            </div>
-            <div className="p-4 max-h-[80vh] overflow-y-auto">
-                {children}
-            </div>
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg relative transform transition-all duration-300 scale-100">
+                <div className="flex justify-between items-center p-6 border-b border-gray-100">
+                    <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+                    <Button variant="ghost" onClick={onClose} className="rounded-full p-2 bg-white hover:bg-gray-100">
+                        <X className="h-5 w-5" />
+                    </Button>
+                </div>
+                <div className="p-6 max-h-[80vh] overflow-y-auto">
+                    {children}
+                </div>
             </div>
         </div>
     );
 };
 
+// Dummy data
+const dummyUsers = [
+    {
+        user_id: "USR001",
+        first_name: "Sarah",
+        last_name: "Johnson",
+        email: "sarah.johnson@university.edu",
+        role: "admin",
+        created_date: Date.now() * 1000000 - (30 * 24 * 60 * 60 * 1000 * 1000000),
+        last_login: Date.now() * 1000000 - (2 * 24 * 60 * 60 * 1000 * 1000000),
+        status: "active"
+    },
+    {
+        user_id: "USR002",
+        first_name: "Michael",
+        last_name: "Chen",
+        email: "m.chen@university.edu",
+        role: "instructor",
+        created_date: Date.now() * 1000000 - (25 * 24 * 60 * 60 * 1000 * 1000000),
+        last_login: Date.now() * 1000000 - (1 * 24 * 60 * 60 * 1000 * 1000000),
+        status: "active"
+    },
+    {
+        user_id: "USR003",
+        first_name: "Emily",
+        last_name: "Rodriguez",
+        email: "emily.rodriguez@student.edu",
+        role: "student",
+        created_date: Date.now() * 1000000 - (20 * 24 * 60 * 60 * 1000 * 1000000),
+        last_login: Date.now() * 1000000 - (3 * 60 * 60 * 1000 * 1000000),
+        status: "active"
+    },
+    {
+        user_id: "USR004",
+        first_name: "David",
+        last_name: "Thompson",
+        email: "d.thompson@university.edu",
+        role: "instructor",
+        created_date: Date.now() * 1000000 - (18 * 24 * 60 * 60 * 1000 * 1000000),
+        last_login: Date.now() * 1000000 - (5 * 24 * 60 * 60 * 1000 * 1000000),
+        status: "active"
+    },
+    {
+        user_id: "USR005",
+        first_name: "Jessica",
+        last_name: "Williams",
+        email: "j.williams@student.edu",
+        role: "student",
+        created_date: Date.now() * 1000000 - (15 * 24 * 60 * 60 * 1000 * 1000000),
+        last_login: Date.now() * 1000000 - (6 * 60 * 60 * 1000 * 1000000),
+        status: "active"
+    },
+    {
+        user_id: "USR006",
+        first_name: "Robert",
+        last_name: "Garcia",
+        email: "robert.garcia@student.edu",
+        role: "student",
+        created_date: Date.now() * 1000000 - (12 * 24 * 60 * 60 * 1000 * 1000000),
+        last_login: Date.now() * 1000000 - (1 * 60 * 60 * 1000 * 1000000),
+        status: "active"
+    },
+    {
+        user_id: "USR007",
+        first_name: "Amanda",
+        last_name: "Davis",
+        email: "amanda.davis@university.edu",
+        role: "admin",
+        created_date: Date.now() * 1000000 - (10 * 24 * 60 * 60 * 1000 * 1000000),
+        last_login: Date.now() * 1000000 - (4 * 24 * 60 * 60 * 1000 * 1000000),
+        status: "inactive"
+    },
+    {
+        user_id: "USR008",
+        first_name: "James",
+        last_name: "Martinez",
+        email: "j.martinez@student.edu",
+        role: "student",
+        created_date: Date.now() * 1000000 - (8 * 24 * 60 * 60 * 1000 * 1000000),
+        last_login: Date.now() * 1000000 - (2 * 60 * 60 * 1000 * 1000000),
+        status: "active"
+    },
+    {
+        user_id: "USR009",
+        first_name: "Lisa",
+        last_name: "Anderson",
+        email: "lisa.anderson@university.edu",
+        role: "instructor",
+        created_date: Date.now() * 1000000 - (5 * 24 * 60 * 60 * 1000 * 1000000),
+        last_login: Date.now() * 1000000 - (30 * 60 * 1000 * 1000000),
+        status: "active"
+    },
+    {
+        user_id: "USR010",
+        first_name: "Kevin",
+        last_name: "Brown",
+        email: "k.brown@student.edu",
+        role: "student",
+        created_date: Date.now() * 1000000 - (3 * 24 * 60 * 60 * 1000 * 1000000),
+        last_login: Date.now() * 1000000 - (15 * 60 * 1000 * 1000000),
+        status: "active"
+    }
+];
+
 export default function UserManagementPage() {
-    const { getAllUsers, createUser, updateUser, deleteUser, loading, error } = useLMS();
-    const [users, setUsers] = useState([]);
-    const [filteredUsers, setFilteredUsers] = useState([]);
-    const [loadingError, setLoadingError] = useState('');
+    const [users, setUsers] = useState(dummyUsers);
+    const [filteredUsers, setFilteredUsers] = useState(dummyUsers);
     const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingUser, setEditingUser] = useState(null);
@@ -110,37 +213,12 @@ export default function UserManagementPage() {
     ];
 
     useEffect(() => {
-        loadUsers();
-    }, []);
-
-    useEffect(() => {
         filterUsers();
     }, [users, searchTerm, filterRole]);
-
-    const loadUsers = async () => {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            setLoadingError("No authentication token found");
-            return;
-        }
-
-        try {
-            const result = await getAllUsers(token);
-            if (result.success) {
-                setUsers(result.data);
-            } else {
-                setLoadingError(result.error || "Failed to load users");
-            }
-        } catch (err) {
-            // setLoadingError("An unexpected error occurred");
-            console.error("Users loading error:", err);
-        }
-    };
 
     const filterUsers = () => {
         let filtered = [...users];
 
-        // Apply search filter
         if (searchTerm) {
             filtered = filtered.filter(user =>
                 `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -149,7 +227,6 @@ export default function UserManagementPage() {
             );
         }
 
-        // Apply role filter
         if (filterRole) {
             filtered = filtered.filter(user => user.role === filterRole);
         }
@@ -157,7 +234,6 @@ export default function UserManagementPage() {
         setFilteredUsers(filtered);
     };
 
-    // Open modal for adding a new user
     const handleAddUserClick = () => {
         setEditingUser(null);
         setFormData({
@@ -168,11 +244,10 @@ export default function UserManagementPage() {
             password: ''
         });
         setIsModalOpen(true);
-        setLoadingError('');
+        setErrorMessage('');
         setSuccessMessage('');
     };
 
-    // Open modal for editing an existing user
     const handleEditUserClick = (user) => {
         setEditingUser(user);
         setFormData({
@@ -180,14 +255,13 @@ export default function UserManagementPage() {
             lastName: user.last_name || '',
             email: user.email || '',
             role: user.role || 'student',
-            password: '' // Don't pre-fill password for security
+            password: ''
         });
         setIsModalOpen(true);
-        setLoadingError('');
+        setErrorMessage('');
         setSuccessMessage('');
     };
 
-    // Close modal and reset form fields
     const closeModal = () => {
         setIsModalOpen(false);
         setEditingUser(null);
@@ -198,107 +272,76 @@ export default function UserManagementPage() {
             role: 'student',
             password: ''
         });
-        setLoadingError('');
+        setErrorMessage('');
         setSuccessMessage('');
         setIsSubmitting(false);
     };
 
-    // Handle form submission (Add or Edit User)
     const handleSubmitUser = async (e) => {
         e.preventDefault();
 
         if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim()) {
-            setLoadingError('First name, last name, and email are required.');
+            setErrorMessage('First name, last name, and email are required.');
             return;
         }
 
         if (!editingUser && !formData.password.trim()) {
-            setLoadingError('Password is required for new users.');
-            return;
-        }
-
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            setLoadingError("No authentication token found");
+            setErrorMessage('Password is required for new users.');
             return;
         }
 
         setIsSubmitting(true);
-        setLoadingError('');
+        setErrorMessage('');
 
-        try {
-            let result;
-            
+        // Simulate API call
+        setTimeout(() => {
             if (editingUser) {
-                // Edit existing user
-                result = await updateUser(
-                    token,
-                    editingUser.user_id,
-                    {
-                        first_name: formData.firstName,
-                        last_name: formData.lastName,
-                        email: formData.email,
-                        role: formData.role,
-                        ...(formData.password && { password: formData.password })
-                    }
+                // Update existing user
+                const updatedUsers = users.map(user =>
+                    user.user_id === editingUser.user_id
+                        ? {
+                            ...user,
+                            first_name: formData.firstName,
+                            last_name: formData.lastName,
+                            email: formData.email,
+                            role: formData.role
+                        }
+                        : user
                 );
+                setUsers(updatedUsers);
+                setSuccessMessage('User updated successfully!');
             } else {
                 // Add new user
-                result = await createUser(
-                    token,
-                    formData.firstName,
-                    formData.lastName,
-                    formData.email,
-                    formData.password,
-                    formData.role
-                );
+                const newUser = {
+                    user_id: `USR${String(users.length + 1).padStart(3, '0')}`,
+                    first_name: formData.firstName,
+                    last_name: formData.lastName,
+                    email: formData.email,
+                    role: formData.role,
+                    created_date: Date.now() * 1000000,
+                    last_login: null,
+                    status: 'active'
+                };
+                setUsers([...users, newUser]);
+                setSuccessMessage('User created successfully!');
             }
-
-            if (result.success) {
-                setSuccessMessage(editingUser ? 'User updated successfully!' : 'User created successfully!');
-                setLoadingError('');
-                await loadUsers(); // Refresh the user list
-                closeModal();
-            } else {
-                setLoadingError(result.error || `Failed to ${editingUser ? 'update' : 'create'} user`);
-                setSuccessMessage('');
-            }
-        } catch (err) {
-            setLoadingError('An unexpected error occurred');
-            setSuccessMessage('');
-            console.error('User operation error:', err);
-        } finally {
+            
             setIsSubmitting(false);
-        }
+            closeModal();
+            
+            setTimeout(() => setSuccessMessage(''), 5000);
+        }, 1500);
     };
 
-    // Handle user deletion
-    const handleDeleteUser = async (userId) => {
+    const handleDeleteUser = (userId) => {
         if (!window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
             return;
         }
 
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            setLoadingError("No authentication token found");
-            return;
-        }
-
-        try {
-            const result = await deleteUser(token, userId);
-            if (result.success) {
-                setSuccessMessage('User deleted successfully!');
-                setLoadingError('');
-                await loadUsers(); // Refresh the user list
-            } else {
-                setLoadingError(result.error || 'Failed to delete user');
-                setSuccessMessage('');
-            }
-        } catch (err) {
-            setLoadingError('An unexpected error occurred');
-            setSuccessMessage('');
-            console.error('User deletion error:', err);
-        }
+        const updatedUsers = users.filter(user => user.user_id !== userId);
+        setUsers(updatedUsers);
+        setSuccessMessage('User deleted successfully!');
+        setTimeout(() => setSuccessMessage(''), 5000);
     };
 
     const handleFormChange = (field, value) => {
@@ -308,17 +351,31 @@ export default function UserManagementPage() {
     const getRoleBadgeColor = (role) => {
         switch (role) {
             case 'admin':
-                return 'bg-purple-100 text-purple-800';
+                return 'bg-gradient-to-r from-purple-100 to-purple-200 text-purple-800 border border-purple-200';
             case 'instructor':
-                return 'bg-yellow-100 text-yellow-800';
+                return 'bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-800 border border-emerald-200';
             case 'student':
-                return 'bg-blue-100 text-blue-800';
+                return 'bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 border border-blue-200';
             default:
-                return 'bg-gray-100 text-gray-800';
+                return 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 border border-gray-200';
+        }
+    };
+
+    const getRoleIcon = (role) => {
+        switch (role) {
+            case 'admin':
+                return <Shield className="h-4 w-4" />;
+            case 'instructor':
+                return <GraduationCap className="h-4 w-4" />;
+            case 'student':
+                return <User className="h-4 w-4" />;
+            default:
+                return <User className="h-4 w-4" />;
         }
     };
 
     const formatDate = (timestamp) => {
+        if (!timestamp) return 'Never';
         return new Date(timestamp / 1000000).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
@@ -326,186 +383,233 @@ export default function UserManagementPage() {
         });
     };
 
-    if (loading) {
-        return (
-            <div className="min-h-screen bg-gray-50 p-8 font-sans">
-                <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-8 space-y-8">
-                    <div className="animate-pulse">
-                        <div className="h-8 bg-gray-200 rounded w-1/3 mb-8"></div>
-                        <div className="h-12 bg-gray-200 rounded mb-6"></div>
-                        <div className="space-y-4">
-                            {[...Array(5)].map((_, i) => (
-                                <div key={i} className="h-16 bg-gray-200 rounded"></div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+    const formatLastLogin = (timestamp) => {
+        if (!timestamp) return 'Never';
+        const diff = Date.now() - (timestamp / 1000000);
+        const minutes = Math.floor(diff / (1000 * 60));
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+        if (minutes < 60) return `${minutes}m ago`;
+        if (hours < 24) return `${hours}h ago`;
+        return `${days}d ago`;
+    };
+
+    const getStatusBadge = (status) => {
+        return status === 'active' 
+            ? <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
+            : <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Inactive</span>;
+    };
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8 font-sans">
-            <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-8 space-y-8">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-4xl font-extrabold text-gray-900">User Management</h1>
-                        <p className="text-gray-600 mt-2">Manage platform users and their roles</p>
-                    </div>
-                    <div className="flex items-center space-x-2 text-sm text-gray-600">
-                        <Users className="h-4 w-4" />
-                        <span>{filteredUsers.length} of {users.length} users</span>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 sm:p-8 font-sans">
+            <div className="max-w-7xl mx-auto">
+                {/* Header Section */}
+                <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-gray-100">
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between space-y-6 lg:space-y-0">
+                        <div className="space-y-2">
+                            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                                User Management
+                            </h1>
+                            <p className="text-gray-600 text-lg">Manage platform users and their roles efficiently</p>
+                        </div>
+                        <div className="flex items-center space-x-6">
+                            <div className="flex items-center space-x-2 text-sm text-gray-600 bg-gray-50 px-4 py-2 rounded-lg">
+                                <Users className="h-4 w-4" />
+                                <span className="font-medium">{filteredUsers.length} of {users.length} users</span>
+                            </div>
+                            <Button onClick={handleAddUserClick} className="px-6 py-3">
+                                <PlusCircle className="h-5 w-5 mr-2" />
+                                Add User
+                            </Button>
+                        </div>
                     </div>
                 </div>
 
                 {/* Success/Error Messages */}
                 {successMessage && (
-                    <div className="flex items-center space-x-2 text-green-600 bg-green-50 p-4 rounded-md">
-                        <CheckCircle className="h-5 w-5" />
-                        <span>{successMessage}</span>
+                    <div className="flex items-center space-x-3 text-green-700 bg-green-50 border border-green-200 p-4 rounded-xl mb-6 shadow-sm">
+                        <CheckCircle className="h-5 w-5 flex-shrink-0" />
+                        <span className="font-medium">{successMessage}</span>
                     </div>
                 )}
 
-                {(loadingError || error) && (
-                    <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-4 rounded-md">
-                        <AlertCircle className="h-5 w-5" />
-                        <span>{loadingError || error}</span>
+                {errorMessage && (
+                    <div className="flex items-center space-x-3 text-red-700 bg-red-50 border border-red-200 p-4 rounded-xl mb-6 shadow-sm">
+                        <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                        <span className="font-medium">{errorMessage}</span>
                     </div>
                 )}
 
                 {/* Search and Filter Section */}
-                <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 sm:space-x-4">
-                <div className="relative w-full sm:w-1/2">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <Input
-                    type="text"
-                    placeholder="Search by name, email, or user ID..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 w-full"
-                    />
-                </div>
-                <div className="flex items-center space-x-4 w-full sm:w-auto">
-                    <Select
-                    value={filterRole}
-                    onChange={(e) => setFilterRole(e.target.value)}
-                    options={roles}
-                    className="w-full sm:w-40"
-                    />
-                    <Button onClick={handleAddUserClick} className="flex-shrink-0 px-4 py-2">
-                    <PlusCircle className="h-5 w-5 mr-2" />
-                    Add User
-                    </Button>
-                </div>
+                <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100">
+                    <div className="flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-6">
+                        <div className="relative flex-1 w-full">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                            <Input
+                                type="text"
+                                placeholder="Search by name, email, or user ID..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="pl-12 w-full"
+                            />
+                        </div>
+                        <div className="w-full lg:w-48">
+                            <Select
+                                value={filterRole}
+                                onChange={(e) => setFilterRole(e.target.value)}
+                                options={roles}
+                                className="w-full"
+                            />
+                        </div>
+                    </div>
                 </div>
 
                 {/* Users Table */}
-                <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    User
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Email
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Role
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Created
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                        {filteredUsers.length === 0 ? (
-                            <tr>
-                                <td colSpan="5" className="px-6 py-12 whitespace-nowrap text-sm text-gray-500 text-center">
-                                    <Users className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                                    <div className="text-lg font-medium text-gray-900 mb-2">
-                                        {searchTerm || filterRole ? 'No users match your filters' : 'No users found'}
-                                    </div>
-                                    <div className="text-gray-600">
-                                        {searchTerm || filterRole 
-                                            ? 'Try adjusting your search or filter criteria' 
-                                            : 'Add your first user to get started'}
-                                    </div>
-                                </td>
-                            </tr>
-                            ) : (
-                                filteredUsers.map((user) => (
-                                <tr key={user.user_id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center">
-                                    <User className="h-6 w-6 text-gray-500 mr-3" />
-                                    <div>
-                                        <div className="text-sm font-medium text-gray-900">
-                                            {user.first_name} {user.last_name}
-                                        </div>
-                                        <div className="text-xs text-gray-500">ID: {user.user_id}</div>
-                                    </div>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{user.email}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getRoleBadgeColor(user.role)}`}>
-                                        {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {user.created_date ? formatDate(user.created_date) : 'N/A'}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => handleEditUserClick(user)}
-                                    className="text-indigo-600 hover:text-indigo-900 mr-2"
-                                    >
-                                    <Pencil className="h-4 w-4" />
-                                    </Button>
-                                    <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => handleDeleteUser(user.user_id)}
-                                    className="text-red-600 hover:text-red-900"
-                                    >
-                                    <Trash2 className="h-4 w-4" />
-                                    </Button>
-                                </td>
+                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
+                                <tr>
+                                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                        User Details
+                                    </th>
+                                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                        Role & Status
+                                    </th>
+                                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                        Activity
+                                    </th>
+                                    <th className="px-6 py-4 text-right text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                        Actions
+                                    </th>
                                 </tr>
-                            ))
-                        )}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-100">
+                                {filteredUsers.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="4" className="px-6 py-16 text-center">
+                                            <div className="flex flex-col items-center space-y-4">
+                                                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                                                    <Users className="h-8 w-8 text-gray-400" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <h3 className="text-lg font-semibold text-gray-900">
+                                                        {searchTerm || filterRole ? 'No users match your filters' : 'No users found'}
+                                                    </h3>
+                                                    <p className="text-gray-600">
+                                                        {searchTerm || filterRole 
+                                                            ? 'Try adjusting your search or filter criteria' 
+                                                            : 'Add your first user to get started'}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    filteredUsers.map((user) => (
+                                        <tr key={user.user_id} className="hover:bg-gray-50 transition-colors duration-200">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center space-x-4">
+                                                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                                                        {user.first_name[0]}{user.last_name[0]}
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm font-semibold text-gray-900">
+                                                            {user.first_name} {user.last_name}
+                                                        </div>
+                                                        <div className="text-sm text-gray-600">{user.email}</div>
+                                                        <div className="text-xs text-gray-400">ID: {user.user_id}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="space-y-2">
+                                                    <span className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-semibold ${getRoleBadgeColor(user.role)}`}>
+                                                        {getRoleIcon(user.role)}
+                                                        <span>{user.role.charAt(0).toUpperCase() + user.role.slice(1)}</span>
+                                                    </span>
+                                                    {getStatusBadge(user.status)}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm text-gray-900">
+                                                    <div>Joined: {formatDate(user.created_date)}</div>
+                                                    <div className="text-gray-600">Last login: {formatLastLogin(user.last_login)}</div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <div className="flex items-center justify-end space-x-2">
+                                                    <Button
+                                                        variant="ghost"
+                                                        onClick={() => handleEditUserClick(user)}
+                                                        className="text-blue-600 hover:text-blue-800 bg-white hover:bg-blue-50 p-2 rounded-lg"
+                                                    >
+                                                        <Pencil className="h-4 w-4" />
+                                                    </Button>
+                                                    <Button
+                                                        variant="ghost"
+                                                        onClick={() => handleDeleteUser(user.user_id)}
+                                                        className="text-red-600 hover:text-red-800 bg-white hover:bg-red-50 p-2 rounded-lg"
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </Button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 {/* Summary Stats */}
                 {users.length > 0 && (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="bg-blue-50 p-4 rounded-lg text-center">
-                            <div className="text-2xl font-bold text-blue-600">
-                                {users.filter(u => u.role === 'student').length}
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl border border-blue-200 shadow-lg">
+                            <div className="flex items-center space-x-3">
+                                <User className="h-8 w-8 text-blue-600" />
+                                <div>
+                                    <div className="text-2xl font-bold text-blue-700">
+                                        {users.filter(u => u.role === 'student').length}
+                                    </div>
+                                    <div className="text-sm font-medium text-blue-600">Students</div>
+                                </div>
                             </div>
-                            <div className="text-sm text-gray-600">Students</div>
                         </div>
-                        <div className="bg-yellow-50 p-4 rounded-lg text-center">
-                            <div className="text-2xl font-bold text-yellow-600">
-                                {users.filter(u => u.role === 'instructor').length}
+                        <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 rounded-2xl border border-emerald-200 shadow-lg">
+                            <div className="flex items-center space-x-3">
+                                <GraduationCap className="h-8 w-8 text-emerald-600" />
+                                <div>
+                                    <div className="text-2xl font-bold text-emerald-700">
+                                        {users.filter(u => u.role === 'instructor').length}
+                                    </div>
+                                    <div className="text-sm font-medium text-emerald-600">Instructors</div>
+                                </div>
                             </div>
-                            <div className="text-sm text-gray-600">Instructors</div>
                         </div>
-                        <div className="bg-purple-50 p-4 rounded-lg text-center">
-                            <div className="text-2xl font-bold text-purple-600">
-                                {users.filter(u => u.role === 'admin').length}
+                        <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-2xl border border-purple-200 shadow-lg">
+                            <div className="flex items-center space-x-3">
+                                <Shield className="h-8 w-8 text-purple-600" />
+                                <div>
+                                    <div className="text-2xl font-bold text-purple-700">
+                                        {users.filter(u => u.role === 'admin').length}
+                                    </div>
+                                    <div className="text-sm font-medium text-purple-600">Admins</div>
+                                </div>
                             </div>
-                            <div className="text-sm text-gray-600">Admins</div>
+                        </div>
+                        <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-2xl border border-gray-200 shadow-lg">
+                            <div className="flex items-center space-x-3">
+                                <UserCheck className="h-8 w-8 text-gray-600" />
+                                <div>
+                                    <div className="text-2xl font-bold text-gray-700">
+                                        {users.filter(u => u.status === 'active').length}
+                                    </div>
+                                    <div className="text-sm font-medium text-gray-600">Active Users</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -513,59 +617,73 @@ export default function UserManagementPage() {
 
             {/* Add/Edit User Modal */}
             <Modal isOpen={isModalOpen} onClose={closeModal} title={editingUser ? 'Edit User' : 'Add New User'}>
-                <form onSubmit={handleSubmitUser} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <form onSubmit={handleSubmitUser} className="space-y-6 ">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Input
+                            label="First Name"
+                            placeholder="e.g., Jane"
+                            value={formData.firstName}
+                            onChange={(e) => handleFormChange('firstName', e.target.value)}
+                            required
+                        />
+                        <Input
+                            label="Last Name"
+                            placeholder="e.g., Doe"
+                            value={formData.lastName}
+                            onChange={(e) => handleFormChange('lastName', e.target.value)}
+                            required
+                        />
+                    </div>
                     <Input
-                        label="First Name"
-                        placeholder="e.g., Jane"
-                        value={formData.firstName}
-                        onChange={(e) => handleFormChange('firstName', e.target.value)}
+                        label="Email Address"
+                        type="email"
+                        placeholder="e.g., jane.doe@university.edu"
+                        value={formData.email}
+                        onChange={(e) => handleFormChange('email', e.target.value)}
                         required
                     />
                     <Input
-                        label="Last Name"
-                        placeholder="e.g., Doe"
-                        value={formData.lastName}
-                        onChange={(e) => handleFormChange('lastName', e.target.value)}
+                        label={editingUser ? "New Password (leave blank to keep current)" : "Password"}
+                        type="password"
+                        placeholder="Enter password"
+                        value={formData.password}
+                        onChange={(e) => handleFormChange('password', e.target.value)}
+                        required={!editingUser}
+                    />
+                    <Select
+                        label="Role"
+                        value={formData.role}
+                        onChange={(e) => handleFormChange('role', e.target.value)}
+                        options={roleOptions}
                         required
                     />
-                </div>
-                <Input
-                    label="Email Address"
-                    type="email"
-                    placeholder="e.g., jane.doe@example.com"
-                    value={formData.email}
-                    onChange={(e) => handleFormChange('email', e.target.value)}
-                    required
-                />
-                <Input
-                    label={editingUser ? "New Password (leave blank to keep current)" : "Password"}
-                    type="password"
-                    placeholder="Enter password"
-                    value={formData.password}
-                    onChange={(e) => handleFormChange('password', e.target.value)}
-                    required={!editingUser}
-                />
-                <Select
-                    label="Role"
-                    value={formData.role}
-                    onChange={(e) => handleFormChange('role', e.target.value)}
-                    options={roleOptions}
-                    required
-                />
-                <div className="flex justify-end space-x-2 pt-4">
-                    <Button variant="outline" onClick={closeModal} disabled={isSubmitting}>
-                        Cancel
-                    </Button>
-                    <Button type="submit" disabled={isSubmitting}>
-                        {isSubmitting 
-                            ? (editingUser ? 'Saving...' : 'Creating...') 
-                            : (editingUser ? 'Save Changes' : 'Add User')
-                        }
-                    </Button>
-                </div>
+                    
+                    {/* Error Message in Modal */}
+                    {errorMessage && (
+                        <div className="flex items-center space-x-2 text-red-600 bg-red-50 border border-red-200 p-3 rounded-lg">
+                            <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                            <span className="text-sm">{errorMessage}</span>
+                        </div>
+                    )}
+                    
+                    <div className="flex justify-end space-x-3 pt-6 border-t border-gray-100">
+                        <Button variant="outline" onClick={closeModal} disabled={isSubmitting} className="px-6">
+                            Cancel
+                        </Button>
+                        <Button type="submit" disabled={isSubmitting} className="px-6">
+                            {isSubmitting 
+                                ? (
+                                    <div className="flex items-center space-x-2">
+                                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                        <span>{editingUser ? 'Saving...' : 'Creating...'}</span>
+                                    </div>
+                                ) 
+                                : (editingUser ? 'Save Changes' : 'Add User')
+                            }
+                        </Button>
+                    </div>
                 </form>
             </Modal>
         </div>
-    );
+    )
 }

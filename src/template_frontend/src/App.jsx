@@ -27,6 +27,7 @@ import HelpCenter from './pages/helpSupport/helpCenter';
 import HelpDetail from './pages/helpSupport/helpDetail';
 import AboutPage from './pages/about/About';
 import ExploreCourses from './pages/course/GuestCourse';
+import PurchasePage from './pages/purchase/Purchase';
 
 export default function App() {
   return (
@@ -38,7 +39,7 @@ export default function App() {
           <Route path="/auth/register" element={<RegisterPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<HelpCenter />} />
-          <Route path="/contact/:slug" element={<HelpDetail />} />
+          <Route path="/help/:slug" element={<HelpDetail />} />
           <Route path="/courses-guest" element={<ExploreCourses />} />
           <Route path="/courses/:slug" element={<CourseDetailPage />} />
 
@@ -55,6 +56,7 @@ export default function App() {
             <Route path="certificate" element={<MyCertificate />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route path="bookmarked" element={<BookmMarkedCoursesPage />} />
+            <Route path="purchase" element={< PurchasePage/>} />
           </Route>
 
           {/* Instructor Routes */}
