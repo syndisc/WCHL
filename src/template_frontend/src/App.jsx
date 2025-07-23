@@ -23,10 +23,11 @@ import AdminLayout from './layouts/adminLayout';
 import CreateCoursesPage from './pages/instructor/CreateCoursesPage';
 import MyCertificate from './pages/dashboard/MyCertificate';
 import BookmMarkedCoursesPage from './pages/dashboard/BookMarkedCoursesPage';
-import HelpCenter from './pages/helpSupport/helpCenter';
-import HelpDetail from './pages/helpSupport/helpDetail';
+import HelpCenter from './pages/help/helpCenter';
+import HelpDetail from './pages/help/helpDetail';
 import AboutPage from './pages/about/About';
 import ExploreCourses from './pages/course/GuestCourse';
+import FAQPage from './pages/faq/faq';
 
 export default function App() {
   return (
@@ -41,6 +42,11 @@ export default function App() {
           <Route path="/contact/:slug" element={<HelpDetail />} />
           <Route path="/courses-guest" element={<ExploreCourses />} />
           <Route path="/courses/:slug" element={<CourseDetailPage />} />
+
+          <Route path="/faq" element={<FAQPage />} />
+
+          <Route path="/help" element={<HelpCenter />} />
+          <Route path="/help/:slug" element={<HelpDetail />} />
 
 
           {/* Dashboard Routes */}
