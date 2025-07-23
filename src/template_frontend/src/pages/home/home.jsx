@@ -3,12 +3,14 @@ import { motion } from "framer-motion"
 import { Button } from "../../components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "../../components/ui/card"
 import { BookOpen, Users, Award, Star, Play, CheckCircle, TrendingUp, Globe, Clock } from "lucide-react"
+import { Navbar } from "@/components/navbar"
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      <Navbar className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50" activePath="/" />
+      {/* <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <BookOpen className="h-8 w-8 text-blue-600" />
@@ -37,7 +39,7 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-      </header>
+      </header> */}
 
       {/* Hero / Jumbotron */}
       <section className="py-24 px-4">
