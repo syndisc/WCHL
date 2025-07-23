@@ -204,7 +204,7 @@ actor LMS {
   };
 
   // === AUTHENTICATION ===
-  public func login(email : Text, password : Text) : async Result.Result<{ token : Text }, Text> {
+  public func login(email : Text, password : Text) : async Result.Result<{ token : Text ; user: User }, Text> {
     switch (Array.find(users, func(u : User) : Bool { u.email == email })) {
       case null { #err("User not found") };
       case (?user) {
@@ -246,8 +246,8 @@ actor LMS {
             if (u.user_id == user.user_id) updatedUser else u;
           },
         );
-
-        #ok({ token = token});
+        
+        #ok({ token = token; user = updatedUser });
       };
     };
   };
