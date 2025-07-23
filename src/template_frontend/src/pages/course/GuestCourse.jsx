@@ -22,6 +22,7 @@ import {
 } from "lucide-react"
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
+import { Navbar } from '@/components/navbar'
 
 // Dummy course data
 const allCourses = [
@@ -391,7 +392,8 @@ export default function ExploreCourses() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      <Navbar className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50" activePath="/courses-guest" />
+      {/* <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <BookOpen className="h-8 w-8 text-blue-600" />
@@ -412,7 +414,7 @@ export default function ExploreCourses() {
             </Link>
           </div>
         </div>
-      </header>
+      </header> */}
 
       {/* Page Header */}
       <section className="py-16 px-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
