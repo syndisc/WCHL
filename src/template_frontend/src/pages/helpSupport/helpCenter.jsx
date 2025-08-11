@@ -5,47 +5,48 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { useLMS } from '../../hooks/useLMS';
+import GuestNavbar from '@/components/self_made/navbar';
 
 const defaultTopics = [
-  { 
-    icon: <User />, 
-    title: 'Account Management', 
-    description: 'Create and manage your account, update profile information, and account settings', 
+  {
+    icon: <User />,
+    title: 'Account Management',
+    description: 'Create and manage your account, update profile information, and account settings',
     slug: 'account-management',
     articleCount: 8
   },
-  { 
-    icon: <BookOpen />, 
-    title: 'Courses & Learning', 
-    description: 'Everything about enrolling, accessing courses, and tracking your learning progress', 
+  {
+    icon: <BookOpen />,
+    title: 'Courses & Learning',
+    description: 'Everything about enrolling, accessing courses, and tracking your learning progress',
     slug: 'courses-learning',
     articleCount: 12
   },
-  { 
-    icon: <MessageCircle />, 
-    title: 'Communication & Support', 
-    description: 'Connect with instructors, join discussions, and get help when you need it', 
+  {
+    icon: <MessageCircle />,
+    title: 'Communication & Support',
+    description: 'Connect with instructors, join discussions, and get help when you need it',
     slug: 'communication-support',
     articleCount: 6
   },
-  { 
-    icon: <Send />, 
-    title: 'Assignments & Quizzes', 
-    description: 'Submit assignments, take quizzes, and understand grading and feedback', 
+  {
+    icon: <Send />,
+    title: 'Assignments & Quizzes',
+    description: 'Submit assignments, take quizzes, and understand grading and feedback',
     slug: 'assignments-quizzes',
     articleCount: 10
   },
-  { 
-    icon: <Users />, 
-    title: 'Community & Networking', 
-    description: 'Connect with classmates, join study groups, and build your professional network', 
+  {
+    icon: <Users />,
+    title: 'Community & Networking',
+    description: 'Connect with classmates, join study groups, and build your professional network',
     slug: 'community-networking',
     articleCount: 5
   },
-  { 
-    icon: <Zap />, 
-    title: 'Technical Issues', 
-    description: 'Troubleshoot technical problems, browser compatibility, and platform issues', 
+  {
+    icon: <Zap />,
+    title: 'Technical Issues',
+    description: 'Troubleshoot technical problems, browser compatibility, and platform issues',
     slug: 'technical-issues',
     articleCount: 15
   },
@@ -104,13 +105,16 @@ export default function HelpCenter() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="w-screen">
       {/* Header */}
-      <div className="text-center mb-12">
+
+      <GuestNavbar />
+
+      <div className="text-center my-6 p-6">
         <HelpCircle className="h-16 w-16 text-blue-600 mx-auto mb-4" />
         <h1 className="text-4xl font-bold text-gray-900 mb-4">How can we help you?</h1>
         <p className="text-xl text-gray-600 mb-8">Find answers, get support, and learn how to make the most of our platform</p>
-        
+
         {/* Search Bar */}
         <div className="max-w-2xl mx-auto">
           <div className="relative">
@@ -136,8 +140,8 @@ export default function HelpCenter() {
 
       {/* Help Topics */}
       <div className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Browse Help Topics</h2>
-        
+        <h2 className="text-2xl font-bold text-gray-900 my-6 text-center">Browse Help Topics</h2>
+
         {filteredTopics.length === 0 ? (
           <div className="text-center py-12">
             <HelpCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -145,14 +149,14 @@ export default function HelpCenter() {
               {searchTerm ? 'No topics match your search' : 'No help topics available'}
             </h3>
             <p className="text-gray-600">
-              {searchTerm 
-                ? 'Try adjusting your search terms or browse all topics' 
+              {searchTerm
+                ? 'Try adjusting your search terms or browse all topics'
                 : 'Check back later for help topics'
               }
             </p>
             {searchTerm && (
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => setSearchTerm('')}
                 className="mt-4"
               >
@@ -161,7 +165,7 @@ export default function HelpCenter() {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6">
             {filteredTopics.map((topic, index) => (
               <Link
                 key={topic.slug || index}
@@ -195,37 +199,40 @@ export default function HelpCenter() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24">
-        <Card className="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-          <MessageCircle className="h-10 w-10 text-blue-600 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Live Chat</h3>
-          <p className="text-gray-600 mb-4">Get instant help from our support team</p>
-          <Button className="bg-blue-600 hover:bg-blue-700">
-            Start Chat
-          </Button>
-        </Card>
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 my-6 text-center">Contact Us</h2>
+        <div className="grid bg-white grid-cols-1 md:grid-cols-3 gap-6 p-6 mt-18">
+          <Card className="text-center p-6 bg-gradient-to-br from-blue-200 to-blue-300 border-blue-200">
+            <MessageCircle className="h-10 w-10 text-blue-600 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Live Chat</h3>
+            <p className="text-gray-600 mb-4">Get instant help from our support team</p>
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              Start Chat
+            </Button>
+          </Card>
 
-        <Card className="text-center p-6 bg-gradient-to-br from-green-50 to-green-100 border-green-200">
-          <Mail className="h-10 w-10 text-green-600 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Email Support</h3>
-          <p className="text-gray-600 mb-4">Send us a detailed message</p>
-          <Button variant="outline" className="border-green-300 text-green-700 hover:bg-green-50">
-            Send Email
-          </Button>
-        </Card>
+          <Card className="text-center p-6 bg-gradient-to-br from-green-200 to-green-300 border-green-200">
+            <Mail className="h-10 w-10 text-green-600 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Email Support</h3>
+            <p className="text-gray-600 mb-4">Send us a detailed message</p>
+            <Button variant="outline" className="border-green-300 text-green-700 hover:bg-green-50">
+              Send Email
+            </Button>
+          </Card>
 
-        <Card className="text-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
-          <Phone className="h-10 w-10 text-purple-600 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Phone Support</h3>
-          <p className="text-gray-600 mb-4">Call us for urgent issues</p>
-          <Button variant="outline" className="border-purple-300 text-purple-700 hover:bg-purple-50">
-            Call Now
-          </Button>
-        </Card>
+          <Card className="text-center p-6 bg-gradient-to-br from-purple-200 to-purple-300 border-purple-200">
+            <Phone className="h-10 w-10 text-purple-600 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Phone Support</h3>
+            <p className="text-gray-600 mb-4">Call us for urgent issues</p>
+            <Button variant="outline" className="border-purple-300 text-purple-700 hover:bg-purple-50">
+              Call Now
+            </Button>
+          </Card>
+        </div>
       </div>
 
       {/* Popular Articles */}
-      <div className="mb-12">
+      <div className="mb-12 px-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Popular Articles</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Link to="/help/getting-started" className="group">

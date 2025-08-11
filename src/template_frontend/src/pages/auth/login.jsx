@@ -48,7 +48,6 @@ export default function LoginPage() {
           edoo_token: result.data.user.edoo_token.toString(),
         };
 
-        console.log(user)
         localStorage.setItem('authToken', result.data.token);
         localStorage.setItem('userData', JSON.stringify(user));
 

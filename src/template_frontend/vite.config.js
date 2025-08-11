@@ -5,6 +5,7 @@ import path from 'path'
 export default defineConfig({
   root: path.resolve(__dirname, '.'),
   plugins: [react()],
+  base: './',
   resolve: {
     alias: {
       "@": path.resolve("./src"),
@@ -24,7 +25,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['@dfinity/agent'],
+      // external: ['@dfinity/agent'],
     },
   },
   optimizeDeps: {

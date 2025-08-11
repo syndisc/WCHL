@@ -174,6 +174,18 @@ actor LMS {
     created_at : Int;
   };
 
+  type PublicUser = {
+    user_id : Text;
+    first_name : Text;
+    last_name : Text;
+    email : Text;
+    bio : Text;
+    profile_picture : Text;
+    role : Text;
+    status : Text;
+    edoo_token : Int;
+  };
+
   // === STORAGE ===
   stable var users : [User] = [];
   stable var students : [Student] = [];
@@ -212,7 +224,7 @@ actor LMS {
           return #err("Account is inactive");
         };
 
-        if(user.password != password) {
+        if (user.password != password) {
           return #err("Incorrect password");
         };
 
@@ -247,7 +259,7 @@ actor LMS {
           },
         );
 
-        #ok({ token = token});
+        #ok({ token = token });
       };
     };
   };
@@ -260,7 +272,7 @@ actor LMS {
       password : Text;
       role : Text;
     }
-  ) : async Result.Result<{ token : Text; user : User }, Text> {
+  ) : async Result.Result<{ token : Text }, Text> {
     // Check if email already exists
     switch (Array.find(users, func(u : User) : Bool { u.email == userData.email })) {
       case (?_) { return #err("Email already exists") };
@@ -273,7 +285,7 @@ actor LMS {
       first_name = userData.first_name;
       last_name = userData.last_name;
       email = userData.email;
-      password = userData.password; 
+      password = userData.password;
       bio = "";
       profile_picture = "";
       role = userData.role;
@@ -313,7 +325,7 @@ actor LMS {
     };
     auth_tokens := Array.append(auth_tokens, [authToken]);
 
-    #ok({ token = token; user = user });
+    #ok({ token = token });
   };
 
   // === MIDDLEWARE ===
@@ -821,7 +833,8 @@ actor LMS {
   */
 
   // Course
-  public func createCourse(courseData : {
+  public func createCourse(
+    courseData : {
       course_name : Text;
       course_description : Text;
       course_status : Text;
@@ -830,7 +843,8 @@ actor LMS {
       language : Text;
       instructor_id : Text;
       duration_days : Nat;
-    }) : async () {
+    }
+  ) : async () {
 
     let courseId = generateId("course");
     let newCourse : Course = {
@@ -879,7 +893,7 @@ actor LMS {
   public func getClass(id : Text) : async ?Class {
     Array.find(classes, func(x : Class) : Bool { x.class_id == id });
   };
-  
+
   public func updateClass(c : Class) : async () {
     classes := Array.map(
       classes,
@@ -1761,7 +1775,7 @@ actor LMS {
             first_name = u.first_name;
             last_name = u.last_name;
             email = u.email;
-            password = u.password; 
+            password = u.password;
             bio = u.bio;
             profile_picture = u.profile_picture;
             role = u.role;

@@ -97,8 +97,6 @@ export default function RegisterPage() {
           updated: userPayload.updated.toString(),
           edoo_token: userPayload.edoo_token.toString(),
         };
-        
-        console.log(serializedUser);
 
         localStorage.setItem('userData', JSON.stringify(serializedUser));
         setSuccess(true);

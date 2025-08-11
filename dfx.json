@@ -8,14 +8,32 @@
       "dependencies": [
         "template_backend"
       ],
-      "source": [],
-      "type": "assets"
+      "source": [
+        "src/template_frontend/dist"
+      ],
+      "frontend": {
+        "entrypoint": "src/template_frontend/dist/index.html"
+      },
+      "type": "assets",
+      "build": "cd src/template_frontend && npm install && npm run build"
     }
   },
   "defaults": {
     "build": {
       "args": "",
       "packtool": ""
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    },
+    "ic": {
+      "providers": [
+        "https://ic0.app"
+      ],
+      "type": "persistent"
     }
   },
   "output_env_file": ".env",
