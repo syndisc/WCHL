@@ -22,11 +22,7 @@ import {
 } from "lucide-react"
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
-<<<<<<< HEAD
 import GuestNavbar from '@/components/self_made/navbar'
-=======
-import { Navbar } from '@/components/navbar'
->>>>>>> 54399fbf866af95c04314a0bab372dfe3ae7b222
 
 // Dummy course data
 const allCourses = [
@@ -397,33 +393,7 @@ export default function ExploreCourses() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Header */}
-<<<<<<< HEAD
       <GuestNavbar />
-=======
-      <Navbar className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50" activePath="/courses-guest" />
-      {/* <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <BookOpen className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">Edoo</span>
-          </div>
-          <nav className="hidden md:flex items-center space-x-6">
-            <a href="/" className="text-gray-600 hover:text-blue-600">Home</a>
-            <a href="/courses" className="text-blue-600 font-medium">Courses</a>
-            <a href="/about" className="text-gray-600 hover:text-blue-600">About</a>
-            <a href="/contact" className="text-gray-600 hover:text-blue-600">Contact</a>
-          </nav>
-          <div className="flex items-center space-x-4">
-            <Link to="/auth/login">
-              <Button variant="ghost">Login</Button>
-            </Link>
-            <Link to="/auth/register">
-              <Button>Get Started</Button>
-            </Link>
-          </div>
-        </div>
-      </header> */}
->>>>>>> 54399fbf866af95c04314a0bab372dfe3ae7b222
 
       {/* Page Header */}
       <section className="py-16 px-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
