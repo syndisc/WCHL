@@ -216,7 +216,7 @@ actor LMS {
   };
 
   // === AUTHENTICATION ===
-  public func login(email : Text, password : Text) : async Result.Result<{ token : Text }, Text> {
+  public func login(email : Text, password : Text) : async Result.Result<{ token : Text ; user: PublicUser }, Text> {
     switch (Array.find(users, func(u : User) : Bool { u.email == email })) {
       case null { #err("User not found") };
       case (?user) {
@@ -259,7 +259,19 @@ actor LMS {
           },
         );
 
-        #ok({ token = token });
+        let publicUser : PublicUser = {
+          user_id = updatedUser.user_id;
+          first_name = updatedUser.first_name;
+          last_name = updatedUser.last_name;
+          email = updatedUser.email;
+          bio = updatedUser.bio;
+          profile_picture = updatedUser.profile_picture;
+          role = updatedUser.role;
+          status = updatedUser.status;
+          edoo_token = updatedUser.edoo_token;
+        };
+        
+        #ok({ token = token; user = publicUser });
       };
     };
   };
@@ -272,7 +284,7 @@ actor LMS {
       password : Text;
       role : Text;
     }
-  ) : async Result.Result<{ token : Text }, Text> {
+  ) : async Result.Result<{ token : Text ; user: PublicUser}, Text> {
     // Check if email already exists
     switch (Array.find(users, func(u : User) : Bool { u.email == userData.email })) {
       case (?_) { return #err("Email already exists") };
@@ -325,7 +337,19 @@ actor LMS {
     };
     auth_tokens := Array.append(auth_tokens, [authToken]);
 
-    #ok({ token = token });
+    let publicUser : PublicUser = {
+      user_id = user.user_id;
+      first_name = user.first_name;
+      last_name = user.last_name;
+      email = user.email;
+      bio = user.bio;
+      profile_picture = user.profile_picture;
+      role = user.role;
+      status = user.status;
+      edoo_token = user.edoo_token;
+    };
+
+    #ok({ token = token ; user = publicUser });
   };
 
   // === MIDDLEWARE ===

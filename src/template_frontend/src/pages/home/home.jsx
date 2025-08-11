@@ -3,13 +3,51 @@ import { motion } from "framer-motion"
 import { Button } from "../../components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "../../components/ui/card"
 import { BookOpen, Users, Award, Star, Play, CheckCircle, TrendingUp, Globe, Clock } from "lucide-react"
+<<<<<<< HEAD
 import GuestNavbar from "@/components/self_made/navbar"
+=======
+import { Navbar } from "@/components/navbar"
+>>>>>>> 54399fbf866af95c04314a0bab372dfe3ae7b222
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Header */}
+<<<<<<< HEAD
       <GuestNavbar />
+=======
+      <Navbar className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50" activePath="/" />
+      {/* <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <BookOpen className="h-8 w-8 text-blue-600" />
+            <span className="text-2xl font-bold text-gray-900">Edoo</span>
+          </div>
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link to="/courses-guest" className="text-gray-600 hover:text-blue-600">
+              Courses
+            </Link>
+            <Link to="/about" className="text-gray-600 hover:text-blue-600">
+              About
+            </Link>
+            <Link to="/help" className="text-gray-600 hover:text-blue-600">
+              Help
+            </Link>
+            <Link to="/about" className="text-gray-600 hover:text-blue-600">
+              About Us
+            </Link>
+          </nav>
+          <div className="flex items-center space-x-4">
+            <Link to="/auth/login">
+              <Button className="bg-white text-blue-500">Login</Button>
+            </Link>
+            <Link to="/auth/register">
+              <Button>Get Started</Button>
+            </Link>
+          </div>
+        </div>
+      </header> */}
+>>>>>>> 54399fbf866af95c04314a0bab372dfe3ae7b222
 
       {/* Hero / Jumbotron */}
       <section className="py-24 px-4">
@@ -96,7 +134,7 @@ export default function HomePage() {
                 instructor: "Sarah Johnson",
                 rating: 4.9,
                 students: "12,543",
-                price: "$89",
+                price: 9,
                 image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=250&fit=crop"
               },
               {
@@ -104,7 +142,7 @@ export default function HomePage() {
                 instructor: "Mike Chen",
                 rating: 4.8,
                 students: "8,921",
-                price: "$79",
+                price: 8,
                 image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop"
               },
               {
@@ -112,7 +150,7 @@ export default function HomePage() {
                 instructor: "Emily Rodriguez",
                 rating: 4.9,
                 students: "6,432",
-                price: "$69",
+                price: 7,
                 image: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=400&h=250&fit=crop"
               }
             ].map((course, index) => (
@@ -141,7 +179,10 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-blue-600">{course.price}</span>
+                    <div className="flex items-center gap-1">
+                      <img src="/token.png" className="w-6 h-6" alt="" srcset="" />
+                      <span className="text-2xl font-bold text-blue-600">{course.price}</span>
+                    </div>
                     <Button size="sm">Enroll Now</Button>
                   </div>
                 </div>
@@ -237,8 +278,8 @@ export default function HomePage() {
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
         >
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="pl-20">
               <h2 className="text-3xl font-bold mb-6">Learn at Your Own Pace</h2>
               <p className="text-gray-600 mb-8">
                 Our platform is designed to fit your lifestyle. Whether you're a busy professional or a dedicated student, 

@@ -115,7 +115,7 @@ const dummyAvailableCourses = [
     instructor: "Alex Thompson",
     category: "Technology",
     level: "Advanced",
-    price: "$199"
+    price: 20
   },
   {
     course_id: "mkt201",
@@ -128,7 +128,7 @@ const dummyAvailableCourses = [
     instructor: "Maria Garcia",
     category: "Marketing",
     level: "Intermediate",
-    price: "$149"
+    price: 15
   },
   {
     course_id: "ai101",
@@ -141,7 +141,7 @@ const dummyAvailableCourses = [
     instructor: "Dr. Kevin Park",
     category: "Technology",
     level: "Beginner",
-    price: "$299"
+    price: 30
   },
   {
     course_id: "fin101",
@@ -154,7 +154,7 @@ const dummyAvailableCourses = [
     instructor: "Robert Kim",
     category: "Finance",
     level: "Beginner",
-    price: "$99"
+    price: 10
   },
   {
     course_id: "photo201",
@@ -167,7 +167,7 @@ const dummyAvailableCourses = [
     instructor: "Sophie Anderson",
     category: "Creative",
     level: "Intermediate",
-    price: "$179"
+    price: 18
   },
   {
     course_id: "lang101",
@@ -180,7 +180,7 @@ const dummyAvailableCourses = [
     instructor: "Carlos Hernandez",
     category: "Language",
     level: "Beginner",
-    price: "$129"
+    price: 13
   }
 ];
 
@@ -295,8 +295,11 @@ export default function MyCoursesPage() {
 
           {!isEnrolled && course.price && (
             <div className="flex items-center justify-between">
-              <span className="text-2xl font-bold text-green-600">{course.price}</span>
-              <span className="text-sm text-gray-500 line-through">$299</span>
+              <div className="flex flex-row items-center gap-1">
+                <img src="/token.png" className="w-6 h-6" alt="" srcset="" />
+                <span className="text-2xl font-bold text-blue-600">{course.price}</span>
+              </div>
+              <span className="text-sm text-gray-500 line-through">40</span>
             </div>
           )}
           
@@ -499,7 +502,7 @@ export default function MyCoursesPage() {
                     <input
                       type="text"
                       placeholder="Search courses, instructors, or topics..."
-                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -507,7 +510,7 @@ export default function MyCoursesPage() {
                   <div className="flex items-center gap-2">
                     <Filter className="w-5 h-5 text-gray-400" />
                     <select
-                      className="px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent min-w-40"
+                      className="px-4 py-3 border border-gray-200 bg-white rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent min-w-40"
                       value={selectedCategory}
                       onChange={(e) => setSelectedCategory(e.target.value)}
                     >

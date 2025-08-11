@@ -1,6 +1,13 @@
 import { motion } from "framer-motion"
 import { Button } from "../../components/ui/button"
-import { Card, CardDescription, CardHeader, CardTitle } from "../../components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 import { 
   BookOpen, 
   Users, 
@@ -18,13 +25,86 @@ import {
   CheckCircle
 } from "lucide-react"
 import { Link } from "react-router-dom"
+<<<<<<< HEAD
 import GuestNavbar from "@/components/self_made/navbar"
+=======
+import { Navbar } from "@/components/navbar"
+
+const TEAM_MEMBERS = [
+  {
+    id: '1',
+    name: 'Zenli Huangtara',
+    role: 'Lead Developer',
+    image: "https://plus.unsplash.com/premium_photo-1689977968861-9c91dbb16049?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    description: 'Oversees technical architecture and development processes. Expert in scalable systems and team leadership.  ',
+    tag: 'Lead Dev'
+  },
+  {
+    id: '2',
+    name: 'Dhannyo Putta',
+    role: 'AI/ML Engineer',
+    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    description: 'Develops and deploys machine learning models for intelligent features and data-driven insights.',
+    tag: 'Artificial Intelligence'
+  },
+  {
+    id: '3',
+    name: 'Alvin Wijaya',
+    role: 'Front-End Engineer',
+    image: 'https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    description: 'Specializes in building intuitive and performant user interfaces with React and modern web technologies.',
+    tag: 'Front End'
+  },
+  {
+    id: '4',
+    name: 'Willard Tio',
+    role: 'Quality Assurance',
+    image: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    description: 'Analyzes complex datasets to identify trends, create reports, and support strategic decision-making.',
+    tag: 'Analyst'
+  },
+  {
+    id: '5',
+    name: 'Bryan Viriya Kurniawan',
+    role: 'Business Analyst',
+    image: 'https://images.unsplash.com/photo-1654110455429-cf322b40a906?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    description: 'Experienced in digital marketing strategies, brand building, and community engagement in tech.',
+    tag: 'Analyst'
+  }
+];
+>>>>>>> 54399fbf866af95c04314a0bab372dfe3ae7b222
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 via-blue-50 to-white">
       {/* Header */}
+<<<<<<< HEAD
       <GuestNavbar />
+=======
+      <Navbar className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50" activePath="/about" />
+      {/* <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <BookOpen className="h-8 w-8 text-blue-600" />
+            <span className="text-2xl font-bold text-gray-900">Edoo</span>
+          </div>
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link to="/" className="text-gray-600 hover:text-blue-600">Home</Link>
+            <Link to="/courses" className="text-gray-600 hover:text-blue-600">Courses</Link>
+            <Link to="/about" className="text-blue-600 font-medium">About</Link>
+            <Link to="/contact" className="text-gray-600 hover:text-blue-600">Contact</Link>
+          </nav>
+          <div className="flex items-center space-x-4">
+            <Link to="/auth/login">
+              <Button variant="ghost">Login</Button>
+            </Link>
+            <Link to="/auth/register">
+              <Button>Get Started</Button>
+            </Link>
+          </div>
+        </div>
+      </header> */}
+>>>>>>> 54399fbf866af95c04314a0bab372dfe3ae7b222
 
       {/* Hero Section */}
       <section className="py-24 px-4">
@@ -211,8 +291,8 @@ export default function AboutPage() {
       </section>
 
       {/* Team Section */}
-      <section className="py-20 px-4 bg-white">
-        <motion.div
+      <section className="py-20 px-16 bg-white">
+        {/* <motion.div
           className="container mx-auto"
           whileInView={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 50 }}
@@ -272,7 +352,43 @@ export default function AboutPage() {
               </motion.div>
             ))}
           </div>
-        </motion.div>
+        </motion.div> */}
+
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-bold mb-6">Meet Our Team</h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            A diverse group of innovators passionate about transforming education through technology
+          </p>
+        </div>
+
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="container mx-auto"
+        >
+        <CarouselContent>
+          {TEAM_MEMBERS.map((member, index) => (
+            <CarouselItem key={index} className="basis-1/3">
+              <div className="mx-3 my-2 bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                <img 
+                  src={member.image} 
+                  alt={member.name}
+                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                />
+                <h3 className="text-xl font-bold mb-2">{member.name}</h3>
+                <div className="text-purple-600 font-medium mb-3">{member.role}</div>
+                <p className="text-gray-600 text-sm mb-4">{member.description}</p>
+                <span className="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">
+                  {member.tag}
+                </span>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+        </Carousel>
       </section>
 
       {/* Technology Stack */}
